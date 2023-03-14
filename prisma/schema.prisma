@@ -1,0 +1,269 @@
+generator client {
+  provider = "prisma-client-js"
+   previewFeatures = ["filteredRelationCount"]
+}
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+model WhiteList {
+  id                            Int                   @id @default(autoincrement())
+  wallet                        String?               @unique
+  twitterId                     String?               @default("")
+  twitterUserName               String?               @default("")
+  userId                        String                @unique @default(uuid())
+  discordId                     String?               @default("")
+  discordUserDiscriminator      String?               @default("")
+  createdAt                     DateTime              @default(now())
+  updatedAt                     DateTime              @default(now()) @updatedAt
+  pendingRewards                PendingReward[]
+  rewards                       Reward[]
+  userQuest                     UserQuest[]
+  nonce                         String?
+  whiteListUserData             WhiteListUserData?                                        
+  uathUser                      String?               @default("")
+  email                         String?               @unique
+  password                      String?               @default("")
+  smsVerification               SmsVerification?
+  avatar                        String?
+  status                        AccountStatus?        @default(PENDING)
+  signUpOrigin                  String?               @default("Wallet")
+}
+model WhiteListUserData {
+  id                            Int           @id @default(autoincrement())
+  userId                        String        @unique
+  user                          WhiteList     @relation(fields: [userId], references: [userId])
+  eth                           Decimal?      @default(0) @db.Decimal(10, 2)
+  lastEthUpdated                DateTime?     
+  followers                     Int?          
+  lastFollowersUpdated          DateTime?     
+}
+model PendingReward {
+  id           Int            @id @default(autoincrement())
+  wallet       String?   
+  generatedURL String         @default(uuid())
+  isClaimed    Boolean        @default(false)
+  rewardTypeId Int    
+  quantity     Int            @default(0)
+  createdAt    DateTime       @default(now())
+  rewardType   RewardType     @relation(fields: [rewardTypeId], references: [id])
+
+  user         WhiteList?      @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId       String?         
+
+  @@unique([userId, rewardTypeId, generatedURL])
+}
+model Reward {
+  id           Int         @id @default(autoincrement())
+  rewardTypeId Int 
+  wallet       String? 
+  quantity     Int         @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now()) @updatedAt
+  rewardType   RewardType  @relation(fields: [rewardTypeId], references: [id])
+  user         WhiteList?  @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId       String?  
+
+  @@unique([userId, rewardTypeId])
+}
+model RewardType {
+  id                  Int                 @id @default(autoincrement())
+  reward              String              @unique
+  pendingRewards      PendingReward[]
+  quests              Quest[]
+  rewards             Reward[]
+  userQuests          UserQuest[]
+  rewardPreview       String?
+  rewardIcon          String?
+
+  isEnabled           Boolean         @default(true)
+}
+model QuestType {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  description    String?
+  quests         Quest[]
+}
+model UserQuest {
+  id                        Int                 @id @default(autoincrement())      
+  questId                   String              @default(uuid())
+  extendedUserQuestData     Json?       
+  createdAt                 DateTime            @default(now())
+  rewardedQty               Int?        
+  rewardedTypeId            Int?        
+  quest                     Quest               @relation(fields: [questId], references: [questId])
+  rewardType                RewardType?         @relation(fields: [rewardedTypeId], references: [id])
+  updatedAt                 DateTime            @default(now())  @updatedAt
+  isHidden                  Boolean             @default(false)
+  hasClaimed                Boolean             @default(false)
+  isClaimable               Boolean             @default(false)
+  user                      WhiteList           @relation(fields: [userId], references: [userId])
+  userId                    String      
+
+  @@unique([userId, questId])
+}
+
+model Quest {
+  id                    Int             @id @default(autoincrement())
+  type                  QuestType       @relation(fields: [questTypeId], references: [id])
+  text                  String    
+  completedText         String    
+  rewardTypeId          Int   
+  quantity              Int             @default(0)
+  isEnabled             Boolean         @default(true)
+  isRequired            Boolean         @default(false)
+  isDeleted             Boolean         @default(false)
+  description           String?         @default("")
+  extendedQuestData     Json?   
+  questId               String          @unique @default(uuid())
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @default(now()) @updatedAt
+  rewardType            RewardType      @relation(fields: [rewardTypeId], references: [id])
+  userQuests            UserQuest[]
+  questTypeId           Int
+  style                 QuestStyle      @default(NORMAL)
+  duration              QuestDuration   @default(ONGOING)  
+  image                 String?
+}
+
+model Admin {
+  id     Int     @id @default(autoincrement())
+  wallet String  @unique
+  nonce  String?
+}
+
+model MoralisNftData {
+  id                  Int                 @id @default(autoincrement())
+  contractAddress     String              @unique
+  contractData        Json?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @default(now()) @updatedAt
+}
+
+model LogError {
+    id                Int                 @id @default(autoincrement())
+    url               String
+    referer           String?
+    userAgent         String?
+    content           Json?
+    createdAt         DateTime            @default(now())
+}
+
+model logRegister {
+    id                Int                 @id @default(autoincrement())
+    url               String
+    referer           String?
+    userAgent         String?
+    wallet            String?             
+    ip                String?
+    createdAt         DateTime            @default(now())
+}
+
+model shellRedeemed {
+    id                Int                 @id @default(autoincrement())
+    wallet            String?             @unique
+    rewards           String[] 
+    rewardPointer     Int                 @default(-1)
+    isRedeemed        Boolean             @default(false)
+    createdAt         DateTime            @default(now())
+    updatedAt         DateTime            @default(now()) @updatedAt
+    userId            String?             @unique
+}
+
+model QuestVariables{
+  id                          Int                 @id @default(autoincrement())
+  vercel_env                  String
+  discordId                   String
+  discordSecret               String
+  discordBackend              String 
+  discordBackendSecret        String
+  twitterId                   String
+  twitterSecret               String
+  twitterBearerToken          String?             @default("")
+  pendingRewardImageUrl       String?             @default("")
+  cloudinaryName              String?             @default("")
+  cloudinaryKey               String?             @default("")
+  cloudinarySecret            String?             @default("")
+  discordBotToken             String?             @default("")
+  hostUrl                     String?             @default("")
+  googleClientEmail           String?             @default("")
+  googleClientId              String?             @default("")
+  googleProjectId             String?             @default("")
+  googlePropertyId            String?             @default("")
+  smsSid                      String?             @default("")
+  smsAuthToken                String?             @default("")
+  smsServiceId                String?             @default("")
+  requiredSmsVerification     Boolean             @default(false)
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime            @default(now()) @updatedAt
+}
+
+model Discord {
+  id                          Int             @id @default(autoincrement())
+  channelId                   String          @unique
+  channel                     String?         
+  isEnabled                   Boolean         @default(true)
+  isDeleted                   Boolean         @default(false)
+  postMessageWhenClaimed      Boolean         @default(true)
+  createdAt                   DateTime        @default(now())
+  updatedAt                   DateTime        @default(now()) @updatedAt
+}
+
+model SmsVerification {
+  id                          Int                     @id @default(autoincrement())
+  user                        WhiteList               @relation(fields: [userId], references: [userId])
+  userId                      String                  @unique
+  attemptedPhone              String                  @unique
+  status                      VerificationStatus      @default(PENDING)
+  valid                       Boolean                 @default(false)
+  createdAt                   DateTime                @default(now())
+  updatedAt                   DateTime                @default(now()) @updatedAt
+}
+
+model WebPushSubscription {
+  id                          Int                 @id @default(autoincrement())
+  endpoint                    String?
+  auth                        String?
+  p256dh                      String?
+}
+
+model AdminLogError {
+  id                          Int                     @id @default(autoincrement())
+  route                       String?
+  message                     String?
+  isSeen                      Boolean                 @default(false)
+  createdAt                   DateTime                @default(now())
+  updatedAt                   DateTime                @default(now()) @updatedAt
+}
+
+enum AccountStatus {
+ PENDING
+ ACTIVE
+}
+
+enum VerificationStatus {
+ PENDING
+ APPROVED
+}
+
+enum QuestStyle {
+ NORMAL       
+ FEATURED     
+}
+
+enum QuestDuration {
+ ONGOING      
+ LIMITED      
+}
+
+model ConfigImageHosting{
+  id                          Int                 @id @default(autoincrement())
+  cloudinaryName              String?             @default("")
+  cloudinaryKey               String?             @default("")
+  cloudinarySecret            String?             @default("")
+  generalPreset               String?             @default("")
+  avatarPreset                String?             @default("")
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime            @default(now()) @updatedAt
+}
