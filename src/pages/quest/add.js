@@ -8,23 +8,29 @@ import { useRouter } from 'next/router'
 import AddQuest from '@components/admin/quest/AddQuest'
 import AdminQuestFormProvider from '@context/AdminQuestFormContext'
 import { useAdminQuestTypesQuery } from '@hooks/admin/quest'
-import Enums from '@enums/index'
+
 import Loading from '@components/shared/LoadingContainer/Loading'
 
-import {
+import Enums, {
   CATEGORY_AUTHENTICATION,
   CATEGORY_COMMUNITY_ENGAGEMENT,
   CATEGORY_PARTNERSHIP,
   CATEGORY_REWARD_POINTS,
   CATEGORY_SOCIAL_FOLLOW,
   CATEGORY_SOCIAL_SHARE,
+  DISCORD_AUTH,
+  TWITTER_AUTH,
+  WALLET_AUTH,
+  FOLLOW_TWITTER,
+  FOLLOW_INSTAGRAM,
+  TWITTER_RETWEET
 } from '@enums/index'
 
 const AdminAddQuest = ({ session }) => {
   const router = useRouter()
   const { data: allQuestTypes, isLoading: isLoadingQuestTypes } = useAdminQuestTypesQuery()
   const [questTypes, questTypesSet] = useState()
-  const { type } = router?.query
+  const { query: { type } } = router
 
   useEffect(() => {
     if (type && allQuestTypes) {
@@ -33,20 +39,20 @@ const AdminAddQuest = ({ session }) => {
         case CATEGORY_AUTHENTICATION.type:
           questTypesFilter = allQuestTypes.filter(
             (q) =>
-              q.name === Enums.DISCORD_AUTH ||
-              q.name === Enums.TWITTER_AUTH ||
-              q.name === Enums.WALLET_AUTH,
+              q.name === DISCORD_AUTH ||
+              q.name === TWITTER_AUTH ||
+              q.name === WALLET_AUTH,
           )
           break
 
         case CATEGORY_SOCIAL_FOLLOW.type:
           questTypesFilter = allQuestTypes.filter(
-            (q) => q.name === Enums.FOLLOW_TWITTER || q.name === Enums.FOLLOW_INSTAGRAM,
+            (q) => q.name === FOLLOW_TWITTER || q.name === FOLLOW_INSTAGRAM,
           )
 
           break
         case CATEGORY_SOCIAL_SHARE.type:
-          questTypesFilter = allQuestTypes.filter((q) => q.name === Enums.TWITTER_RETWEET)
+          questTypesFilter = allQuestTypes.filter((q) => q.name === TWITTER_RETWEET)
 
           break
         case CATEGORY_REWARD_POINTS.type:

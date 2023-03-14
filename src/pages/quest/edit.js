@@ -8,14 +8,14 @@ import { useRouter } from 'next/router'
 
 import AdminQuestFormProvider from '@context/AdminQuestFormContext'
 import { useAdminQuestTypesQuery } from '@hooks/admin/quest'
-import Loading from '@components/shared/LoadingContainer/Loading'
+
 
 import EditQuest from '@components/admin/quest/EditQuest'
 
 const AdminEditQuest = () => {
   const router = useRouter()
   const { data: allQuestTypes, isLoading: isLoadingQuestTypes } = useAdminQuestTypesQuery()
-  const { id } = router?.query
+  const { query: { id } } = router;
 
   return (
     <AdminQuestFormProvider questTypes={allQuestTypes} id={id} >

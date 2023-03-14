@@ -131,7 +131,9 @@ const UsersBanner = ({ downloadCsv }: UsersBannerProps) => {
           >
             Filter Users
           </Button>
-          <Menu zIndex="5">
+          <Menu 
+          // zIndex="5"
+          >
             <MenuButton as={Button} variant='blue' maxW='150px' borderColor='white' size='sm'>
               Add User
             </MenuButton>

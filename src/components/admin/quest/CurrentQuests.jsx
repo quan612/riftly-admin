@@ -474,29 +474,6 @@ const getCellValue = (cell, usersCount, editQuestAction, mutateAsync, handleOnDe
           </Flex>
         )
       }
-    case 'LAST ACTIVE':
-      if (value < 24) {
-        return (
-          <Text color="green.300" fontSize={'lg'}>
-            {value} hrs
-          </Text>
-        )
-      }
-
-      if (value === 24) {
-        return (
-          <Text color="green.300" fontSize={'lg'}>
-            1 day
-          </Text>
-        )
-      }
-
-      return (
-        <Text color={color} fontSize={'lg'}>
-          {Math.floor(cell.value / 24)} days
-        </Text>
-      )
-
     case 'COMPLETION RATE':
       return (
         <Flex align="center" justifyContent={'space-between'} gap="6px">
@@ -564,34 +541,6 @@ const getCellValue = (cell, usersCount, editQuestAction, mutateAsync, handleOnDe
             _hover={{ cursor: 'pointer', color: 'red.300' }}
           >
             <DeleteIcon />
-          </Box>
-        </Flex>
-      )
-
-    case 'USER':
-      return getUsername(cell.row.original)
-    case 'CONNECTIONS':
-      return (
-        <Flex gap={{ base: '5px', lg: '8px' }}>
-          <Box boxSize={'18px'}>
-            {email && <EmailIcon />}
-            {!email && <TransparentEmailIcon />}
-          </Box>
-          <Box boxSize={'18px'}>
-            {google && <GoogleIcon />}
-            {!google && <TransparentGoogleIcon />}
-          </Box>
-          <Box boxSize={'18px'}>
-            {discordUserDiscriminator && <DiscordIcon />}
-            {!discordUserDiscriminator && <TransparentDiscordIcon />}
-          </Box>
-          <Box boxSize={'18px'}>
-            {twitterUserName && <TwitterIcon />}
-            {!twitterUserName && <TransparentTwiterIcon />}
-          </Box>
-          <Box boxSize={'18px'}>
-            {wallet && <WalletIcon />}
-            {!wallet && <TransparentWalletIcon />}
           </Box>
         </Flex>
       )

@@ -187,7 +187,7 @@ const AddNewUser = () => {
                   </Button>
                 </AdminCard>
               </Box>
-            </HalfPageWrappe>
+            </HalfPageWrapper>
           </Form>
         )
       }}

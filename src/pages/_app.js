@@ -3,7 +3,6 @@ import React, { StrictMode, useEffect } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
 import '../styles/globals.css'
 
-
 import { Web3Provider } from 'context/Web3Context'
 import { SessionProvider } from 'next-auth/react'
 import { AdminGuard } from '@components/admin/layout/AdminGuard'
@@ -11,9 +10,10 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import Script from 'next/script'
 import * as gtag from '../lib/ga/gtag'
 import { useRouter } from 'next/router'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Box } from '@chakra-ui/react'
 import theme from 'theme/theme'
 import AdminLayout from '@components/admin/AdminLayout'
+import { useWindowSize } from 'react-use'
 
 export function reportWebVitals(metric) {
   // console.log(metric);
@@ -85,8 +85,6 @@ function MyApp({ Component, pageProps }) {
 
 export default MyApp
 
-import { Box } from '@chakra-ui/react'
-import { useWindowSize } from 'react-use'
 const LayoutWrapper = ({ children }) => {
 
   const ref = use100vh()
