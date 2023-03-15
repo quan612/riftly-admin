@@ -335,12 +335,12 @@ export default function UserSignUpLineChart() {
             <Text color="secondaryGray.600" fontSize="sm" fontWeight="500" mt="4px" me="12px">
               User sign up
             </Text>
-            <Flex align="center">
+            {/* <Flex align="center">
               <Icon as={RiArrowUpSFill} color="green.500" me="2px" mt="2px" />
               <Text color="green.500" fontSize="sm" fontWeight="700">
                 +2.45%
               </Text>
-            </Flex>
+            </Flex> */}
           </Flex>
 
           <Flex align="start" flexDirection={'column'} gap="8px">

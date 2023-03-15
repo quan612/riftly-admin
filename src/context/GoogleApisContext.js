@@ -3,6 +3,9 @@ import { prisma } from 'context/PrismaContext'
 
 export const analyticsDataClient = async () => {
   let variables = await prisma.questVariables.findFirst()
+  if (!variables) {
+    return null
+  }
   const { googleClientEmail, googleClientId, googleProjectId } = variables
 
   if (

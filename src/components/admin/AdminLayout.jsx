@@ -63,9 +63,7 @@ export default function AdminLayout({ session, children }) {
     }
     return backText
   }
-  if (typeof window !== 'undefined') {
-    console.log(window?.location.pathname)
-  }
+
   const getActiveRoute = (routes) => {
     let activeRoute = ''
 

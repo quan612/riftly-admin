@@ -96,7 +96,7 @@ export default function Dashboard() {
           }
           name="New Users this month"
           value={aggregatedUserStatistic?.newUsers?.newUsersThisMonth}
-          growth={`${aggregatedUserStatistic?.newUsers?.growth}`}
+          growth={`${aggregatedUserStatistic?.newUsers?.growth || null}`}
         />
         <MiniStatistics
           startContent={

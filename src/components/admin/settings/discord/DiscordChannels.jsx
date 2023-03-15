@@ -79,11 +79,11 @@ const DiscordChannels = () => {
             <Th px="0.25rem">Channel Id</Th>
             <Th px="0.25rem">
               Status
-              <RiftlyTooltip label="Disabled Channel will not be listed under Reward User Page" />
+              {/* <RiftlyTooltip label="Disabled Channel will not be listed under Reward User Page" /> */}
             </Th>
-            <Th v>
+            <Th>
               Post Message
-              <RiftlyTooltip label="Allow to post an embeded message to this channel once user claimed a reward" />
+              {/* <RiftlyTooltip label="Allow to post an embeded message to this channel once user claimed a reward" /> */}
             </Th>
             {/* <Th px="0.25rem">Action</Th> */}
           </Tr>

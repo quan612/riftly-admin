@@ -36,9 +36,7 @@ const DiscordBotInfo = () => {
     twitterId: configs?.twitterId || '',
     twitterSecret: configs?.twitterSecret || '',
     pendingRewardImageUrl: configs?.pendingRewardImageUrl || '',
-    cloudinaryName: configs?.cloudinaryName || '',
-    cloudinaryKey: configs?.cloudinaryKey || '',
-    cloudinarySecret: configs?.cloudinarySecret || '',
+
     hostUrl: configs?.hostUrl || '',
     twitterBearerToken: configs?.twitterBearerToken || '',
     googleClientEmail: configs?.googleClientEmail || '',
@@ -88,7 +86,6 @@ const DiscordBotInfo = () => {
         }}
       >
         {({ values, errors, status, touched, handleChange, setFieldValue, dirty }) => {
-          console.log(dirty)
           return (
             <Box w="100%">
               <Form>

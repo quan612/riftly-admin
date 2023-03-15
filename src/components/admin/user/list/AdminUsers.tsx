@@ -8,8 +8,6 @@ import {
   Text,
   Button,
   useColorModeValue,
-
-
   Checkbox,
   GridItem,
   Table,
@@ -18,10 +16,9 @@ import {
   Thead,
   Tr,
   Td,
-  Tooltip,
-  IconButton,
+
   Icon,
-  useToast,
+
   ButtonGroup,
   Avatar,
   Menu,
@@ -131,9 +128,7 @@ const UsersBanner = ({ downloadCsv }: UsersBannerProps) => {
           >
             Filter Users
           </Button>
-          <Menu 
-          // zIndex="5"
-          >
+          <Menu >
             <MenuButton as={Button} variant='blue' maxW='150px' borderColor='white' size='sm'>
               Add User
             </MenuButton>

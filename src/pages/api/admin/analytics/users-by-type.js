@@ -16,6 +16,9 @@ async function AnalyticsUserByQuery(req, res) {
 
         let variables = await prisma.questVariables.findFirst()
 
+        if (!variables) {
+          return res.status(200).json({ isError: true, error: 'Missing analytics config' })
+        }
         const { googlePropertyId } = variables
 
         let startDate = '',

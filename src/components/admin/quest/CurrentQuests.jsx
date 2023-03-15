@@ -8,7 +8,6 @@ import {
   Flex,
   Text,
   Button,
-  useColorMode,
   useColorModeValue,
   Table,
   Tbody,
@@ -16,9 +15,6 @@ import {
   Thead,
   Tr,
   Td,
-  Tooltip,
-  IconButton,
-  Icon,
   useToast,
   ButtonGroup,
   useDisclosure,
@@ -125,6 +121,7 @@ const CurrentQuests = () => {
   const [currentQuests, setCurrentQuests] = useState(null)
 
   const { data: quests, isLoading: isLoadingQuests } = useAdminQuestsQuery()
+  const { data: usersCount, isLoading: isFetchingUsersCount } = useAdminAllUsersCountQuery()
 
   useEffect(() => {
     if (quests && !quests.isError) {
@@ -150,12 +147,14 @@ const CurrentQuests = () => {
         {/* <FilterUsersSidebar /> */}
       </RightSideBar>
 
-      {currentQuests && currentQuests.length > 0 && <ResultTable data={currentQuests} />}
+      {currentQuests && currentQuests.length > 0 && usersCount && (
+        <ResultTable data={currentQuests} usersCount={usersCount} />
+      )}
     </Flex>
   )
 }
 
-const ResultTable = ({ data }) => {
+const ResultTable = ({ data, usersCount }) => {
   const newQuestModal = useDisclosure()
   // const { filterSidebar, userSidebar, userDetails, viewUserDetails } = useContext(UsersContext)
   const router = useRouter()
@@ -171,10 +170,7 @@ const ResultTable = ({ data }) => {
     },
     {
       Header: 'POINTS',
-      // accessor: (row) => {
-      //   const rewardValue = row?.rewards?.find((e) => e?.rewardType?.reward === 'Points')
-      //   return rewardValue?.quantity //?.toLocaleString("en-US") || 0;
-      // },
+
       accessor: 'quantity',
     },
     {
@@ -192,32 +188,10 @@ const ResultTable = ({ data }) => {
         const {
           _count: { userQuests },
         } = row
-        return ((userQuests / usersCount) * 100).toFixed(0)
+        if (usersCount) return ((userQuests / usersCount) * 100).toFixed(0)
       },
     },
-    // {
-    //   Header: 'LAST ACTIVE',
-    //   accessor: (row) => {
-    //     const lastFinishedQuestDaytime = row?.userQuest[0]?.updatedAt || row?.updatedAt
-    //     // const dayPast = moment(new Date()).diff(moment(lastFinishedQuestDaytime), 'days', false)
-    //     const hourPast = moment(new Date()).diff(moment(lastFinishedQuestDaytime), 'hours', false)
 
-    //     return hourPast // manipulate later
-    //   },
-    // },
-    // {
-    //   Header: 'CONNECTIONS',
-    //   accessor: 'connections',
-    //   disableSortBy: true,
-    // },
-    // {
-    //   Header: 'FOLLOWERS',
-    //   accessor: (row) => row?.whiteListUserData?.followers || 0,
-    // },
-    // {
-    //   Header: 'NET WORTH',
-    //   accessor: (row) => row?.whiteListUserData?.eth || 0,
-    // },
     {
       Header: 'ACTION',
       accessor: 'action',
@@ -237,7 +211,9 @@ const ResultTable = ({ data }) => {
     {
       columns,
       data: tableData,
-      initialState: { pageSize: 10 },
+      initialState: {
+        pageSize: 100,
+      },
     },
     useGlobalFilter,
     useSortBy,
@@ -257,7 +233,6 @@ const ResultTable = ({ data }) => {
 
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100')
 
-  const { data: usersCount, isLoading: isFetchingUsersCount } = useAdminAllUsersCountQuery()
   const { isLoading: upsertingQuest, mutateAsync } = useAdminQuestUpsert()
   const [deleteQuest, deletingQuest, handleOnDelete] = useAdminQuestSoftDelete()
 

@@ -15,6 +15,7 @@ import {
   GridItem,
   InputGroup,
   Tooltip,
+  Text,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import { HeadingLg, HeadingSm, TextMd, TextSm } from '@components/shared/Typography'
@@ -93,8 +94,8 @@ export const AdminQuestFormWrapper = ({
   setFieldValue,
   children,
 }) => {
-  console.log('is create', isCreate)
   const { questTypeSelect, questType, questTypes, rewardTypes } = useContext(AdminQuestFormContext)
+
   return (
     <Form>
       <Flex
@@ -403,6 +404,7 @@ export const AdminQuestFormWrapper = ({
           text={values.text}
           description={values?.description}
           quantity={values?.quantity}
+          status={status}
         />
       </Flex>
       {/* Debug */}
@@ -423,7 +425,7 @@ export const AdminQuestFormWrapper = ({
 }
 
 /* Quest Preview */
-const QuestPreview = ({ text, description, quantity }) => {
+const QuestPreview = ({ text, description, quantity, status }) => {
   return (
     <AdminCard bg="transparent" border="1px solid" borderColor="brand.neutral3">
       <Flex direction="column" gap="20px">
@@ -432,7 +434,13 @@ const QuestPreview = ({ text, description, quantity }) => {
           Confirm that all information is correct and schedule your quest.
         </TextMd>
         <UserQuestBox text={text} description={description} quantity={quantity} />
+        {status && (
+          <Text color="red.300" w="100%">
+            {status}
+          </Text>
+        )}
       </Flex>
+
       <Flex justifyContent="center" mt="32px">
         <Button variant="blue" type="submit">
           Schedule Quest

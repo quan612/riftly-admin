@@ -79,7 +79,8 @@ export const MiniStatistics = (props) => {
             >
               {value}
             </StatNumber>
-            {growth !== null && growth !== undefined ? (
+
+            {growth !== null && growth !== undefined && growth !== 'null' && (
               <Flex align="center">
                 <Text
                   color={`${growth > 0 ? 'green.500' : 'red.400'}`}
@@ -93,7 +94,7 @@ export const MiniStatistics = (props) => {
                   since last month
                 </Text>
               </Flex>
-            ) : null}
+            )}
           </Stat>
           <Flex ms="auto" w="max-content">
             {endContent}

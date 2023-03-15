@@ -50,9 +50,7 @@ const SmsService = () => {
     twitterId: configs?.twitterId || '',
     twitterSecret: configs?.twitterSecret || '',
     pendingRewardImageUrl: configs?.pendingRewardImageUrl || '',
-    cloudinaryName: configs?.cloudinaryName || '',
-    cloudinaryKey: configs?.cloudinaryKey || '',
-    cloudinarySecret: configs?.cloudinarySecret || '',
+
     hostUrl: configs?.hostUrl || '',
     twitterBearerToken: configs?.twitterBearerToken || '',
     googleClientEmail: configs?.googleClientEmail || '',

@@ -182,9 +182,6 @@ model QuestVariables{
   twitterSecret               String
   twitterBearerToken          String?             @default("")
   pendingRewardImageUrl       String?             @default("")
-  cloudinaryName              String?             @default("")
-  cloudinaryKey               String?             @default("")
-  cloudinarySecret            String?             @default("")
   discordBotToken             String?             @default("")
   hostUrl                     String?             @default("")
   googleClientEmail           String?             @default("")

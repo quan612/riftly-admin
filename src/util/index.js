@@ -1,8 +1,11 @@
 import Enums from 'enums'
 import axios from 'axios'
 
-export const shortenAddress = (address) =>
-  `${address.slice(0, 5)}...${address.slice(address.length - 4)}`
+export const shortenAddress = (address) => {
+  if (!address) return ''
+  if (address?.length === 0) return ''
+  return `${address.slice(0, 5)}...${address.slice(address.length - 4)}`
+}
 
 export const validateEmail = (email) => {
   return String(email)
