@@ -28,7 +28,7 @@ export const AdminCard = ({ children, bg = 'brand.neutral4', ...rest }) => {
 
   return (
     <Card boxShadow={shadow}
-      p={{ base: '16px', md: '24px', lg: '32px' }}
+      p={{ base: '16px', md: '24px', xl: '32px' }}
       bg={bg} {...rest}>
       {children}
     </Card>
@@ -126,7 +126,7 @@ export const AdminBanner = ({ children }) => {
       alignItems="center"
       justifyContent={'center'}
       p={{ base: '12px', lg: '2rem' }}
-      zIndex={999}
+      zIndex={10}
       mt='20px'
     >
       {children}

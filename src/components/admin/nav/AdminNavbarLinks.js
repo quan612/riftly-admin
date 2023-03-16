@@ -123,6 +123,7 @@ export default function HeaderLinks(props) {
           borderRadius="20px"
           bg={menuBg}
           border="none"
+          zIndex={11}
         >
           <Flex w="100%" mb="0px">
             <Text

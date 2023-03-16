@@ -38,12 +38,12 @@ const AdminUserInfo = ({ userDetails }: UsersBannerProps) => {
         </FormLabel>
         <Text fontWeight="400">{moment(createdAt).format('MM-DD-YYYY')}</Text>
       </FormControl>
-      {wallet.length > 0 && (
+      
         <FormControl gap="8px">
           <FormLabel fontSize="sm" fontWeight="200" mb="2px">
             Wallet
           </FormLabel>
-          <Flex gap="1rem">
+          {wallet && wallet?.length > 0 && (    <Flex gap="1rem">
             <Text isTruncated maxW="80%">
               {shortenAddress(wallet)}
             </Text>
@@ -68,8 +68,9 @@ const AdminUserInfo = ({ userDetails }: UsersBannerProps) => {
               }}
             />
           </Flex>
+            )}
         </FormControl>
-      )}
+    
 
       {discordUserDiscriminator && discordUserDiscriminator.length > 0 && (
         <FormControl gap="8px">

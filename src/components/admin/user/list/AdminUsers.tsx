@@ -210,14 +210,14 @@ const ResultTable = ({ data }) => {
                   as={Button}
                   variant="blue"
                   size="sm"
-                  pe="0.2rem"
-                  ps="0.2rem"
+                  pe="0.1rem"
+                  ps="0.1rem"
                   h="32px"
-                  w="95px"
+                  w="90px"
                   fontSize="sm"
                   fontWeight="400"
                   color={'white'}
-                  borderRadius="48px"
+                  borderRadius="32px"
                 >
                   <ChevronDownIcon w="6" h="5" />
                   Actions
@@ -457,6 +457,7 @@ const ResultTable = ({ data }) => {
                       return (
                         <Th
                           {...column.getHeaderProps(column.getSortByToggleProps())}
+                          w='95px'
                           p="0"
                           key={index}
                         >
@@ -475,7 +476,7 @@ const ResultTable = ({ data }) => {
                         {!column?.hideHeader && (
                           <Flex
                             align="center"
-                            fontSize={{ sm: '8px', lg: '14px' }}
+                            fontSize={{ base:'10px', lg: '14px' }}
                             color="gray.400"
                             gap="8px"
                             fontWeight={'400'}
@@ -553,6 +554,20 @@ const ResultTable = ({ data }) => {
 const getUsername = (userObj: Prisma.WhiteList) => {
   const { email, discordUserDiscriminator, twitterUserName, wallet, avatar } = userObj
 
+  let username;
+  if(wallet){
+    username = shortenAddress(wallet)
+  }
+  else if(email){
+    username = email
+  }
+  else if(discordUserDiscriminator){
+    username = discordUserDiscriminator
+  }
+  else if(twitterUserName){
+    username = twitterUserName
+  }
+ 
   return (
     <Flex alignItems={'center'} gap={{ base: '8px', lg: '1rem' }}>
       <Box>
@@ -563,8 +578,8 @@ const getUsername = (userObj: Prisma.WhiteList) => {
           src={avatar}
         />
       </Box>
-      <Heading color="white" fontSize={'md'} maxWidth="120px" isTruncated>
-        {shortenAddress(wallet)}
+      <Heading color="white" fontSize={'md'} minWidth="120px" isTruncated>
+        {username } 
       </Heading>
     </Flex>
   )
@@ -608,14 +623,15 @@ const getCellValue = (cell, viewUserDetails) => {
   switch (cell.column.Header) {
     case 'TIER':
       return (
-        <Text color="white" fontSize={'lg'}>
+        <Text color="white"  >
           5
         </Text>
       )
+     
     case 'LAST ACTIVE':
       if (value < 24) {
         return (
-          <Text color="green.300" fontSize={'lg'}>
+          <Text color="green.300" >
             {value} hrs
           </Text>
         )
@@ -623,14 +639,14 @@ const getCellValue = (cell, viewUserDetails) => {
 
       if (value === 24) {
         return (
-          <Text color="green.300" fontSize={'lg'}>
+          <Text color="green.300" >
             1 day
           </Text>
         )
       }
      
       return (
-        <Text color={color} fontSize={'lg'}>
+        <Text color={color} >
           {Math.floor(cell.value / 24)} days
         </Text>
       )
@@ -725,11 +741,11 @@ const columnData = [
     disableSortBy: true,
   },
   {
-    Header: 'FOLLOWERS',
+    Header: 'FOLLOWS',
     accessor: (row) => row?.whiteListUserData?.followers || 0,
   },
   {
-    Header: 'NET WORTH',
+    Header: 'NET',
     accessor: (row) => row?.whiteListUserData?.eth || 0,
   },
   {

@@ -35,7 +35,7 @@ export default function RightSideBar(props) {
   const secondaryButtonBg = useColorModeValue('white', 'transparent')
   const secondaryButtonBorder = useColorModeValue('gray.700', 'white')
   const secondaryButtonColor = useColorModeValue('gray.700', 'white')
-  const bgDrawer = useColorModeValue('white', 'navy.800')
+  const bgDrawer = 'brand.neutral5'
   const settingsRef = React.useRef()
   return (
     <>
