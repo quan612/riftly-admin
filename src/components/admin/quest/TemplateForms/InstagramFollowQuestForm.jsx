@@ -115,7 +115,7 @@ const InstagramFollowQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnChange={true}
       onSubmit={onSubmit}
     >
-      {({ values, errors, status, touched, setFieldValue }) => {
+      {({ values, errors, status, touched, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -123,6 +123,7 @@ const InstagramFollowQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return (

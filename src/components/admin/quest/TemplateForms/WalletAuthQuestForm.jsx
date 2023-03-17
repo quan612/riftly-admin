@@ -111,7 +111,7 @@ const WalletAuthQuestForm = ({ quest = null, isCreate = true }) => {
         }
       }}
     >
-      {({ values, errors, status, touched, setFieldValue }) => {
+      {({ values, errors, status, touched, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -119,6 +119,7 @@ const WalletAuthQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return <AdminQuestFormWrapper {...childrenProps} />

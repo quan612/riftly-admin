@@ -32,7 +32,7 @@ import RightSideBar from '@components/shared/RightSideBar'
 import NewQuestModal from './NewQuestModal'
 import moment from 'moment'
 
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import { AddIcon, ChevronDownIcon, SmallAddIcon } from '@chakra-ui/icons'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaEllipsisH } from 'react-icons/fa'
 import { BsFilter, BsFillPlayFill } from 'react-icons/bs'
@@ -51,7 +51,7 @@ import { QuestStyle, QuestDuration } from '@prisma/client'
 import { useAdminAllUsersCountQuery } from '@hooks/admin/user'
 import { FaPlay } from 'react-icons/fa'
 
-const AdminQuestsBanner = ({ onAddNew }) => {
+const AdminQuestsBanner = ({ count, onAddNew }) => {
   return (
     <AdminBanner>
       <Flex
@@ -63,7 +63,7 @@ const AdminQuestsBanner = ({ onAddNew }) => {
         <Flex direction="column" maxWidth="100%" my={{ base: '14px' }} gap="1rem">
           {/* {allUsers && ( */}
           <Heading fontSize={{ base: 'lg', lg: '3xl' }} color={'white'} fontWeight="700">
-            10 Active Quests
+            {count} Active Quests
           </Heading>
           {/* )} */}
           <Text fontSize={'lg'} color={'white'} fontWeight="400">
@@ -85,26 +85,18 @@ const AdminQuestsBanner = ({ onAddNew }) => {
           fontWeight="semibold"
           fontSize="lg"
         >
-          <Button
-            variant="outline"
-            leftIcon={<BsFilter color="white" />}
+          {/* <Button
+            variant="blue"
+            borderColor={'white'}
+            leftIcon={<BsFilter size={'20px'} color="white" />}
             // onClick={filterSidebar.onOpen}
           >
             Filter
-          </Button>
+          </Button> */}
           <Button
-            variant="outline"
-            // leftIcon={
-            //   <Icon
-            //     transition="0.8s"
-            //     color="green.400"
-            //     boxSize={7}
-            //     as={FaFileCsv}
-            //     _hover={{
-            //       cursor: 'pointer',
-            //     }}
-            //   />
-            // }
+            variant="blue"
+            borderColor={'white'}
+            leftIcon={<AddIcon boxSize={'16px'} />}
             onClick={onAddNew}
           >
             Add Quest
@@ -116,18 +108,8 @@ const AdminQuestsBanner = ({ onAddNew }) => {
 }
 
 const CurrentQuests = () => {
-  // const { filterSidebar, userSidebar, userDetails, viewUserDetails } = useContext(UsersContext)
-
-  const [currentQuests, setCurrentQuests] = useState(null)
-
   const { data: quests, isLoading: isLoadingQuests } = useAdminQuestsQuery()
   const { data: usersCount, isLoading: isFetchingUsersCount } = useAdminAllUsersCountQuery()
-
-  useEffect(() => {
-    if (quests && !quests.isError) {
-      setCurrentQuests(quests?.sort(shortByText))
-    }
-  }, [quests])
 
   return (
     <Flex
@@ -147,8 +129,8 @@ const CurrentQuests = () => {
         {/* <FilterUsersSidebar /> */}
       </RightSideBar>
 
-      {currentQuests && currentQuests.length > 0 && usersCount && (
-        <ResultTable data={currentQuests} usersCount={usersCount} />
+      {quests && quests.length > 0 && usersCount && (
+        <ResultTable data={quests} usersCount={usersCount} />
       )}
     </Flex>
   )
@@ -274,6 +256,7 @@ const ResultTable = ({ data, usersCount }) => {
         }}
       />
       <AdminQuestsBanner
+        count={data?.length}
         onAddNew={() => {
           newQuestModal.onOpen()
         }}
@@ -526,16 +509,6 @@ const getCellValue = (cell, usersCount, editQuestAction, mutateAsync, handleOnDe
         </Text>
       )
   }
-}
-
-function shortByText(a, b) {
-  if (a.text?.toLowerCase() < b.text?.toLowerCase()) {
-    return -1
-  }
-  if (a.text?.toLowerCase() > b.text?.toLowerCase()) {
-    return 1
-  }
-  return 0
 }
 
 export default CurrentQuests

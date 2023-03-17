@@ -87,7 +87,6 @@ const EnterCodeQuestForm = ({ quest = null, isCreate = true }) => {
     style: quest?.style || QuestStyle.NORMAL,
     duration: quest?.duration || QuestDuration.ONGOING,
   }
-
   const { isLoading, mutateAsync } = useAdminQuestUpsert()
   const toast = useToast()
 
@@ -119,7 +118,7 @@ const EnterCodeQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnChange={true}
       onSubmit={onSubmit}
     >
-      {({ values, errors, status, touched, setFieldValue }) => {
+      {({ values, errors, status, touched, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -127,6 +126,7 @@ const EnterCodeQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return (

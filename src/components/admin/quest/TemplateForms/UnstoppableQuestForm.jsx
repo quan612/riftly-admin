@@ -111,7 +111,7 @@ const UnstoppableQuestForm = ({ quest = null, isCreate = true }) => {
         }
       }}
     >
-      {({ values, errors, status, touched, handleChange, setFieldValue }) => {
+      {({ values, errors, status, touched, handleChange, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -119,6 +119,7 @@ const UnstoppableQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return <AdminQuestFormWrapper {...childrenProps} />

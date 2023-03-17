@@ -91,7 +91,6 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
 
   const onSubmit = async (fields, { setStatus }) => {
     try {
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
       let res = await mutateAsync(fields)
       if (res?.isError) {
         setStatus(res.message)
@@ -118,7 +117,7 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnChange={true}
       onSubmit={onSubmit}
     >
-      {({ values, errors, status, touched, handleChange, setFieldValue }) => {
+      {({ values, errors, status, touched, handleChange, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -126,6 +125,7 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return (

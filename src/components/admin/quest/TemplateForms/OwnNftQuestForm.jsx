@@ -94,7 +94,6 @@ const OwnNftQuestForm = ({ quest = null, isCreate = true }) => {
 
   const onSubmit = async (fields, { setStatus }) => {
     try {
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
       let res = await mutateAsync(fields)
       if (res?.isError) {
         setStatus(res.message)
@@ -121,7 +120,7 @@ const OwnNftQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnChange={true}
       onSubmit={onSubmit}
     >
-      {({ values, errors, status, touched, setFieldValue }) => {
+      {({ values, errors, status, touched, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -129,6 +128,7 @@ const OwnNftQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return (

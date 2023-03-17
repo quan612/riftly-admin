@@ -70,7 +70,7 @@ const AdminAddQuest = ({ session }) => {
           break
         case CATEGORY_COMMUNITY_ENGAGEMENT.type:
           questTypesFilter = allQuestTypes.filter(
-            (q) => q.name === Enums.IMAGE_UPLOAD_QUEST || q.name === Enums.CODE_QUEST,
+            (q) => q.name === Enums.CODE_QUEST //|| q.name === Enums.IMAGE_UPLOAD_QUEST ,
           )
 
           break

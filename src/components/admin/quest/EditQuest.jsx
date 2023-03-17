@@ -47,7 +47,7 @@ export default function EditQuest({ quest = null }) {
   if (selectedQuest && selectedQuest?.type?.name)
     return (
       <>
-        {selectedQuest?.type?.name === Enums.DISCORD_AUTH && (
+        {selectedQuest?.type?.name === Enums.DAILY_SHELL && (
           <DailyQuestForm quest={selectedQuest} isCreate={false} />
         )}
 

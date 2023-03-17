@@ -112,7 +112,7 @@ const DiscordAuthQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnChange={false}
       onSubmit={onSubmit}
     >
-      {({ values, errors, status, touched, setFieldValue }) => {
+      {({ values, errors, status, touched, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -120,6 +120,7 @@ const DiscordAuthQuestForm = ({ quest = null, isCreate = true }) => {
           values,
           errors,
           touched,
+          dirty,
           setFieldValue,
         }
         return <AdminQuestFormWrapper {...childrenProps} />

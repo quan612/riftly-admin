@@ -40,7 +40,7 @@ export const useAdminQuestsQuery = () => {
   const { data, isLoading } = useQuery(
     'admin-quests-query',
     async () => {
-      return axios.get(`${Enums.BASEPATH}/api/admin/quest/`).then((r) => r.data)
+      return axios.get(`${Enums.BASEPATH}/api/admin/quest/`).then((r) => r.data?.sort(sortByText))
     },
     { staleTime: 60 },
   )
@@ -58,4 +58,15 @@ export const useAdminQuestTypesQuery = () => {
   )
 
   return { data, isLoading }
+}
+
+
+function sortByText(a, b) {
+  if (a.text?.toLowerCase() < b.text?.toLowerCase()) {
+    return -1
+  }
+  if (a.text?.toLowerCase() > b.text?.toLowerCase()) {
+    return 1
+  }
+  return 0
 }

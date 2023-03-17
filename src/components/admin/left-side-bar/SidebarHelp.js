@@ -18,7 +18,7 @@ export function SidebarHelp(props) {
       justify="center"
       direction="column"
       align="center"
-      spacing="20px"
+
       mb="24px"
       mt="auto"
       position='relative'
