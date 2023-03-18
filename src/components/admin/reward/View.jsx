@@ -1,22 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
+import Enums from 'enums'
 
-import {
-  Heading,
-  Box,
-  Flex,
-  Text,
-  Button,
-  useColorMode,
-  useColorModeValue,
-  Icon,
-  Grid,
-} from '@chakra-ui/react'
+import { Heading, Box, Flex, Text, Icon, Grid } from '@chakra-ui/react'
 import { AdminBanner, AdminCard } from '@components/shared/Card'
 
 import { HeadingLg, TextMd } from '@components/shared/Typography'
 import { useRouter } from 'next/router'
 
-const SettingsView = () => {
+const RewardMethodView = () => {
   const router = useRouter()
   return (
     <Flex
@@ -31,15 +22,14 @@ const SettingsView = () => {
         <AdminCard p="16px">
           <Flex direction="column" gap="16px">
             <Flex direction="column" gap="20px">
-              <HeadingLg>Configuration</HeadingLg>
+              <HeadingLg>Select Reward Method</HeadingLg>
               <TextMd color="brand.neutral2">
-                Choose which item you would like to configure. Please contact our support if you run
-                into difficulties!
+                {`Choose how would you like to reward the user(s)`}
               </TextMd>
             </Flex>
 
             <Flex direction="column" gap="16px">
-              {settingsList.map((setting, index) => {
+              {methodList.map((setting, index) => {
                 return (
                   <Box
                     className="quest-box"
@@ -68,7 +58,7 @@ const SettingsView = () => {
   )
 }
 
-export default SettingsView
+export default RewardMethodView
 
 const SettingBoxSVG = ({ setting }) => {
   const { icon, title, description } = setting
@@ -113,7 +103,13 @@ const SettingBoxSVG = ({ setting }) => {
         </g>
         <defs>
           <clipPath id="clip0_481_2561">
-            <rect width="18" height="18" fill="white" transform="translate(663 45)" />
+            <rect
+              stroke="currentColor"
+              width="18"
+              height="18"
+              fill="white"
+              transform="translate(663 45)"
+            />
           </clipPath>
         </defs>
       </svg>
@@ -155,115 +151,17 @@ const TwitterSettingIcon = () => {
   )
 }
 
-const AnalyticsSettingIcon = () => {
-  return (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.128 15.02C7.79202 11.7065 10.3447 8.92102 13.5009 6.97494C16.657 5.02885 20.2921 3.99883 24 4C29.39 4 33.918 5.98 37.38 9.21L31.646 14.946C29.572 12.964 26.936 11.954 24 11.954C18.79 11.954 14.38 15.474 12.81 20.2C12.41 21.4 12.182 22.68 12.182 24C12.182 25.32 12.41 26.6 12.81 27.8C14.382 32.528 18.79 36.046 24 36.046C26.69 36.046 28.98 35.336 30.772 34.136C31.8109 33.452 32.7003 32.5645 33.3864 31.527C34.0725 30.4895 34.5412 29.3237 34.764 28.1H24V20.364H42.836C43.072 21.672 43.2 23.036 43.2 24.454C43.2 30.546 41.02 35.674 37.236 39.154C33.928 42.21 29.4 44 24 44C21.3733 44.0011 18.7721 43.4845 16.3451 42.4797C13.9181 41.475 11.7129 40.0019 9.85552 38.1445C7.99814 36.2871 6.52499 34.0819 5.52027 31.6549C4.51555 29.2279 3.99895 26.6267 4 24C4 20.772 4.772 17.72 6.128 15.02Z"
-        fill="#00BBC7"
-      />
-    </svg>
-  )
-}
-
-const SmsSettingIcon = () => {
-  return (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M14.582 41.648L4.00002 44L6.35202 33.418C4.80309 30.5208 3.99508 27.2853 4.00002 24C4.00002 12.954 12.954 4 24 4C35.046 4 44 12.954 44 24C44 35.046 35.046 44 24 44C20.7147 44.0049 17.4793 43.1969 14.582 41.648Z"
-        fill="#00BBC7"
-      />
-    </svg>
-  )
-}
-
-const RewardsSettingIcon = () => {
-  return (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M40.5 24C40.5 25.5771 39.46 26.8571 38.1786 26.8571C31.7668 26.8571 26.5714 33.2514 26.5714 41.1429C26.5714 42.72 25.5314 44 24.25 44C22.9686 44 21.9286 42.72 21.9286 41.1429C21.9286 33.2514 16.7332 26.8571 10.3214 26.8571C9.04 26.8571 8 25.5771 8 24C8 22.4229 9.04 21.1429 10.3214 21.1429C16.7332 21.1429 21.9286 14.7429 21.9286 6.85714C21.9286 5.28 22.9686 4 24.25 4C25.5314 4 26.5714 5.28 26.5714 6.85714C26.5714 14.7429 31.7668 21.1429 38.1786 21.1429C39.46 21.1429 40.5 22.4229 40.5 24Z"
-        fill="#00BBC7"
-      />
-    </svg>
-  )
-}
-
-const ImageHostingIcon = () => {
-  return (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M34.0076 14.0154C30.7502 14.0151 27.5702 15.0087 24.8924 16.8635C22.2147 18.7182 20.1665 21.3458 19.0216 24.3954L22.7696 25.8014C23.7595 23.1722 25.6403 20.9735 28.0845 19.5882C30.5286 18.2029 33.3811 17.7187 36.1455 18.22C38.9098 18.7213 41.4107 20.1763 43.2128 22.3316C45.0148 24.4869 46.0038 27.206 46.0076 30.0154C46.0076 33.198 44.7433 36.2502 42.4928 38.5007C40.2424 40.7511 37.1902 42.0154 34.0076 42.0154H14.0076C11.174 42.0172 8.43126 41.0162 6.26494 39.1897C4.09862 37.3632 2.6485 34.8291 2.17137 32.036C1.69424 29.2429 2.22088 26.3711 3.65803 23.9291C5.09517 21.487 7.35012 19.6323 10.0236 18.6934C9.85226 15.2386 10.966 11.8427 13.15 9.16042C15.334 6.47811 18.4337 4.69928 21.8515 4.16687C25.2693 3.63446 28.7632 4.38617 31.6596 6.27708C34.556 8.16798 36.6499 11.0642 37.5376 14.4074C36.379 14.1466 35.1951 14.0151 34.0076 14.0154Z"
-        fill="#00BBC7"
-      />
-    </svg>
-  )
-}
-
-const settingsList = [
+const methodList = [
   {
-    title: 'Discord',
-    description: 'Server connection, bot connection, channel connection, client ID',
+    title: 'Single Reward',
+    description: 'Reward single user by wallet, discord or twitter handle',
     icon: <DiscordSettingIcon />,
-    path: '/setting/discord',
+    path: '/reward/single',
   },
   {
-    title: 'Twitter',
-    description: 'Account information, bearer token, client ID',
+    title: 'Bulk Reward',
+    description: 'Reward multiple users by uploading .csv of wallet addresses',
     icon: <TwitterSettingIcon />,
-    path: '/setting/twitter',
-  },
-  {
-    title: 'Google Analytics',
-    description: 'Client Email, client ID, project ID, property ID',
-    icon: <AnalyticsSettingIcon />,
-    path: '/setting/analytics',
-  },
-  {
-    title: 'SMS Service',
-    description: 'SMS SID, authorization token, service ID ',
-    icon: <SmsSettingIcon />,
-    path: '/setting/sms',
-  },
-  {
-    title: 'Rewards',
-    description: 'Add new rewards, edit active rewards',
-    icon: <RewardsSettingIcon />,
-    path: '/setting/reward',
-  },
-  {
-    title: 'Image Hosting Service',
-    description: 'Configure service for image upload',
-    icon: <ImageHostingIcon />,
-    path: '/setting/image-hosting',
-  },
-  {
-    title: 'Miscellaneous',
-    description: 'Host Url, General Reward Embeded Image',
-    icon: <ImageHostingIcon />,
-    path: '/setting/misc',
+    path: '/reward/bulk',
   },
 ]

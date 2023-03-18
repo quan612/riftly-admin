@@ -45,7 +45,7 @@ export const getUserName = (session) => {
     case 'twitter':
       return session?.profile?.data?.username
     case 'unstoppable-authenticate':
-      return session?.user?.uauthUser
+      return session?.user?.uathUser
     case 'email':
       return session?.user?.email
     default:

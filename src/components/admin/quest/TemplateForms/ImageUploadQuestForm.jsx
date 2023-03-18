@@ -48,12 +48,15 @@ const ImageUploadSchema = object().shape({
         const { startDate, endDate } = from[0].value
         const { duration } = from[1].value
         if (duration === QuestDuration.ONGOING) return true
-
         if (duration === QuestDuration.LIMITED && !endDate) {
           return false
         }
-
-        if (duration === QuestDuration.LIMITED && startDate > endDate) {
+        const dayDiff = moment(new Date(endDate).toISOString()).diff(
+          moment(new Date(startDate).toISOString()),
+          'days',
+          false,
+        )
+        if (duration === QuestDuration.LIMITED && dayDiff < 0) {
           return false
         }
         return true

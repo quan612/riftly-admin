@@ -1,17 +1,19 @@
 import React from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from 'pages/api/auth/[...nextauth]'
-import RewardMethodView from '@components/admin/reward/View'
+import dynamic from 'next/dynamic'
 
-const AdminRewardPage = () => {
-  return <RewardMethodView />
+const AddRewardToUserComponent = dynamic(() => import('@components/admin/reward/AddRewardToUser'))
+
+const AdminRewards = () => {
+  return <AddRewardToUserComponent />
 }
 
-AdminRewardPage.Layout = AdminLayout
-AdminRewardPage.requireAdmin = true
-export default AdminRewardPage
+AdminRewards.Layout = AdminLayout
+AdminRewards.requireAdmin = true
+export default AdminRewards
 
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from 'pages/api/auth/[...nextauth]'
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions)
   if (!session || session?.user?.isAdmin === false) {

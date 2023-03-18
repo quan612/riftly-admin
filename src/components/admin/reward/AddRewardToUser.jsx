@@ -23,14 +23,16 @@ import {
   Select,
   useToast,
   GridItem,
+  RadioGroup,
+  Image,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import { useAdminRewardSingleUser } from '@hooks/admin/reward'
 import HalfPageWrapper from '../layout/HalfPageWrapper'
+import { HeadingLg, TextMd } from '@components/shared/Typography'
+import RiftlyRadio from '@components/shared/Radio'
 
 const AddRewardToUser = () => {
-  const bg = useColorModeValue('white', '#1B254B')
-  const shadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'none')
   const [rewardTypes, isLoadingRewardTypes] = useEnabledRewardTypesQuery()
   const [discordChannels, isLoadingDiscordChannels] = useEnabledAdminDiscordChannelsQuery()
 
@@ -43,7 +45,7 @@ const AddRewardToUser = () => {
     quantity: 1,
     postInDiscordChannels: [],
     generatedURL: '',
-    addRewardDirectly: true,
+    method: Enums.AUTOMATIC,
   })
 
   const generatedRef = useRef()
@@ -65,7 +67,7 @@ const AddRewardToUser = () => {
       const res = await rewardAsync(fields)
 
       if (res?.isError) {
-        generatedRef.current.value = ''
+        // generatedRef.current.value = ''
         setStatus(res?.message)
       } else {
         toast({
@@ -92,6 +94,28 @@ const AddRewardToUser = () => {
     }
   }
 
+  const getPreviewImage = useCallback((rewardTypeId, rewardTypes) => {
+    if (!rewardTypes) {
+      return null
+    }
+    let selectedReward = rewardTypes.find((r) => parseInt(r.id) === parseInt(rewardTypeId))
+
+    if (
+      !selectedReward ||
+      !selectedReward?.rewardPreview ||
+      selectedReward?.rewardPreview?.trim().length < 1
+    ) {
+      return null
+    }
+
+    let srcImage = selectedReward?.rewardPreview
+    return (
+      <Flex justify={'center'}>
+        <Image src={srcImage} alt="reward-preview" w={'70%'} />
+      </Flex>
+    )
+  })
+
   return (
     <Formik
       enableReinitialize={true}
@@ -106,53 +130,67 @@ const AddRewardToUser = () => {
           <Box w="100%">
             <Form>
               <HalfPageWrapper>
-                <AdminCard boxShadow={shadow} py="8">
-                  <SimpleGrid columns={1} rowGap={4} w="full">
-                    <GridItem>
-                      <FormControl>
-                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                          User Type
-                        </FormLabel>
-                        <Field name="type" as={Select} fontSize="md" ms="4px" size="lg">
-                          <option value={Enums.WALLET}>{Enums.WALLET}</option>
-                          <option value={Enums.DISCORD}>{Enums.DISCORD}</option>
-                          <option value={Enums.TWITTER}>{Enums.TWITTER}</option>
-                        </Field>
-                      </FormControl>
+                <AdminCard>
+                  <Flex direction="column" gap="20px">
+                    <HeadingLg>User</HeadingLg>
+                    <TextMd color="brand.neutral2">
+                      Fill in the information of the receiver of the reward. This can be wallet
+                      address, Discord handle (user#1234), or Twitter handle.
+                    </TextMd>
+
+                    <FormControl>
+                      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                        Account Type
+                      </FormLabel>
+                      <Field name="type" as={Select} fontSize="md" ms="4px" size="lg">
+                        <option value={Enums.WALLET}>{Enums.WALLET}</option>
+                        <option value={Enums.DISCORD}>{Enums.DISCORD}</option>
+                        <option value={Enums.TWITTER}>{Enums.TWITTER}</option>
+                      </Field>
+                    </FormControl>
+
+                    <FormControl isRequired isInvalid={errors.username && touched.username}>
+                      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                        User
+                      </FormLabel>
+
+                      <Field
+                        as={Input}
+                        name="username"
+                        type="text"
+                        variant="riftly"
+                        placeholder="Wallet / Discord User abc#1234 / Twitter User"
+                        validate={(value) => {
+                          let error
+
+                          if (values.type === Enums.WALLET && !utils.isAddress(value)) {
+                            error = 'Invalid address checksum.'
+                          }
+                          if (
+                            (values.type === Enums.DISCORD || values.type === Enums.TWITTER) &&
+                            value.length < 1
+                          ) {
+                            error = 'User cannot be blank.'
+                          }
+                          return error
+                        }}
+                      />
+                      <FormErrorMessage fontSize="md">{errors.username}</FormErrorMessage>
+                    </FormControl>
+                  </Flex>
+                </AdminCard>
+
+                <AdminCard py="8">
+                  <SimpleGrid columns={2} rowGap={4} w="full">
+                    <GridItem colSpan={2}>
+                      <Flex direction="column" gap="20px">
+                        <HeadingLg>User</HeadingLg>
+                        <TextMd color="brand.neutral2">
+                          {`Choose the type of reward and the quantity. Reward types can be edited and added in Settings > Rewards`}
+                        </TextMd>
+                      </Flex>
                     </GridItem>
-
-                    <GridItem colSpan={1}>
-                      <FormControl isRequired isInvalid={errors.username && touched.username}>
-                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                          User
-                        </FormLabel>
-
-                        <Field
-                          as={Input}
-                          name="username"
-                          type="text"
-                          variant="riftly"
-                          placeholder="Wallet / Discord User abc#1234 / Twitter User"
-                          validate={(value) => {
-                            let error
-
-                            if (values.type === Enums.WALLET && !utils.isAddress(value)) {
-                              error = 'Invalid address checksum.'
-                            }
-                            if (
-                              (values.type === Enums.DISCORD || values.type === Enums.TWITTER) &&
-                              value.length < 1
-                            ) {
-                              error = 'User cannot be blank.'
-                            }
-                            return error
-                          }}
-                        />
-                        <FormErrorMessage fontSize="md">{errors.username}</FormErrorMessage>
-                      </FormControl>
-                    </GridItem>
-
-                    <GridItem colSpan={1}>
+                    <GridItem colSpan={2}>
                       <FormControl
                         isRequired
                         isInvalid={errors.rewardTypeId && touched.rewardTypeId}
@@ -175,7 +213,7 @@ const AddRewardToUser = () => {
                           }}
                         >
                           <option key={-1} value={-1}>
-                            Select a reward
+                            Select reward type
                           </option>
                           {rewardTypes &&
                             rewardTypes.map((type, index) => {
@@ -190,7 +228,7 @@ const AddRewardToUser = () => {
                       </FormControl>
                     </GridItem>
 
-                    <GridItem colSpan={1}>
+                    <GridItem colSpan={2}>
                       <FormControl isInvalid={errors.quantity} isRequired>
                         <FormLabel ms="4px" fontSize="md" fontWeight="bold">
                           Quantity
@@ -216,15 +254,42 @@ const AddRewardToUser = () => {
                         <FormErrorMessage fontSize="md">{errors.quantity}</FormErrorMessage>
                       </FormControl>
                     </GridItem>
+                    <GridItem colSpan={2}>
+                      <FormControl>
+                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                          Claiming Method
+                        </FormLabel>
 
-                    <GridItem colSpan={1}>
+                        <RadioGroup
+                          onChange={(val) => setFieldValue('method', val)}
+                          value={values.method}
+                        >
+                          <Flex
+                            gap="1rem"
+                            direction={{ base: 'column', md: 'row' }}
+                            // justifyContent={'space-between'}
+                          >
+                            <RiftlyRadio value={Enums.MANUAL} isDisabled={true}>
+                              User claims manually from notification
+                            </RiftlyRadio>
+                            <RiftlyRadio value={Enums.AUTOMATIC}>
+                              Reward automatically deposit to user
+                            </RiftlyRadio>
+                          </Flex>
+                        </RadioGroup>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={2}>
                       {discordChannels && discordChannels.length > 0 && (
-                        <FormControl>
-                          <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                        <>
+                          <Text ms="4px" fontSize="md" fontWeight="bold" mb="4px">
                             Post To Discord Channels
-                          </FormLabel>
+                          </Text>
+                          <TextMd color="brand.neutral2" mb="10px">
+                            {`Multiple channels may be selected for posting reward message. Message will not be posted if there are no channels added. Channels can be added in Settings > Discord.`}
+                          </TextMd>
 
-                          <Box display={'flex'} gap="16px">
+                          <Box display={'flex'} gap="16px" flexWrap={'wrap'}>
                             {discordChannels.map((d, index) => {
                               let isChecked = false
                               if (values.postInDiscordChannels.length === 0) {
@@ -243,82 +308,89 @@ const AddRewardToUser = () => {
                               }
 
                               return (
-                                <FormControl display="flex" alignItems="center" key={index}>
-                                  <Switch
-                                    isChecked={isChecked}
-                                    name="postInDiscordChannels"
-                                    id="remember-login"
-                                    colorScheme="blue"
-                                    me="10px"
-                                    onChange={(event) => {
-                                      let toPost = event.target.checked
+                                <GridItem colSpan={2} key={index}>
+                                  <FormControl display="flex" alignItems="center">
+                                    <Switch
+                                      isChecked={isChecked}
+                                      name="postInDiscordChannels"
+                                      id="remember-login"
+                                      colorScheme="blue"
+                                      me="10px"
+                                      onChange={(event) => {
+                                        let toPost = event.target.checked
+                                        let postToThisChannel = {
+                                          channel: d.channel,
+                                          channelId: d.channelId,
+                                          toPost,
+                                        }
+                                        let tmp = values.postInDiscordChannels.filter(
+                                          (r) => r?.channelId !== postToThisChannel.channelId,
+                                        )
+                                        tmp = [...tmp, postToThisChannel]
 
-                                      let postToThisChannel = {
-                                        channel: d.channel,
-                                        channelId: d.channelId,
-                                        toPost,
-                                      }
+                                        setFieldValue('postInDiscordChannels', tmp)
+                                      }}
+                                    />
 
-                                      let tmp = values.postInDiscordChannels.filter(
-                                        (r) => r?.channelId !== postToThisChannel.channelId,
-                                      )
-
-                                      // if (toPost) {
-                                      tmp = [...tmp, postToThisChannel]
-                                      // }
-
-                                      setFieldValue('postInDiscordChannels', tmp)
-                                    }}
-                                  />
-
-                                  <FormLabel mb="0" fontWeight="normal">
-                                    {d.channel}
-                                  </FormLabel>
-                                </FormControl>
+                                    <FormLabel mb="0" fontWeight="normal">
+                                      {d.channel}
+                                    </FormLabel>
+                                  </FormControl>
+                                </GridItem>
                               )
                             })}
                           </Box>
-                        </FormControl>
+                        </>
                       )}
                     </GridItem>
+                  </SimpleGrid>
+                </AdminCard>
 
-                    <GridItem colSpan={1}>
-                      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                        Add Reward Directly
-                      </FormLabel>
-                      <Switch
-                        isDisabled={true}
-                        name="addRewardDirectly"
-                        isChecked={values.addRewardDirectly ? true : false}
-                        onChange={handleChange}
-                      />
-                    </GridItem>
-                    {/* <GridItem colSpan={{ base: 1, lg: 2 }}>
-                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                          Generated URL
-                        </FormLabel>
-                        <Input name="generatedURL" type="text" disabled={true} ref={generatedRef} />
-                      </GridItem> */}
-                    <RewardPreviewCard
+                <AdminCard bg="transparent" border="1px solid" borderColor="brand.neutral3">
+                  <Flex direction="column" gap="20px">
+                    <HeadingLg>Reward Preview</HeadingLg>
+                    <TextMd color="brand.neutral2">
+                      {`Reward image can be adjusted in Settings > Rewards.`}
+                    </TextMd>
+                    {/* <RewardPreviewCard
                       rewardTypeId={values.rewardTypeId}
                       rewardTypes={rewardTypes}
-                    />
-                  </SimpleGrid>
+                    /> */}
+                    {getPreviewImage(values.rewardTypeId, rewardTypes)}
 
-                  {status && <Text colorScheme={'red'}>API error: {status} </Text>}
-                  <Button
-                    w={{ base: '200px' }}
-                    my="16px"
-                    type="submit"
-                    colorScheme="teal"
-                    size="lg"
-                    isLoading={isSubmitting}
-                    // disabled={isSubmitButtonDisabled(values)}
-                  >
-                    Submit
-                  </Button>
+                    {status && (
+                      <Text color="red.300" w="100%">
+                        {status}
+                      </Text>
+                    )}
+                  </Flex>
+
+                  <Flex justifyContent="center" mt="32px">
+                    <Button
+                      w="50%"
+                      variant="blue"
+                      type="submit"
+                      disabled={!dirty}
+                      isLoading={isSubmitting}
+                    >
+                      Send Reward
+                    </Button>
+                  </Flex>
                 </AdminCard>
               </HalfPageWrapper>
+              {/* Debug */}
+              {process.env.NODE_ENV !== 'production' && (
+                <>
+                  <p>Values:</p>
+                  <pre>
+                    <code>{JSON.stringify(values, null, 2)}</code>
+                  </pre>
+                  <p>Errors:</p>
+                  <pre>
+                    <code>{JSON.stringify(errors, null, 2)}</code>
+                  </pre>
+                </>
+              )}
             </Form>
           </Box>
         )
@@ -329,9 +401,16 @@ const AddRewardToUser = () => {
 
 export default AddRewardToUser
 
+{
+  /* <GridItem colSpan={{ base: 1, lg: 2 }}>
+                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                          Generated URL
+                        </FormLabel>
+                        <Input name="generatedURL" type="text" disabled={true} ref={generatedRef} />
+                      </GridItem> */
+}
+
 const RewardPreviewCard = ({ rewardTypeId, rewardTypes }) => {
-  const bg = useColorModeValue('white', '#1B254B')
-  const shadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'none')
   const getPreviewImage = useCallback((rewardTypeId, rewardTypes) => {
     if (!rewardTypes) {
       return null
@@ -348,7 +427,7 @@ const RewardPreviewCard = ({ rewardTypeId, rewardTypes }) => {
 
     let srcImage = selectedReward?.rewardPreview
     return (
-      <AdminCard boxShadow={shadow} py="10px">
+      <AdminCard py="10px">
         <img src={srcImage} alt="reward-preview" />
       </AdminCard>
     )
@@ -363,35 +442,3 @@ const RewardPreviewCard = ({ rewardTypeId, rewardTypes }) => {
     </Box>
   )
 }
-
-// checked={
-//     values
-//         ?.postInDiscordChannels[
-//         index
-//     ]?.toPost
-//         ? values
-//               ?.postInDiscordChannels[
-//               index
-//           ]?.toPost
-//         : false
-// }
-// defaultChecked={false}
-// defaultChecked={() => {
-//     if (
-//         values
-//             .postInDiscordChannels
-//             .length === 0
-//     ) {
-//         return false;
-//     }
-//     let checkIndex =
-//         values.postInDiscordChannels.findIndex(
-//             (c) =>
-//                 c.channelId ===
-//                 d.channelId
-//         );
-//     if (checkIndex !== -1) {
-//         return false;
-//     }
-//     return true;
-// }}

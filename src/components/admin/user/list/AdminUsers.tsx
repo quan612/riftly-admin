@@ -122,7 +122,8 @@ const UsersBanner = ({ downloadCsv }: UsersBannerProps) => {
             CSV
           </Button>
           <Button
-            variant="outline"
+            variant="blue"
+            borderColor='white'
             leftIcon={<BsFilter color="white" />}
             onClick={filterSidebar.onOpen}
           >
@@ -210,8 +211,9 @@ const ResultTable = ({ data }) => {
                   as={Button}
                   variant="blue"
                   size="sm"
-                  pe="0.1rem"
-                  ps="0.1rem"
+                  p='0px !important'
+                  pe="0.1rem !important"
+                  ps="0.1rem !important"
                   h="32px"
                   w="90px"
                   fontSize="sm"

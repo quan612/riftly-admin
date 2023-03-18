@@ -144,7 +144,7 @@ export const authOptions = {
   debug: false,
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60, // 7 days
+    maxAge: 60 * 60 * 4, // 7 days
   },
   jwt: {
     signingKey: NEXTAUTH_SECRET,

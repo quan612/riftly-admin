@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 
 import { utils } from 'ethers'
@@ -22,16 +22,21 @@ import {
   FormControl,
   FormLabel,
   GridItem,
+  Flex,
+  Select,
+  Box,
 } from '@chakra-ui/react'
 
-import Card, { AdminCard } from '@components/shared/Card'
-import { RiftlyCheckMark } from '@components/shared/Icons'
+import { AdminCard } from '@components/shared/Card'
+import { CheckSvg, CrossSvg, RiftlyCheckMark } from '@components/shared/Icons'
 import { useAdminAddManyUsers } from '@hooks/admin/user'
 import HalfPageWrapper from '../layout/HalfPageWrapper'
+import { HeadingLg, TextMd } from '@components/shared/Typography'
+import Enums from '@enums/index'
+import { sortByFalseFirst } from '@util/sort'
 
+/**Remove formik here, we dont do anything related to formik here */
 const AdminBulkUsersAdd = () => {
-  const bg = useColorModeValue('white', '#1B254B')
-  const shadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'none')
   const toast = useToast()
   const [newUsersData, isAdding, bulkUsersAsync] = useAdminAddManyUsers()
   const [usersArray, usersArraySet] = useState([])
@@ -62,6 +67,7 @@ const AdminBulkUsersAdd = () => {
       usersArraySet(arrayData)
     }
     setInputFile(e.target.files[0])
+    e.target.value = ''
   }
   return (
     <Formik
@@ -69,158 +75,191 @@ const AdminBulkUsersAdd = () => {
       validateOnChange={false}
       // onSubmit={onSubmit}
     >
-      {({ errors, status, touched, setFieldValue }) => (
+      {({ errors, status, touched, setFieldValue, resetForm, dirty }) => (
         <Form>
           <HalfPageWrapper>
-            <AdminCard boxShadow={shadow} py="8">
-              <SimpleGrid
-                minChildWidth={'300px'}
-                columns={{ base: 3 }}
-                columnGap={10}
-                rowGap={4}
-                w="full"
-                mb="24px"
-              >
-                <GridItem colSpan={{ base: 1 }}>
-                  <FormControl>
-                    <FormLabel ms="4px" fontSize="md" fontWeight="bold" color="green.500">
-                      <Link
-                        href={`data:csv;charset=utf-8,${encodeURIComponent(getTemplate())}`}
-                        download={`Wallet Bulk.csv`}
-                      >
+            <AdminCard py="8">
+              <Flex direction="column" gap="20px">
+                <HeadingLg>Bulk Users</HeadingLg>
+                <TextMd color="brand.neutral2">
+                  Add users in bulk by downloading our template in .csv format and uploading the
+                  completed file.
+                </TextMd>
+
+                <FormControl>
+                  <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                    Account Type
+                  </FormLabel>
+                  <Field name="type" as={Select} fontSize="md" ms="4px" size="lg">
+                    <option value={Enums.WALLET}>{Enums.WALLET}</option>
+                    {/* <option value={Enums.DISCORD}>{Enums.DISCORD}</option>
+                        <option value={Enums.TWITTER}>{Enums.TWITTER}</option> */}
+                  </Field>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                    Bulk User File
+                  </FormLabel>
+                  <ButtonGroup gap="16px" display={'flex'}>
+                    <Link
+                      flex="1"
+                      href={`data:csv;charset=utf-8,${encodeURIComponent(getTemplate())}`}
+                      download={`User Wallets Bulk.csv`}
+                    >
+                      <Button variant="outline-blue" w="100%">
                         Template File
-                      </Link>
-                    </FormLabel>
-                  </FormControl>
-                </GridItem>
+                      </Button>
+                    </Link>
 
-                <GridItem colSpan={{ base: 2 }}>
-                  <Button
-                    w={'192px'}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      e.preventDefault()
-                      hiddenFileInput.current.click()
-                    }}
-                    variant="blue"
-                    me="4"
-                  >
-                    <div>
-                      <span>Choose File</span>
-                    </div>
-                  </Button>
-                  {inputFile && inputFile.name}
-                  <input
-                    type="file"
-                    name="file"
-                    accept="text/csv"
-                    style={{ display: 'none' }}
-                    ref={hiddenFileInput}
-                    onChange={(e) => handleOnLoadFile(e, setFieldValue)}
-                  />
-                </GridItem>
-              </SimpleGrid>
-              {status && <Text colorScheme={'red'}>API error: {status} </Text>}
+                    <Button
+                      onClick={() => {
+                        hiddenFileInput.current.click()
+                      }}
+                      flex="1"
+                      variant="blue"
+                    >
+                      Choose File
+                    </Button>
+                  </ButtonGroup>
+                </FormControl>
 
-              <Text fontSize="md">
-                Valid
-                <Text as={'span'} color="green.500" me={'1'} ms="1">
-                  {usersArray.filter((user) => user.isValid).length}
-                </Text>{' '}
-                users, Invalid
-                <Text as={'span'} color="red.500" me={'1'} ms="1">
-                  {usersArray.filter((user) => !user.isValid).length}
-                </Text>
-                users
-                <Tooltip
-                  placement="top"
-                  label="Valid users would not be added if exists"
-                  aria-label="A tooltip"
-                  fontSize="md"
-                >
-                  <i
-                    className="ms-1 bi bi-info-circle"
-                    data-toggle="tooltip"
-                    title="Tooltip on top"
-                  ></i>
-                </Tooltip>
-              </Text>
-
-              {usersArray && usersArray.length > 0 && (
-                <Table variant="simple">
-                  <Thead>
-                    <Tr my=".8rem" color="gray.400">
-                      <Th pl="0px" borderColor={borderColor} color="gray.400" fontSize={'md'}>
-                        Wallet
-                      </Th>
-                      <Th borderColor={borderColor} color="gray.400" fontSize={'md'}>
-                        Is Valid
-                      </Th>
-                    </Tr>
-                  </Thead>
-
-                  <Tbody>
-                    {usersArray.map((row, index) => {
-                      return (
-                        <Tr key={index}>
-                          <Td>{usersArray[index].wallet}</Td>
-                          <Td>
-                            {usersArray[index].isValid && <RiftlyCheckMark />}
-                            {!usersArray[index].isValid && (
-                              <Text color="red.300">Not a valid address</Text>
-                            )}
-                          </Td>
-                        </Tr>
-                      )
-                    })}
-                  </Tbody>
-                </Table>
-              )}
-              <ButtonGroup mt="16px">
-                <Button
-                  variant="twitter"
-                  onClick={async () => {
-                    setInputFile(null)
-                    let payload = {
-                      usersArray,
-                    }
-
-                    let createManyOp = await bulkUsersAsync(payload)
-
-                    if (createManyOp.isError) {
-                      toast({
-                        title: 'Error',
-                        description: ` ${createManyOp.message}`,
-                        position: 'bottom-right',
-                        status: 'error',
-                        duration: 3000,
-                      })
-                    } else {
-                      toast({
-                        title: 'Succeed',
-                        description: `Added ${createManyOp.count} users`,
-                        position: 'bottom-right',
-                        status: 'success',
-                        duration: 3000,
-                      })
-                    }
-                    setInputFile(null)
-                    usersArraySet([])
-                  }}
-                >
-                  Bulk Add
-                </Button>
-                <Button
-                  variant="discord"
-                  onClick={async () => {
-                    setInputFile(null)
-                    usersArraySet([])
-                  }}
-                >
-                  Cancel
-                </Button>
-              </ButtonGroup>
+                <input
+                  type="file"
+                  name="file"
+                  accept="text/csv"
+                  style={{ display: 'none' }}
+                  ref={hiddenFileInput}
+                  onChange={(e) => handleOnLoadFile(e, setFieldValue)}
+                />
+              </Flex>
             </AdminCard>
+
+            {usersArray && usersArray.length > 0 && (
+              <AdminCard py="8">
+                <Flex
+                  direction={'column'}
+                  align="center"
+                  justify="center"
+                  bg={'brand.neutral5'}
+                  border="2px dashed"
+                  borderColor={'rgba(255, 255, 255, 0.1)'}
+                  borderRadius="16px"
+                  w="100%"
+                  py="24px"
+                >
+                  <Box
+                    overflowY="auto"
+                    css={{
+                      '&::-webkit-scrollbar': {
+                        width: '10px',
+                      },
+                      '&::-webkit-scrollbar-track': {
+                        background: '#2F4E6D',
+                        width: '12px',
+                        borderRadius: '24px',
+                      },
+                      '&::-webkit-scrollbar-thumb': {
+                        height: '60px',
+                        background: '#1D63FF',
+                        borderRadius: '24px',
+                      },
+                    }}
+                    maxHeight="300px"
+                    w="95%"
+                  >
+                    <Table variant="simple">
+                      <Thead>
+                        <Tr my=".8rem" color="gray.400">
+                          <Th pl="0" borderColor={borderColor} color="gray.400" fontSize={'md'}>
+                            Wallet
+                          </Th>
+                          <Th pe="0" borderColor={borderColor} color="gray.400" fontSize={'md'}>
+                            Is Valid
+                          </Th>
+                        </Tr>
+                      </Thead>
+
+                      <Tbody>
+                        {usersArray.sort(sortByFalseFirst).map((row, index) => {
+                          return (
+                            <Tr key={index}>
+                              <Td
+                                pl="0"
+                                color={`${usersArray[index].isValid ? 'white' : 'red.300'}`}
+                              >
+                                {usersArray[index].wallet}
+                              </Td>
+                              <Td pe="0">
+                                {usersArray[index].isValid && <CheckSvg />}
+                                {!usersArray[index].isValid && <CrossSvg />}
+                              </Td>
+                            </Tr>
+                          )
+                        })}
+                      </Tbody>
+                    </Table>
+                  </Box>
+                </Flex>
+
+                {inputFile && (
+                  <Text color="brand.neutral2" align={'center'}>
+                    {inputFile.name}
+                  </Text>
+                )}
+
+                {status && <Text color={'red.300'}>API error: {status} </Text>}
+
+                <ButtonGroup mt="16px" display="flex" gap="16px">
+                  <Button
+                    flex="1"
+                    variant="blue"
+                    disabled={usersArray.length === 0 || !dirty}
+                    onClick={async () => {
+                      setInputFile(null)
+                      let payload = {
+                        usersArray,
+                      }
+
+                      let createManyOp = await bulkUsersAsync(payload)
+
+                      if (createManyOp.isError) {
+                        toast({
+                          title: 'Error',
+                          description: ` ${createManyOp.message}`,
+                          position: 'bottom-right',
+                          status: 'error',
+                          duration: 3000,
+                        })
+                      } else {
+                        toast({
+                          title: 'Succeed',
+                          description: `Added ${createManyOp.count} users`,
+                          position: 'bottom-right',
+                          status: 'success',
+                          duration: 3000,
+                        })
+                      }
+                      setInputFile(null)
+                      usersArraySet([])
+                    }}
+                  >
+                    Bulk Add
+                  </Button>
+                  <Button
+                    flex="1"
+                    variant="outline-blue"
+                    onClick={async () => {
+                      setInputFile(null)
+                      usersArraySet([])
+                      resetForm()
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </AdminCard>
+            )}
           </HalfPageWrapper>
         </Form>
       )}

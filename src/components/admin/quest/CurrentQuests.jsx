@@ -33,11 +33,6 @@ import NewQuestModal from './NewQuestModal'
 import moment from 'moment'
 
 import { AddIcon, ChevronDownIcon, SmallAddIcon } from '@chakra-ui/icons'
-import { AiOutlineUser } from 'react-icons/ai'
-import { FaEllipsisH } from 'react-icons/fa'
-import { BsFilter, BsFillPlayFill } from 'react-icons/bs'
-import { AiFillDelete } from 'react-icons/ai'
-import { MdPreview } from 'react-icons/md'
 import {
   DeleteIcon,
   EditIcon,

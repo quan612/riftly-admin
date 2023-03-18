@@ -20,6 +20,7 @@ export const RequiredInput = ({
   error,
   touched,
   placeholder = '',
+  validate = null,
 }) => {
   return (
     <FormControl isRequired isInvalid={error && touched}>
@@ -36,6 +37,7 @@ export const RequiredInput = ({
         variant="riftly"
         ms="4px"
         placeholder={placeholder}
+        validate={validate}
       />
 
       <FormErrorMessage fontSize="md" name={fieldName}>
@@ -45,7 +47,14 @@ export const RequiredInput = ({
   )
 }
 
-export const RequiredPasswordInput = ({ label, fieldName, error, touched, placeholder = '' }) => {
+export const RequiredPasswordInput = ({
+  label,
+  fieldName,
+  error,
+  touched,
+  placeholder = '',
+  validate = null,
+}) => {
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
 
@@ -65,6 +74,7 @@ export const RequiredPasswordInput = ({ label, fieldName, error, touched, placeh
           variant="riftly"
           ms="4px"
           placeholder={placeholder}
+          validate={validate}
         />
 
         <InputRightElement width="4.5rem">
@@ -86,7 +96,7 @@ export const NonRequiredTextInput = ({
   fieldName,
   error = null,
   touched = null,
-  placeholder = ''
+  placeholder = '',
 }) => {
   return (
     <FormControl isInvalid={error && touched}>

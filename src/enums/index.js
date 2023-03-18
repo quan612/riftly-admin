@@ -21,6 +21,8 @@ const Enums = {
   HOURLY: 'hourly',
   WEEKLY: 'weekly',
   MONTHLY: 'monthly',
+  MANUAL: "Manual",
+  AUTOMATIC: "Automatic",
 
   PAGINATION_SKIP: 4000,
   /* The number to perform update on large dataset, for when splitting into small chunks,

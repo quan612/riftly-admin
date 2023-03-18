@@ -1,7 +1,7 @@
 const { BetaAnalyticsDataClient } = require('@google-analytics/data')
 import { prisma } from 'context/PrismaContext'
 
-export const analyticsDataClient = async () => {
+const analyticsClient = async () => {
   let variables = await prisma.questVariables.findFirst()
   if (!variables) {
     return null
@@ -26,5 +26,6 @@ export const analyticsDataClient = async () => {
     projectId: googleProjectId,
   })
 }
+export const analyticsDataClient = global.analyticsDataClient || analyticsClient;
 
-if (process.env.NODE_ENV !== 'production') global.analyticsDataClient = analyticsDataClient
+if (process.env.NODE_ENV !== 'production') global.analyticsDataClient = analyticsClient

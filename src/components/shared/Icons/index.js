@@ -1,7 +1,5 @@
-import { Icon, Tooltip, Flex } from '@chakra-ui/react'
-import { } from 'react-icons/bs'
+import { Icon, Tooltip, Flex, Box } from '@chakra-ui/react'
 import { BiEdit } from 'react-icons/bi'
-import { } from 'react-icons/bs'
 import { BsTwitter, BsDiscord, BsGoogle, BsCheckLg, BsInfoCircle } from 'react-icons/bs'
 
 export const IconBox = (props) => {
@@ -13,6 +11,8 @@ export const IconBox = (props) => {
     </Flex>
   )
 }
+
+
 
 export const RiftlyIcon = ({ fill = '#1D63FF' }) => {
   return (
@@ -409,5 +409,45 @@ export const DeleteIcon = () => {
       <path fill={'currentColor'} d="M6.75 5.8V2.95C6.75 2.69804 6.85009 2.45641 7.02825 2.27825C7.20641 2.10009 7.44804 2 7.7 2H15.3C15.552 2 15.7936 2.10009 15.9718 2.27825C16.1499 2.45641 16.25 2.69804 16.25 2.95V5.8H21V7.7H19.1V20.05C19.1 20.302 18.9999 20.5436 18.8218 20.7218C18.6436 20.8999 18.402 21 18.15 21H4.85C4.59804 21 4.35641 20.8999 4.17825 20.7218C4.00009 20.5436 3.9 20.302 3.9 20.05V7.7H2V5.8H6.75ZM8.65 3.9V5.8H14.35V3.9H8.65Z" />
     </Icon>
 
+  )
+}
+
+
+
+export const CheckSvg = () => {
+  return (
+    <Box boxSize={'18px'}>
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 19 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M6.77387 9.193L16.5579 0L18.064 1.414L6.77387 12.021L0 5.657L1.50507 4.243L6.77387 9.193Z"
+          fill="#00BBC7"
+        />
+      </svg>
+    </Box>
+  )
+}
+
+export const CrossSvg = () => {
+  return (
+    <Box boxSize={'18px'}>
+      <Icon
+        width="100%"
+        height="100%"
+        viewBox="0 0 18 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9.25098 6.68376L14.0997 1.83503L15.716 3.45127L10.8672 8.30001L15.716 13.1487L14.0997 14.765L9.25098 9.91625L4.40224 14.765L2.786 13.1487L7.63473 8.30001L2.786 3.45127L4.40224 1.83503L9.25098 6.68376Z"
+          fill="#FC8181"
+        />
+      </Icon>
+    </Box>
   )
 }

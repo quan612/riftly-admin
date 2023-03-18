@@ -26,7 +26,7 @@ const AdminUpdateUsersFollowersAPI = async (req, res) => {
             let twitterUserMetric = await axios
               .get(`https://api.twitter.com/2/users/${twitterId}?user.fields=public_metrics`, {
                 headers: {
-                  Authorization: `Bearer ${process.env.twitterBearerToken}`,
+                  Authorization: `Bearer ${twitterBearerToken}`,
                   'Content-Type': 'application/json',
                 },
               })

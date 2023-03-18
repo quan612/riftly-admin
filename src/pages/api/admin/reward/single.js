@@ -17,7 +17,7 @@ const AddPendingRewardAPI = async (req, res) => {
         */
     case 'POST':
       try {
-        const { username, type, rewardTypeId, quantity, postInDiscordChannels, addRewardDirectly } =
+        const { username, type, rewardTypeId, quantity, postInDiscordChannels, method } =
           req.body
 
         let userCondition = username
@@ -53,9 +53,8 @@ const AddPendingRewardAPI = async (req, res) => {
             .json({ isError: true, message: 'Missing Server Config To Reward User!' })
         }
 
-        console.log(`** Pending Reward: Create reward for user**`)
 
-        if (addRewardDirectly) {
+        if (method === Enums.AUTOMATIC) {
           let rewardOp = await createReward(parseInt(rewardTypeId), quantity, user.userId)
           if (!rewardOp) {
             return res.status(200).json({

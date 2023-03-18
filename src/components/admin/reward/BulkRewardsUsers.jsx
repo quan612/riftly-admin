@@ -33,17 +33,19 @@ import {
   Input,
 } from '@chakra-ui/react'
 
-import Card from '@components/shared/Card'
+import Card, { AdminCard } from '@components/shared/Card'
 
 import axios from 'axios'
-import { RiftlyCheckMark } from '@components/shared/Icons'
+import { CheckSvg, CrossSvg, RiftlyCheckMark } from '@components/shared/Icons'
 import Loading from '@components/shared/LoadingContainer/Loading'
 import { useEnabledRewardTypesQuery } from '@hooks/admin/reward-types'
 import { useAdminBulkRewardsMutation } from '@hooks/admin/reward'
+import HalfPageWrapper from '../layout/HalfPageWrapper'
+import { HeadingLg, TextMd } from '@components/shared/Typography'
+import Enums from '@enums/index'
+import { sortByFalseFirst } from '@util/sort'
 
 const BulkRewardsUsers = () => {
-  const bg = useColorModeValue('white', '#1B254B')
-  const shadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'none')
   const toast = useToast()
   const [rewardsData, isAddingRewards, bulkRewardsAsync] = useAdminBulkRewardsMutation()
   const [usersArray, usersArraySet] = useState([])
@@ -98,13 +100,13 @@ const BulkRewardsUsers = () => {
       const { quantity, rewardTypeId } = fields
 
       setInputFile(null)
-
+      // console.log(usersArray)
       let chunkSplit = []
       const chunkSize = 100
       for (let i = 0; i < usersArray.length; i += chunkSize) {
         chunkSplit = [...chunkSplit, usersArray.slice(i, i + chunkSize)]
       }
-
+      // console.log(chunkSplit)
       let op = await Promise.allSettled(
         chunkSplit.map(async (chunk) => {
           let payload = {
@@ -112,32 +114,47 @@ const BulkRewardsUsers = () => {
             rewardTypeId: parseInt(rewardTypeId),
             quantity,
           }
+
           // console.log(payload)
           let res = await bulkRewardsAsync(payload)
           res.start = chunk[0].wallet
           res.end = chunk[chunk.length - 1].wallet
+          console.log(res)
           return res
         }),
       )
 
+      let error = 0
       for (let i = 0; i < op.length; i++) {
         if (op[i]?.value?.isError) {
           console.log(op[i]?.value?.message)
 
-          toast({
-            title: 'Exception',
-            description: `There were some errors. Log has been tracked. Please contact admin.`,
-            position: 'bottom-right',
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-          })
-          break
+          error++
         }
+      }
+      if (error > 0)
+        toast({
+          title: 'Exception',
+          description: `There were some errors. Log has been tracked. Please contact admin.`,
+          position: 'bottom-right',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        })
+      else {
+        toast({
+          title: 'Success',
+          description: `Bulk Reward successful.`,
+          position: 'top-right',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
       }
       setInputFile(null)
       usersArraySet([])
       originDataSet([])
+      resetForm()
     } catch (error) {
       toast({
         title: 'Exception',
@@ -158,215 +175,280 @@ const BulkRewardsUsers = () => {
         initialValues={initialValues}
         onSubmit={onSubmitForm}
       >
-        {({ errors, status, touched, setFieldValue }) => (
+        {({ errors, status, touched, values, setFieldValue, handleChange, resetForm, dirty }) => (
           <Box w="100%">
             <Form>
-              <Flex
-                flexDirection={{
-                  base: 'row',
-                }}
-                w="100%"
-                h="100%"
-                justifyContent="center"
-                mb="60px"
-                mt={{ base: '20px', md: '20px' }}
-                gap="1%"
-              >
-                <Box w={{ base: '100%' }} minW="100%">
-                  <Card boxShadow={shadow} py="8" bg={bg}>
-                    <SimpleGrid
-                      minChildWidth={'300px'}
-                      columns={{ base: 3 }}
-                      columnGap={10}
-                      rowGap={4}
-                      w="full"
-                      mb="24px"
-                    >
-                      <GridItem colSpan={{ base: 1 }}>
-                        <FormControl>
-                          <FormLabel ms="4px" fontSize="md" fontWeight="bold" color="green.500">
-                            <Link
-                              href={`data:csv;charset=utf-8,${encodeURIComponent(getTemplate())}`}
-                              download={`Rewards Wallet Bulk.csv`}
-                            >
-                              Template File
-                            </Link>
-                          </FormLabel>
-                        </FormControl>
-                      </GridItem>
+              <HalfPageWrapper>
+                <AdminCard>
+                  <Flex direction="column" gap="20px">
+                    <HeadingLg>Reward Users</HeadingLg>
+                    <TextMd color="brand.neutral2">
+                      Reward users in bulk by downloading our template in .csv format and uploading
+                      the completed file.
+                    </TextMd>
 
-                      <GridItem colSpan={{ base: 2 }}>
+                    <FormControl>
+                      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                        Account Type
+                      </FormLabel>
+                      <Field name="type" as={Select} fontSize="md" ms="4px" size="lg">
+                        <option value={Enums.WALLET}>{Enums.WALLET}</option>
+                        {/* <option value={Enums.DISCORD}>{Enums.DISCORD}</option>
+                        <option value={Enums.TWITTER}>{Enums.TWITTER}</option> */}
+                      </Field>
+                    </FormControl>
+
+                    <FormControl>
+                      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                        Bulk User File
+                      </FormLabel>
+                      <ButtonGroup gap="16px" display={'flex'}>
+                        <Link
+                          flex="1"
+                          href={`data:csv;charset=utf-8,${encodeURIComponent(getTemplate())}`}
+                          download={`Rewards Wallet Bulk.csv`}
+                        >
+                          <Button variant="outline-blue" w="100%">
+                            Template File
+                          </Button>
+                        </Link>
+
                         <Button
-                          w={'192px'}
                           onClick={() => {
                             hiddenFileInput.current.click()
                           }}
+                          flex="1"
                           variant="blue"
-                          me="4"
                         >
-                          <div>
-                            <span>Choose File</span>
-                          </div>
+                          Choose File
                         </Button>
-                        {inputFile && inputFile.name}
-                        <input
-                          type="file"
-                          name="file"
-                          accept="text/csv"
-                          style={{ opacity: 0 }}
-                          ref={hiddenFileInput}
-                          onChange={(e) => {
-                            e.stopPropagation()
-                            handleOnLoadFile(e)
+                      </ButtonGroup>
+                    </FormControl>
+
+                    <input
+                      type="file"
+                      name="file"
+                      accept="text/csv"
+                      style={{ opacity: 0, width: '0px', height: '0px' }}
+                      ref={hiddenFileInput}
+                      onChange={(e) => {
+                        e.stopPropagation()
+                        handleOnLoadFile(e)
+                      }}
+                    />
+                  </Flex>
+
+                  {originData && originData.length > 0 && (
+                    <Flex
+                      direction={'column'}
+                      align="center"
+                      justify="center"
+                      bg={'brand.neutral5'}
+                      border="2px dashed"
+                      borderColor={'rgba(255, 255, 255, 0.1)'}
+                      borderRadius="16px"
+                      w="100%"
+                      py="24px"
+                    >
+                      <Box
+                        overflowY="auto"
+                        css={{
+                          '&::-webkit-scrollbar': {
+                            width: '10px',
+                          },
+                          '&::-webkit-scrollbar-track': {
+                            background: '#2F4E6D',
+                            width: '12px',
+                            borderRadius: '24px',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            height: '60px',
+                            background: '#1D63FF',
+                            borderRadius: '24px',
+                          },
+                        }}
+                        maxHeight="300px"
+                        w="95%"
+                      >
+                        <Table variant="simple">
+                          <Thead>
+                            <Tr my=".8rem" color="gray.400">
+                              <Th pl="0" borderColor={borderColor} color="gray.400" fontSize={'md'}>
+                                Wallet
+                              </Th>
+                              <Th pe="0" borderColor={borderColor} color="gray.400" fontSize={'md'}>
+                                Is Valid
+                              </Th>
+                            </Tr>
+                          </Thead>
+
+                          <Tbody>
+                            {originData.sort(sortByFalseFirst).map((row, index) => {
+                              return (
+                                <Tr key={index}>
+                                  <Td
+                                    pl="0"
+                                    color={`${originData[index].isValid ? 'white' : 'red.300'}`}
+                                  >
+                                    {originData[index].wallet}
+                                  </Td>
+                                  <Td pe="0">
+                                    {originData[index].isValid && <CheckSvg />}
+                                    {!originData[index].isValid && <CrossSvg />}
+                                  </Td>
+                                </Tr>
+                              )
+                            })}
+                          </Tbody>
+                        </Table>
+                      </Box>
+                    </Flex>
+                  )}
+                  {inputFile && (
+                    <Text color="brand.neutral2" align={'center'}>
+                      {inputFile.name}
+                    </Text>
+                  )}
+                </AdminCard>
+
+                {/* Reward */}
+                <AdminCard py="8">
+                  <SimpleGrid minChildWidth={'300px'} columns={{ base: 2 }} rowGap={4}>
+                    <GridItem colSpan={2}>
+                      <Flex direction="column" gap="20px">
+                        <HeadingLg>Reward</HeadingLg>
+                        <TextMd color="brand.neutral2">
+                          {`Choose the type of reward and the quantity. Reward types can be edited and added in Settings > Rewards`}
+                        </TextMd>
+                      </Flex>
+                    </GridItem>
+
+                    <GridItem colSpan={2}>
+                      <FormControl
+                        isRequired
+                        isInvalid={errors.rewardTypeId && touched.rewardTypeId}
+                      >
+                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                          Reward Type
+                        </FormLabel>
+                        <Field
+                          name="rewardTypeId"
+                          as={Select}
+                          fontSize="md"
+                          ms="4px"
+                          size="lg"
+                          validate={(value) => {
+                            let error
+                            if (value < 0) {
+                              error = 'Please select a reward.'
+                            }
+                            return error
+                          }}
+                        >
+                          <option key={-1} value={-1}>
+                            Select reward type
+                          </option>
+                          {rewardTypes &&
+                            rewardTypes.map((type, index) => {
+                              return (
+                                <option key={index} value={type.id}>
+                                  {type.reward}
+                                </option>
+                              )
+                            })}
+                        </Field>
+                        <FormErrorMessage fontSize="md">{errors.rewardTypeId}</FormErrorMessage>
+                      </FormControl>
+                    </GridItem>
+
+                    <GridItem colSpan={2}>
+                      <FormControl isInvalid={errors.quantity} isRequired>
+                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                          Quantity
+                        </FormLabel>
+
+                        <Field
+                          as={Input}
+                          size="lg"
+                          name="quantity"
+                          type="number"
+                          variant="auth"
+                          validate={(value) => {
+                            let error
+                            if (value.length < 1) {
+                              error = 'Quantity cannot be blank.'
+                            } else if (value < 1) {
+                              error = 'Quantity must be at least 1.'
+                            }
+                            return error
                           }}
                         />
-                      </GridItem>
 
-                      <GridItem colSpan={1}>
-                        <FormControl
-                          isRequired
-                          isInvalid={errors.rewardTypeId && touched.rewardTypeId}
-                          mb="24px"
-                        >
-                          <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                            Reward Type
-                          </FormLabel>
-                          <Field
-                            name="rewardTypeId"
-                            as={Select}
-                            fontSize="md"
-                            ms="4px"
-                            size="lg"
-                            validate={(value) => {
-                              let error
-                              if (value < 0) {
-                                error = 'Please select a reward.'
-                              }
-                              return error
-                            }}
-                          >
-                            <option key={-1} value={-1}>
-                              Select a reward
-                            </option>
-                            {rewardTypes &&
-                              rewardTypes.map((type, index) => {
-                                return (
-                                  <option key={index} value={type.id}>
-                                    {type.reward}
-                                  </option>
-                                )
-                              })}
-                          </Field>
-                          <FormErrorMessage fontSize="md">{errors.rewardTypeId}</FormErrorMessage>
-                        </FormControl>
-                      </GridItem>
+                        <FormErrorMessage fontSize="md">{errors.quantity}</FormErrorMessage>
+                      </FormControl>
+                    </GridItem>
+                  </SimpleGrid>
+                  {status && <Text colorScheme={'red'}>API error: {status} </Text>}
 
-                      <GridItem colSpan={1}>
-                        <FormControl mb="24px" isInvalid={errors.quantity} isRequired>
-                          <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                            Quantity
-                          </FormLabel>
-
-                          <Field
-                            as={Input}
-                            size="lg"
-                            w="50%"
-                            name="quantity"
-                            type="number"
-                            variant="auth"
-                            validate={(value) => {
-                              let error
-                              if (value.length < 1) {
-                                error = 'Quantity cannot be blank.'
-                              } else if (value < 1) {
-                                error = 'Quantity must be at least 1.'
-                              }
-                              return error
-                            }}
-                          />
-
-                          <FormErrorMessage fontSize="md">{errors.quantity}</FormErrorMessage>
-                        </FormControl>
-                      </GridItem>
-                    </SimpleGrid>
-                    {status && <Text colorScheme={'red'}>API error: {status} </Text>}
-
-                    <Text fontSize="md">
-                      Valid
-                      <Text as={'span'} color="green.500" me={'1'} ms="1">
-                        {originData.filter((user) => user.isValid).length}
-                      </Text>{' '}
-                      users, Invalid
-                      <Text as={'span'} color="red.500" me={'1'} ms="1">
-                        {originData.filter((user) => !user.isValid).length}
-                      </Text>
-                      users
-                      <Tooltip
-                        placement="top"
-                        label="Valid users would not be added if exists"
-                        aria-label="A tooltip"
-                        fontSize="md"
-                      >
-                        <i
-                          className="ms-1 bi bi-info-circle"
-                          data-toggle="tooltip"
-                          title="Tooltip on top"
-                        ></i>
-                      </Tooltip>
+                  {/* <Text fontSize="md">
+                    Valid
+                    <Text as={'span'} color="green.500" me={'1'} ms="1">
+                      {originData.filter((user) => user.isValid).length}
+                    </Text>{' '}
+                    users, Invalid
+                    <Text as={'span'} color="red.500" me={'1'} ms="1">
+                      {originData.filter((user) => !user.isValid).length}
                     </Text>
-                    <ButtonGroup mt="16px">
-                      <Button
-                        variant="twitter"
-                        // onClick={handleBulkRewards}
-                        type="submit"
-                        disabled={usersArray.length === 0}
-                      >
-                        Bulk Rewards
-                      </Button>
-                      <Button
-                        variant="discord"
-                        onClick={async () => {
-                          setInputFile(null)
-                          usersArraySet([])
-                          originDataSet([])
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </ButtonGroup>
-                    {originData && originData.length > 0 && (
-                      <Table variant="simple">
-                        <Thead>
-                          <Tr my=".8rem" color="gray.400">
-                            <Th pl="0px" borderColor={borderColor} color="gray.400" fontSize={'md'}>
-                              Wallet
-                            </Th>
-                            <Th borderColor={borderColor} color="gray.400" fontSize={'md'}>
-                              Is Valid
-                            </Th>
-                          </Tr>
-                        </Thead>
-
-                        <Tbody>
-                          {originData.map((row, index) => {
-                            return (
-                              <Tr key={index}>
-                                <Td>{originData[index].wallet}</Td>
-                                <Td>
-                                  {originData[index].isValid && <RiftlyCheckMark />}
-                                  {!originData[index].isValid && (
-                                    <Text color="red.300">Not a valid address</Text>
-                                  )}
-                                </Td>
-                              </Tr>
-                            )
-                          })}
-                        </Tbody>
-                      </Table>
-                    )}
-                  </Card>
-                </Box>
-              </Flex>
+                    users
+                    <Tooltip
+                      placement="top"
+                      label="Valid users would not be added if exists"
+                      aria-label="A tooltip"
+                      fontSize="md"
+                    >
+                      <i
+                        className="ms-1 bi bi-info-circle"
+                        data-toggle="tooltip"
+                        title="Tooltip on top"
+                      ></i>
+                    </Tooltip>
+                  </Text> */}
+                  <ButtonGroup mt="16px" w="100%">
+                    <Button
+                      variant="blue"
+                      flex="1"
+                      type="submit"
+                      disabled={usersArray.length === 0 || !dirty}
+                    >
+                      Bulk Rewards
+                    </Button>
+                    <Button
+                      flex="1"
+                      variant="outline-blue"
+                      onClick={async () => {
+                        resetForm()
+                        setInputFile(null)
+                        usersArraySet([])
+                        originDataSet([])
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </ButtonGroup>
+                </AdminCard>
+              </HalfPageWrapper>
+              {process.env.NODE_ENV !== 'production' && (
+                <>
+                  <p>Values:</p>
+                  <pre>
+                    <code>{JSON.stringify(values, null, 2)}</code>
+                  </pre>
+                  <p>Errors:</p>
+                  <pre>
+                    <code>{JSON.stringify(errors, null, 2)}</code>
+                  </pre>
+                </>
+              )}
             </Form>
           </Box>
         )}

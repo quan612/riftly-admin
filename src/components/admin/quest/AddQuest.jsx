@@ -307,7 +307,7 @@ export const AdminQuestFormWrapper = ({
 
               {values.duration === QuestDuration.LIMITED && (
                 <>
-                  <GridItem colSpan={1}>
+                  <GridItem colSpan={{ base: 2, md: 1 }}>
                     <FormControl
                       isInvalid={
                         errors?.extendedQuestData?.startDate &&
@@ -337,7 +337,7 @@ export const AdminQuestFormWrapper = ({
                                 onChange={(val) => {
                                   setFieldValue(
                                     `extendedQuestData.startDate`,
-                                    moment.utv(val).format('MM/DD/YYYY'),
+                                    moment.utc(val).format('MM/DD/YYYY'),
                                   )
                                 }}
                                 className="react-datapicker__input-text"
@@ -352,7 +352,7 @@ export const AdminQuestFormWrapper = ({
                       </FormErrorMessage>
                     </FormControl>
                   </GridItem>
-                  <GridItem colSpan={1}>
+                  <GridItem colSpan={{ base: 2, md: 1 }}>
                     <FormControl
                       isInvalid={
                         errors?.extendedQuestData?.endDate && touched?.extendedQuestData?.endDate

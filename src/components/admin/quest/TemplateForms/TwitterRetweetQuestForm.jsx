@@ -52,7 +52,12 @@ const TwitterRetweetQuestSchema = object().shape({
           return false
         }
 
-        if (duration === QuestDuration.LIMITED && startDate > endDate) {
+        const dayDiff = moment(new Date(endDate).toISOString()).diff(
+          moment(new Date(startDate).toISOString()),
+          'days',
+          false,
+        )
+        if (duration === QuestDuration.LIMITED && dayDiff < 0) {
           return false
         }
         return true
@@ -99,7 +104,6 @@ const TwitterRetweetQuestForm = ({ quest = null, isCreate = true }) => {
           if (res?.isError) {
             setStatus(res.message)
           } else {
-            console.log(res)
             toast({
               title: 'Success',
               description: `Mutate quest success`,

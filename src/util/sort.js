@@ -4,3 +4,7 @@ export const isNotDoneFirst = (a, b) => {
 export const isAlphabeticallly = (a, b) => {
   return a.text.localeCompare(b.text)
 }
+
+export const sortByFalseFirst = (a, b) => {
+  return a.isValid - b.isValid
+}

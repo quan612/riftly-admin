@@ -77,8 +77,9 @@ const NewQuestModal = ({ isOpen, onClose }) => {
       footer={
         <ButtonGroup
           display={'flex'}
-          justifyContent={'space-around'}
-          w={{ base: '100%', lg: '50%' }}
+          justifyContent={'center'}
+          alignItems="center"
+          w={{ base: '100%' }}
           gap="24px"
         >
           <Button

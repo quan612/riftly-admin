@@ -361,6 +361,7 @@ export function SidebarResponsive(props) {
               justifyContent="flex-start"
               alignItems="center"
               bg="transparent"
+              borderColor={"transparent"}
               mb={{
                 xl: '6px',
               }}

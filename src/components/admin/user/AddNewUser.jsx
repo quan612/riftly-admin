@@ -20,20 +20,10 @@ import {
   GridItem,
   useToast,
 } from '@chakra-ui/react'
-import Card, { AdminCard } from '@components/shared/Card'
+import { AdminCard } from '@components/shared/Card'
 import { useAdminAddSingleUser } from '@hooks/admin/user'
 import HalfPageWrapper from '../layout/HalfPageWrapper'
-
-const avatars = [
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava1.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava2.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava3.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava4.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava5.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava6.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava7.png`,
-  `${Enums.BASEPATH}/img/sharing-ui/invite/ava8.png`,
-]
+import { RequiredInput } from '@components/shared/Formik'
 
 const initialValues = {
   type: Enums.WALLET,
@@ -55,16 +45,9 @@ const UserSchema = object().shape({
 })
 
 const AddNewUser = () => {
-  const bg = useColorModeValue('white', '#1B254B')
-  const shadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'none')
   const toast = useToast()
-  const [avatar, setAvatar] = useState(null)
-  const [newUserData, isAdding, addUserAsync] = useAdminAddSingleUser()
 
-  useEffect(() => {
-    let ava = avatars[Math.floor(Math.random() * avatars.length)]
-    setAvatar(ava)
-  }, [])
+  const [newUserData, isAdding, addUserAsync] = useAdminAddSingleUser()
 
   const onSubmit = async (fields, { setStatus, resetForm, validate }) => {
     try {
@@ -109,15 +92,9 @@ const AddNewUser = () => {
             <HalfPageWrapper>
               <Box w={{ base: '100%' }} minW="100%">
                 <AdminCard py="8">
-                  <SimpleGrid
-                    minChildWidth={'300px'}
-                    columns={{ base: 1, lg: 3 }}
-                    columnGap={10}
-                    rowGap={4}
-                    w="full"
-                  >
-                    <GridItem>
-                      <FormControl mb="24px">
+                  <SimpleGrid columns={1} rowGap={4} w="full">
+                    <GridItem colSpan={1}>
+                      <FormControl>
                         <FormLabel ms="4px" fontSize="md" fontWeight="bold">
                           User Type
                         </FormLabel>
@@ -129,18 +106,13 @@ const AddNewUser = () => {
                       </FormControl>
                     </GridItem>
 
-                    <GridItem colSpan={{ base: 1, lg: 2 }}>
-                      <FormControl mb="24px" isRequired isInvalid={errors.user && touched.user}>
-                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                          User (Wallet / Discord Id / Twitter User)
-                        </FormLabel>
-
-                        <Field
-                          as={Input}
-                          size="lg"
-                          name="user"
-                          type="text"
-                          variant="auth"
+                    <GridItem colSpan={1}>
+                      <FormControl isRequired isInvalid={errors.user && touched.user}>
+                        <RequiredInput
+                          label={'User Name'}
+                          fieldName="user"
+                          error={errors?.user}
+                          touched={touched?.user}
                           placeholder="Wallet / Discord Id / Twitter User"
                           validate={(value) => {
                             let error
@@ -157,34 +129,27 @@ const AddNewUser = () => {
                             return error
                           }}
                         />
-                        <FormErrorMessage fontSize="md">{errors.user}</FormErrorMessage>
                       </FormControl>
                     </GridItem>
 
-                    {/* {errors && errors.user && (
-                                                <Text fontSize="md" color="red.500">
-                                                    {errors && errors.user}
-                                                </Text>
-                                            )} */}
+                    {status && (
+                      <Text fontSize="md" color="red.300" width={'100%'}>
+                        {status}
+                      </Text>
+                    )}
                   </SimpleGrid>
-                  {status && (
-                    <Text fontSize="md" color="red.500" width={'100%'}>
-                      {status}
-                    </Text>
-                  )}
 
-                  <Button
-                    w={{ base: '200px' }}
-                    my="16px"
-                    type="submit"
-                    colorScheme="teal"
-                    size="lg"
-                    isLoading={isAdding}
-                    disabled={isAdding}
-                    // disabled={isSubmitButtonDisabled(values)}
-                  >
-                    Submit
-                  </Button>
+                  <Flex justifyContent="center" mt="24px">
+                    <Button
+                      w="50%"
+                      variant="blue"
+                      type="submit"
+                      disabled={!dirty || isAdding}
+                      isLoading={isAdding}
+                    >
+                      Submit
+                    </Button>
+                  </Flex>
                 </AdminCard>
               </Box>
             </HalfPageWrapper>
