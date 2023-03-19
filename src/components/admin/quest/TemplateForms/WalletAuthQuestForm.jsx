@@ -29,12 +29,23 @@ const WalletQuestSchema = object().shape({
   extendedQuestData: object().shape({
     startDate: string().test('valid startDate', 'Start Date is not valid!', function () {
       const { from } = this
-      const { startDate } = from[0].value // first ancestor
+      const { startDate, endDate } = from[0].value // first ancestor
       const { duration } = from[1].value // root ancestor
 
       if (duration === QuestDuration.ONGOING) return true
 
       if (duration === QuestDuration.LIMITED && !startDate) {
+        return false
+      }
+      if (duration === QuestDuration.LIMITED && !endDate) {
+        return false
+      }
+      const dayDiff = moment(new Date(endDate).toISOString()).diff(
+        moment(new Date(startDate).toISOString()),
+        'days',
+        false,
+      )
+      if (duration === QuestDuration.LIMITED && dayDiff < 0) {
         return false
       }
 
@@ -47,10 +58,12 @@ const WalletQuestSchema = object().shape({
         const { duration } = from[1].value
         if (duration === QuestDuration.ONGOING) return true
 
+        if (duration === QuestDuration.LIMITED && !startDate) {
+          return false
+        }
         if (duration === QuestDuration.LIMITED && !endDate) {
           return false
         }
-
         const dayDiff = moment(new Date(endDate).toISOString()).diff(
           moment(new Date(startDate).toISOString()),
           'days',
@@ -71,8 +84,8 @@ const WalletAuthQuestForm = ({ quest = null, isCreate = true }) => {
   const initialValues = {
     type: Enums.WALLET_AUTH,
     extendedQuestData: quest?.extendedQuestData ?? {
-      startDate: moment.utc(new Date()),
-      endDate: moment.utc(new Date()),
+      startDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
+      endDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
     },
     text: quest?.text || 'Authenticate your Wallet',
     description: quest?.description ?? 'Require the user to authenticate with a crypto wallet',

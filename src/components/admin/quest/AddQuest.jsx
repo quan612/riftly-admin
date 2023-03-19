@@ -331,13 +331,16 @@ export const AdminQuestFormWrapper = ({
                                   e.preventDefault()
                                 }}
                                 // dateFormat="yyyy-MM-dd"
+                                // dateFormat="MM/DD/YYYY"
                                 dateFormat="MM/dd/yyyy"
                                 // dateFormat="MM-dd-yyyy"
                                 selected={(field.value && new Date(field.value)) || null}
+                                // selected={field.value || null}
                                 onChange={(val) => {
                                   setFieldValue(
                                     `extendedQuestData.startDate`,
                                     moment.utc(val).format('MM/DD/YYYY'),
+                                    // moment.utc(val).format('yyyy-MM-dd'),
                                   )
                                 }}
                                 className="react-datapicker__input-text"

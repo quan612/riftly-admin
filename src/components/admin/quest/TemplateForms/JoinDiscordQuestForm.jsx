@@ -30,12 +30,23 @@ const JoinDiscordSchema = object().shape({
     discordServer: string().required('A discord server Id is required!'),
     startDate: string().test('valid startDate', 'Start Date is not valid!', function () {
       const { from } = this
-      const { startDate } = from[0].value // first ancestor
+      const { startDate, endDate } = from[0].value // first ancestor
       const { duration } = from[1].value // root ancestor
 
       if (duration === QuestDuration.ONGOING) return true
 
       if (duration === QuestDuration.LIMITED && !startDate) {
+        return false
+      }
+      if (duration === QuestDuration.LIMITED && !endDate) {
+        return false
+      }
+      const dayDiff = moment(new Date(endDate).toISOString()).diff(
+        moment(new Date(startDate).toISOString()),
+        'days',
+        false,
+      )
+      if (duration === QuestDuration.LIMITED && dayDiff < 0) {
         return false
       }
 
@@ -48,6 +59,9 @@ const JoinDiscordSchema = object().shape({
         const { duration } = from[1].value
         if (duration === QuestDuration.ONGOING) return true
 
+        if (duration === QuestDuration.LIMITED && !startDate) {
+          return false
+        }
         if (duration === QuestDuration.LIMITED && !endDate) {
           return false
         }
@@ -73,8 +87,8 @@ const JoinDiscordQuestForm = ({ quest = null, isCreate = true }) => {
     extendedQuestData: quest?.extendedQuestData ?? {
       discordServer: '',
       collaboration: '',
-      startDate: moment.utc(new Date()),
-      endDate: moment.utc(new Date()),
+      startDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
+      endDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
     },
     text: quest?.text || 'Join Our Discord',
     description: quest?.description ?? 'Let user join our discord',

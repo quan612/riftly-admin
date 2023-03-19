@@ -30,12 +30,23 @@ const InstagramFollowQuestSchema = object().shape({
     followAccount: string().required('An Instagram account is required!'),
     startDate: string().test('valid startDate', 'Start Date is not valid!', function () {
       const { from } = this
-      const { startDate } = from[0].value // first ancestor
+      const { startDate, endDate } = from[0].value // first ancestor
       const { duration } = from[1].value // root ancestor
 
       if (duration === QuestDuration.ONGOING) return true
 
       if (duration === QuestDuration.LIMITED && !startDate) {
+        return false
+      }
+      if (duration === QuestDuration.LIMITED && !endDate) {
+        return false
+      }
+      const dayDiff = moment(new Date(endDate).toISOString()).diff(
+        moment(new Date(startDate).toISOString()),
+        'days',
+        false,
+      )
+      if (duration === QuestDuration.LIMITED && dayDiff < 0) {
         return false
       }
 
@@ -48,6 +59,9 @@ const InstagramFollowQuestSchema = object().shape({
         const { duration } = from[1].value
         if (duration === QuestDuration.ONGOING) return true
 
+        if (duration === QuestDuration.LIMITED && !startDate) {
+          return false
+        }
         if (duration === QuestDuration.LIMITED && !endDate) {
           return false
         }
@@ -66,15 +80,15 @@ const InstagramFollowQuestSchema = object().shape({
     }),
   }),
 })
-
+console.log(moment(new Date().toISOString()).format('MM/DD/yyyy'))
 const InstagramFollowQuestForm = ({ quest = null, isCreate = true }) => {
   const initialValues = {
     type: Enums.FOLLOW_INSTAGRAM,
     extendedQuestData: quest?.extendedQuestData ?? {
       followAccount: '',
       collaboration: '',
-      startDate: moment.utc(new Date()),
-      endDate: moment.utc(new Date()),
+      startDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'), // moment(new Date()).format('MM/DD/yyyy'),
+      endDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'), //moment(new Date().toISOString()).format('MM/DD/yyyy'),
     },
     text: quest?.text || 'Follow Instagram Account',
     description: quest?.description ?? 'Require the user to follow an Instagram Account',
