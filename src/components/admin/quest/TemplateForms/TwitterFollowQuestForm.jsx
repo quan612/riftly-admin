@@ -100,7 +100,7 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnChange={true}
       onSubmit={async (fields, { setStatus }) => {
         try {
-          alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
+          // alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
           let res = await mutateAsync(fields)
           if (res?.isError) {
             setStatus(res.message)
