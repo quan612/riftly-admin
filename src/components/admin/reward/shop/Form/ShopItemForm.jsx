@@ -180,7 +180,7 @@ const ShopItemForm = ({ item = null, isCreate = true }) => {
     //   type: ContractType.ERC20,
     // },
     contractAddress: item?.contractAddress ?? '',
-    contractType: item?.contractType ?? '',
+    contractType: item?.contractType ?? ContractType.ERC20,
     abi: item?.abi ?? '',
   }
 
