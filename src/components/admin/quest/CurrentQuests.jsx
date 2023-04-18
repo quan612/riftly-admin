@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
-import Enums from 'enums'
 import { useRouter } from 'next/router'
 
 import {
@@ -28,7 +27,7 @@ import {
   useAdminQuestsQuery,
   useAdminQuestUpsert,
 } from '@hooks/admin/quest'
-import RightSideBar from '@components/shared/RightSideBar'
+
 import NewQuestModal from './NewQuestModal'
 import moment from 'moment'
 
@@ -107,26 +106,8 @@ const CurrentQuests = () => {
   const { data: usersCount, isLoading: isFetchingUsersCount } = useAdminAllUsersCountQuery()
 
   return (
-    <Flex
-      flexDirection={{
-        base: 'column',
-      }}
-      w="100%"
-      h="100%"
-      justifyContent="center"
-      gap="20px"
-    >
-      <RightSideBar
-        // isOpen={filterSidebar.isOpen}
-        // onClose={filterSidebar.onClose}
-        title="Filter Quests"
-      >
-        {/* <FilterUsersSidebar /> */}
-      </RightSideBar>
-
-      {quests && quests.length > 0 && usersCount && (
-        <ResultTable data={quests} usersCount={usersCount} />
-      )}
+    <Flex flexDirection="column" w="100%" h="100%" justifyContent="center" gap="20px">
+      {quests && usersCount && <ResultTable data={quests} usersCount={usersCount} />}
     </Flex>
   )
 }

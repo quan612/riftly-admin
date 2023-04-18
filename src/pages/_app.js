@@ -1,6 +1,6 @@
 import React, { StrictMode, useEffect } from 'react'
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css'
 import '../styles/globals.css'
 
 import { Web3Provider } from 'context/Web3Context'
@@ -60,20 +60,18 @@ function MyApp({ Component, pageProps }) {
                             `}
             </Script>
             <ChakraProvider theme={theme}>
-
-
-              {Component.requireAdmin ? (
+              {Component.requireAdmin && (
                 <AdminLayout {...pageProps}>
                   <AdminGuard>
                     <Component {...pageProps} />
                   </AdminGuard>
                 </AdminLayout>
-              ) : (
-
+              )}
+              {Component.doc && <Component {...pageProps} key={router.asPath} />}
+              {!Component.doc && !Component.requireAdmin && (
                 <LayoutWrapper>
                   <Component {...pageProps} key={router.asPath} />
                 </LayoutWrapper>
-
               )}
             </ChakraProvider>
           </StrictMode>
@@ -86,7 +84,6 @@ function MyApp({ Component, pageProps }) {
 export default MyApp
 
 const LayoutWrapper = ({ children }) => {
-
   const ref = use100vh()
   return (
     <Box

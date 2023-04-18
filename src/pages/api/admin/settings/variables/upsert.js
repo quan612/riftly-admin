@@ -16,9 +16,7 @@ const AdminConfigsUpsertAPI = async (req, res) => {
           twitterId,
           twitterSecret,
           pendingRewardImageUrl,
-          cloudinaryName,
-          cloudinaryKey,
-          cloudinarySecret,
+
           hostUrl,
           discordBotToken,
           twitterBearerToken,
@@ -29,6 +27,7 @@ const AdminConfigsUpsertAPI = async (req, res) => {
           smsSid,
           smsAuthToken,
           smsServiceId,
+          apiKey,
         } = req.body
 
         let env = process.env.VERCEL_ENV || 'development'
@@ -47,11 +46,9 @@ const AdminConfigsUpsertAPI = async (req, res) => {
             discordBackendSecret,
             twitterId,
             twitterSecret,
-            pendingRewardImageUrl,
-            cloudinaryName,
-            cloudinaryKey,
-            cloudinarySecret,
             twitterBearerToken,
+            pendingRewardImageUrl,
+
             googleClientEmail,
             googleClientId,
             googleProjectId,
@@ -59,6 +56,7 @@ const AdminConfigsUpsertAPI = async (req, res) => {
             smsSid,
             smsAuthToken,
             smsServiceId,
+            apiKey
           },
           update: {
             hostUrl,
@@ -70,9 +68,7 @@ const AdminConfigsUpsertAPI = async (req, res) => {
             twitterId,
             twitterSecret,
             pendingRewardImageUrl,
-            cloudinaryName,
-            cloudinaryKey,
-            cloudinarySecret,
+
             twitterBearerToken,
             googleClientEmail,
             googleClientId,
@@ -81,6 +77,7 @@ const AdminConfigsUpsertAPI = async (req, res) => {
             smsSid,
             smsAuthToken,
             smsServiceId,
+            apiKey
           },
         })
 

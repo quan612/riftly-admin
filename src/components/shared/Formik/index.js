@@ -6,6 +6,7 @@ import {
   FormLabel,
   FormErrorMessage,
   Textarea,
+  Text,
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react'
@@ -78,9 +79,9 @@ export const RequiredPasswordInput = ({
         />
 
         <InputRightElement width="4.5rem">
-          <Button h="1.75rem" size="sm" onClick={handleClick}>
+          <Text height="1.25rem" size="sm" onClick={handleClick} cursor="pointer">
             {show ? 'Hide' : 'Show'}
-          </Button>
+          </Text>
         </InputRightElement>
       </InputGroup>
       <FormErrorMessage fontSize="md" name={fieldName}>
@@ -143,6 +144,38 @@ export const RequiredTextAreaInput = ({ label, fieldName, error, touched, placeh
         py="11px"
         resize="none"
         placeholder={placeholder}
+      />
+
+      <FormErrorMessage fontSize="md" name="text">
+        {error}
+      </FormErrorMessage>
+    </FormControl>
+  )
+}
+
+
+export const NonRequiredTextAreaInput = ({ label, fieldName, error, touched, placeholder = '', ...rest }) => {
+  return (
+    <FormControl isInvalid={error && touched}>
+      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+        {label}
+      </FormLabel>
+      <Field
+        name={fieldName}
+        type="text"
+        as={Textarea}
+        fontSize="md"
+        ms="4px"
+        size="md"
+        color="white"
+        border="1px solid"
+        borderColor="brand.neutral2"
+        borderRadius="16px"
+        bg="brand.neutral3"
+        py="11px"
+        resize="none"
+        placeholder={placeholder}
+        {...rest}
       />
 
       <FormErrorMessage fontSize="md" name="text">

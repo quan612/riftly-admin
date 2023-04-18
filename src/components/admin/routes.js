@@ -79,36 +79,95 @@ const routes = [
   },
   /** Reward paths **/
   {
-    name: 'Reward',
+    name: 'Rewards',
     path: '/reward',
     showOnSidebar: true,
     icon: <RewardNavIcon />
-
+  },
+  {
+    name: 'Reward Users',
+    path: '/reward/send-rewards',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Rewards</Text>
+      </Flex>
+    ),
+    backPath: '/reward'
   },
   {
     name: 'Single Reward',
-    path: '/reward/single',
+    path: '/reward/send-rewards/single',
 
     showOnSidebar: false,
     backText: (
       <Flex gap="1.5rem">
         <Text>{'<'}</Text>
-        <Text>Back to Reward</Text>
+        <Text>Back to Send Reward</Text>
+      </Flex>
+    ),
+    backPath: '/reward/send-rewards'
+  },
+  {
+    name: 'Bulk Reward',
+    path: '/reward/send-rewards/bulk',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Send Reward</Text>
+      </Flex>
+    ),
+    backPath: '/reward/send-rewards'
+  },
+  {
+    name: 'Config Reward Types',
+    path: '/reward/config',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Rewards</Text>
       </Flex>
     ),
     backPath: '/reward'
   },
   {
-    name: 'Bulk Reward',
-    path: '/reward/bulk',
+    name: 'Shop Items',
+    path: '/reward/shop',
     showOnSidebar: false,
     backText: (
       <Flex gap="1.5rem">
         <Text>{'<'}</Text>
-        <Text>Back to Reward</Text>
+        <Text>Back to Rewards</Text>
       </Flex>
     ),
     backPath: '/reward'
+  },
+  {
+    name: 'Add a New Shop Item',
+    path: '/reward/shop/add',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Shop</Text>
+      </Flex>
+    ),
+    backPath: '/reward/shop'
+  },
+  {
+    name: 'Edit Shop Item',
+    path: '/reward/shop/edit',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Shop</Text>
+      </Flex>
+    ),
+    backPath: '/reward/shop'
   },
   /** Quest paths **/
   {
@@ -216,8 +275,8 @@ const routes = [
     backPath: '/setting'
   },
   {
-    name: 'Edit Rewards Setting',
-    path: '/setting/reward',
+    name: 'Edit Misc',
+    path: '/setting/misc',
     icon: <GiPlanetConquest />,
     showOnSidebar: false,
     backText: (
@@ -229,8 +288,34 @@ const routes = [
     backPath: '/setting'
   },
   {
-    name: 'Edit Misc',
-    path: '/setting/misc',
+    name: 'Edit Redeemable Setting',
+    path: '/setting/redeemable-contract',
+    icon: <GiPlanetConquest />,
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Setting</Text>
+      </Flex>
+    ),
+    backPath: '/setting'
+  },
+  {
+    name: 'Configure Admins',
+    path: '/setting/admin',
+    icon: <GiPlanetConquest />,
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Setting</Text>
+      </Flex>
+    ),
+    backPath: '/setting'
+  },
+  {
+    name: 'Configure Nft Contracts Data',
+    path: '/setting/nft-contracts',
     icon: <GiPlanetConquest />,
     showOnSidebar: false,
     backText: (

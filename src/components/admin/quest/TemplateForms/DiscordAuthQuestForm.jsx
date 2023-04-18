@@ -7,6 +7,7 @@ import { useAdminQuestUpsert } from '@hooks/admin/quest'
 import { AdminQuestFormWrapper } from '../AddQuest'
 import moment from 'moment'
 import { QuestStyle, QuestDuration } from '@prisma/client'
+import { useRouter } from 'next/router'
 
 const DiscordQuestSchema = object().shape({
   text: string().required('Quest text is required'),
@@ -101,6 +102,7 @@ const DiscordAuthQuestForm = ({ quest = null, isCreate = true }) => {
 
   const { isLoading, mutateAsync } = useAdminQuestUpsert()
   const toast = useToast()
+  const router = useRouter()
 
   const onSubmit = async (fields, { setStatus }) => {
     try {
@@ -109,7 +111,6 @@ const DiscordAuthQuestForm = ({ quest = null, isCreate = true }) => {
       if (res?.isError) {
         setStatus(res.message)
       } else {
-        console.log(res)
         toast({
           title: 'Success',
           description: `Update quest success`,
@@ -117,6 +118,7 @@ const DiscordAuthQuestForm = ({ quest = null, isCreate = true }) => {
           status: 'success',
           duration: 2000,
         })
+        router.push('/quest')
       }
     } catch (error) {
       setStatus(error.message)

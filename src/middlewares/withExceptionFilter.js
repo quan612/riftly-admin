@@ -18,9 +18,11 @@ const withExceptionFilter = (handler) => {
       const timestamp = new Date().toISOString()
 
       const responseBody = {
+        isError: true,
         statusCode,
         timestamp,
-        path: req.url,
+        // path: req.url,
+        message
       }
 
       return res.status(statusCode).json(responseBody)

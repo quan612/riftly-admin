@@ -8,6 +8,7 @@ import { AdminQuestFormWrapper } from '../AddQuest'
 import moment from 'moment'
 import { QuestStyle, QuestDuration } from '@prisma/client'
 import { RequiredInput } from '@components/shared/Formik'
+import { useRouter } from 'next/router'
 
 const ImageUploadSchema = object().shape({
   text: string().required('Quest text is required'),
@@ -107,14 +108,15 @@ const ImageUploadQuestForm = ({ quest = null, isCreate = true }) => {
 
   const { isLoading, mutateAsync } = useAdminQuestUpsert()
   const toast = useToast()
+  const router = useRouter()
 
   const onSubmit = async (fields, { setStatus }) => {
     try {
       let res = await mutateAsync(fields)
+      console.log(res)
       if (res?.isError) {
         setStatus(res.message)
       } else {
-        console.log(res)
         toast({
           title: 'Success',
           description: `Mutate quest success`,
@@ -122,6 +124,7 @@ const ImageUploadQuestForm = ({ quest = null, isCreate = true }) => {
           status: 'success',
           duration: 2000,
         })
+        router.push('/quest')
       }
     } catch (error) {
       setStatus(error.message)

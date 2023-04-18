@@ -17,7 +17,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { RiftlyLogoWhiteText } from '@components/shared/Logo'
-
 import { SidebarResponsive } from '../left-side-bar/Sidebar'
 
 import routes from '../routes'
@@ -25,16 +24,16 @@ import React, { useContext, useEffect, useState, useCallback, useRef } from 'rea
 import { Web3Context } from '@context/Web3Context'
 import AdminLogin from '../AdminLogin'
 
+
 export default function HeaderLinks(props) {
   const { variant, children, fixed, scrolled, secondary, onOpen, session, ...rest } = props
 
   const { colorMode } = useColorMode()
 
-  // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white')
   let menuBg = 'brand.neutral4'
   const textColor = useColorModeValue('secondaryGray.900', 'white')
-  const textColorBrand = useColorModeValue('brand.700', 'brand.400')
+
   const shadow = useColorModeValue(
     '14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
@@ -137,7 +136,7 @@ export default function HeaderLinks(props) {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Riftly
+              👋&nbsp; Hey {session?.user?.username}
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">

@@ -108,10 +108,10 @@ const FreeLimitedQuestForm = ({ quest = null, isCreate = true }) => {
   const onSubmit = async (fields, { setStatus }) => {
     try {
       let res = await mutateAsync(fields)
+      console.log(res)
       if (res?.isError) {
         setStatus(res.message)
       } else {
-        console.log(res)
         toast({
           title: 'Success',
           description: `Update quest successful`,

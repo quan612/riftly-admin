@@ -8,6 +8,7 @@ import { AdminQuestFormWrapper } from '../AddQuest'
 import moment from 'moment'
 import { QuestStyle, QuestDuration } from '@prisma/client'
 import { RequiredInput, NonRequiredTextInput } from '@components/shared/Formik'
+import { useRouter } from 'next/router'
 
 const TwitterRetweetQuestSchema = object().shape({
   text: string().required('Quest text is required'),
@@ -104,6 +105,7 @@ const TwitterRetweetQuestForm = ({ quest = null, isCreate = true }) => {
   }
   const { isLoading, mutateAsync } = useAdminQuestUpsert()
   const toast = useToast()
+  const router = useRouter()
 
   return (
     <Formik
@@ -124,6 +126,7 @@ const TwitterRetweetQuestForm = ({ quest = null, isCreate = true }) => {
               status: 'success',
               duration: 2000,
             })
+            router.push('/quest')
           }
         } catch (error) {
           setStatus(error.message)

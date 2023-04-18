@@ -3,10 +3,12 @@ const Enums = {
   WALLET: 'Wallet',
   DISCORD: 'Discord',
   TWITTER: 'Twitter',
-  METAMASK: 'METAMASK',
-  WALLETCONNECT: 'WALLETCONNET',
   EMAIL: 'Email',
   GOOGLE: 'Google',
+  APPLE: 'Apple',
+  METAMASK: 'METAMASK',
+  WALLETCONNECT: 'WALLETCONNET',
+
   REWARDTYPE: {
     MYSTERYBOWL: 'Mystery Bowl',
     NUDE: 'Nude',
@@ -16,6 +18,7 @@ const Enums = {
   },
   ADMIN_SIGN_MSG: 'Sign to authenticate as admin',
   USER_SIGN_MSG: 'Welcome to the Cove’s DeepSea Challenger!\nSign in to start earning treasure.',
+
 
   DAILY: 'daily',
   HOURLY: 'hourly',

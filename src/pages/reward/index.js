@@ -2,10 +2,10 @@ import React from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
-import RewardMethodView from '@components/admin/reward/View'
+import RewardsView from '@components/admin/reward/View'
 
 const AdminRewardPage = () => {
-  return <RewardMethodView />
+  return <RewardsView />
 }
 
 AdminRewardPage.Layout = AdminLayout

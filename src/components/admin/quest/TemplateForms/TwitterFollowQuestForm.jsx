@@ -8,6 +8,7 @@ import { AdminQuestFormWrapper } from '../AddQuest'
 import moment from 'moment'
 import { NonRequiredTextInput, RequiredInput } from '@components/shared/Formik'
 import { QuestStyle, QuestDuration } from '@prisma/client'
+import { useRouter } from 'next/router'
 
 const TwitterFollowQuestSchema = object().shape({
   text: string().required('Quest text is required'),
@@ -105,6 +106,7 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
 
   const { isLoading, mutateAsync } = useAdminQuestUpsert()
   const toast = useToast()
+  const router = useRouter()
 
   return (
     <Formik
@@ -116,10 +118,10 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
         try {
           // alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
           let res = await mutateAsync(fields)
+          console.log(res)
           if (res?.isError) {
             setStatus(res.message)
           } else {
-            console.log(res)
             toast({
               title: 'Success',
               description: `Mutate quest success`,
@@ -127,6 +129,7 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
               status: 'success',
               duration: 2000,
             })
+            router.push('/quest')
           }
         } catch (error) {
           setStatus(error.message)

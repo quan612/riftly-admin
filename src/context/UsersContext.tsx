@@ -6,12 +6,12 @@ import type Prisma from '@prisma/client'
 import { getNftOwners } from '@components/admin/user/list/helper'
 import { utils } from 'ethers'
 import { RewardFilterType, WhiteListAggregate } from 'types/common'
+import axios from 'axios'
 
 type UsersFilterType = {
   type: string
-  contract: string
+  nftData: string
   user: string
-  chainId: string
   rewards?: RewardFilterType[]
 }
 
@@ -37,18 +37,16 @@ const UsersProvider: React.FC<React.ReactNode> = ({ children }) => {
 
   const [filterObj, filterObjSet] = useState({
     type: Enums.WALLET,
-    contract: '',
+    nftData: '',
     user: '',
-    chainId: 'eth',
     rewards: [],
   })
 
   const resetFilter = useCallback(() => {
     filterObjSet({
       type: Enums.WALLET,
-      contract: '',
+      nftData: '',
       user: '',
-      chainId: 'eth',
       rewards: [],
     })
   }, [filterObj])
@@ -61,13 +59,13 @@ const UsersProvider: React.FC<React.ReactNode> = ({ children }) => {
       if (allUsers) {
         try {
           let filterResult = [...(allUsers as WhiteListAggregate[])]
-          const { contract, chainId, user, rewards, type } = filterObj
-          if (contract?.trim().length > 0) {
-            const owners = await getNftOwners(utils.getAddress(contract), chainId)
-            filterResult = filterResult.filter((w) => owners.includes(w.wallet))
+          const { nftData, user, rewards, type } = filterObj
+          if (nftData?.length > 0) {
+
+            filterResult = filterResult.filter((w) => nftData.includes(w.wallet))
           }
           if (user?.trim().length > 0) {
-            //todo change users filter here
+
             switch (type) {
               case Enums.WALLET:
                 filterResult = filterResult.filter((w) => w.wallet === user)

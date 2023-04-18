@@ -33,37 +33,8 @@ const DiscordChannels = () => {
     }
   }
 
-  const handleOnPostMessageChange = async (e, discord) => {
-    e.preventDefault()
-
-    let val = e.target.checked
-    if (discord.postMessageWhenClaimed !== val) {
-      const payload = {
-        ...discord,
-        postMessageWhenClaimed: val,
-        isCreated: false,
-      }
-
-      const res = await upsertChannelAsync(payload)
-      if (!res?.isError) {
-        toast({
-          title: 'Success',
-          description: `Mutate discord channel ${discord.channel} success`,
-          position: 'bottom-right',
-          status: 'success',
-          duration: 2000,
-        })
-      }
-    }
-  }
-
   const debouncedStatusChangeHandler = useCallback(
     (e, discord) => debounce(handleOnStatusChange(e, discord), 800),
-    [],
-  )
-
-  const debouncedIsPostMessageChangeHandler = useCallback(
-    (val, discord) => debounce(handleOnPostMessageChange(val, discord), 800),
     [],
   )
 
@@ -100,13 +71,6 @@ const DiscordChannels = () => {
                       id="-discord-channel-status"
                       defaultChecked={discord?.isEnabled ? true : false}
                       onChange={(e) => debouncedStatusChangeHandler(e, discord)}
-                    />
-                  </Td>
-                  <Td px="0.25rem">
-                    <Switch
-                      id="post-discord-channel-message"
-                      defaultChecked={discord?.postMessageWhenClaimed ? true : false}
-                      onChange={(e) => debouncedIsPostMessageChangeHandler(e, discord)}
                     />
                   </Td>
                   {/*  <Td px="0.25rem">

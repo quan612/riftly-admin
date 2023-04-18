@@ -38,7 +38,6 @@ export default function AdminGeneralImageUpload(props) {
   const hiddenFileInput = useRef(null)
   const imageEl = useRef(null)
 
-  console.log('imageName', imageName)
   const handleOnChange = useCallback((changeEvent) => {
     uploadErrorSet(null)
 

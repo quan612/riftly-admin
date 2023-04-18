@@ -146,7 +146,7 @@ const HomeBanner = () => {
       >
         <Flex direction="column" maxWidth="100%" my={{ base: '14px' }} gap="1rem">
           <Heading fontSize={{ base: 'lg', lg: '3xl' }} color={'white'} fontWeight="700">
-            Good morning, Riftly team 👋
+            Good morning team 👋
           </Heading>
           <Text fontSize={'lg'} color={'white'} fontWeight="400">
             Here is what's happening with your platform

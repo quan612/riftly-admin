@@ -48,6 +48,19 @@ export const useAdminQuestsQuery = () => {
   return { data, isLoading }
 }
 
+export const useAdminEnabledQuestsQuery = () => {
+  const { data, isLoading } = useQuery(
+    'enabled-quests-query',
+    async () => {
+      return axios.get(`${Enums.BASEPATH}/api/admin/quest/`).then((r) => r.data?.sort(sortByText).filter(d => d.isEnabled === true))
+    },
+    { staleTime: 60 },
+  )
+
+  return { data, isLoading }
+}
+
+
 export const useAdminQuestTypesQuery = () => {
   const { data, isLoading } = useQuery(
     'admin-quest-types-query',

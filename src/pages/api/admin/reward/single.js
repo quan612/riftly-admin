@@ -67,7 +67,6 @@ const AddPendingRewardAPI = async (req, res) => {
           let discordChannels = await prisma.discord.findMany({
             where: {
               isEnabled: true,
-              postMessageWhenClaimed: true,
             },
           })
 

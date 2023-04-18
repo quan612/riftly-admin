@@ -32,7 +32,7 @@ customDateInput.displayName = 'DateInput'
 
 const CustomInput = React.forwardRef(customDateInput)
 
-export default function EditQuest({ quest = null }) {
+export default function EditQuest() {
   const { isLoadingQuests, selectedQuest } = useContext(AdminQuestFormContext)
 
   let questProps = {

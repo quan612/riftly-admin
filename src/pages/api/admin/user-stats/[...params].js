@@ -1,9 +1,6 @@
 import { prisma } from '@context/PrismaContext'
-import { getWhiteListUserByUserId } from 'repositories/user'
 import adminMiddleware from '@middlewares/adminMiddleware'
-const { EvmChain } = require('@moralisweb3/common-evm-utils')
 
-const Moralis = require('moralis').default
 const ethers = require('ethers')
 
 const handler = async (req, res) => {
@@ -44,12 +41,6 @@ const handler = async (req, res) => {
           },
         })
 
-        if (!Moralis.Core.isStarted) {
-          await Moralis.start({
-            apiKey: process.env.MORALIS_API_KEY,
-            // ...other configuration
-          })
-        }
 
         res.setHeader('Cache-Control', 'max-age=0, s-maxage=10, stale-while-revalidate')
         res.status(200).json(user)

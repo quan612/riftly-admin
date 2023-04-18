@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   Icon,
   Grid,
+  Image,
 } from '@chakra-ui/react'
 import { AdminBanner, AdminCard } from '@components/shared/Card'
 
@@ -189,23 +190,6 @@ const SmsSettingIcon = () => {
   )
 }
 
-const RewardsSettingIcon = () => {
-  return (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox="0 0 48 48"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M40.5 24C40.5 25.5771 39.46 26.8571 38.1786 26.8571C31.7668 26.8571 26.5714 33.2514 26.5714 41.1429C26.5714 42.72 25.5314 44 24.25 44C22.9686 44 21.9286 42.72 21.9286 41.1429C21.9286 33.2514 16.7332 26.8571 10.3214 26.8571C9.04 26.8571 8 25.5771 8 24C8 22.4229 9.04 21.1429 10.3214 21.1429C16.7332 21.1429 21.9286 14.7429 21.9286 6.85714C21.9286 5.28 22.9686 4 24.25 4C25.5314 4 26.5714 5.28 26.5714 6.85714C26.5714 14.7429 31.7668 21.1429 38.1786 21.1429C39.46 21.1429 40.5 22.4229 40.5 24Z"
-        fill="#00BBC7"
-      />
-    </svg>
-  )
-}
-
 const ImageHostingIcon = () => {
   return (
     <svg
@@ -220,6 +204,13 @@ const ImageHostingIcon = () => {
         fill="#00BBC7"
       />
     </svg>
+  )
+}
+const ContractIcon = () => {
+  return (
+    <Flex justify={'center'} align="center" w="100%">
+      <Image position={'absolute'} src="/img/user/checklist.gif" w={'50px'} fit={'fill'} />
+    </Flex>
   )
 }
 
@@ -248,12 +239,7 @@ const settingsList = [
     icon: <SmsSettingIcon />,
     path: '/setting/sms',
   },
-  {
-    title: 'Rewards',
-    description: 'Add new rewards, edit active rewards',
-    icon: <RewardsSettingIcon />,
-    path: '/setting/reward',
-  },
+
   {
     title: 'Image Hosting Service',
     description: 'Configure service for image upload',
@@ -265,5 +251,23 @@ const settingsList = [
     description: 'Host Url, General Reward Embeded Image',
     icon: <ImageHostingIcon />,
     path: '/setting/misc',
+  },
+  {
+    title: 'Redeemable Configuration',
+    description: 'Manage redeemable contracts and redeemable amount',
+    icon: <ContractIcon />,
+    path: '/setting/redeemable-contract',
+  },
+  {
+    title: 'Admins',
+    description: 'Manage Admins',
+    icon: <ImageHostingIcon />,
+    path: '/setting/admin',
+  },
+  {
+    title: 'NFT Data',
+    description: 'Manage Users of NFT Projects',
+    icon: <ImageHostingIcon />,
+    path: '/setting/nft-contracts',
   },
 ]

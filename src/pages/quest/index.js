@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
 import dynamic from 'next/dynamic'
 const CurrentQuestsComponent = dynamic(() => import('@components/admin/quest/CurrentQuests'))
 
-const AdminQuest = ({ session }) => {
+const AdminQuest = () => {
   return <CurrentQuestsComponent />
 }
 

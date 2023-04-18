@@ -7,7 +7,7 @@ const AdminDiscordChannelsPostAPI = async (req, res) => {
   switch (method) {
     case 'POST':
       try {
-        const { id, channel, channelId, isEnabled, isDeleted, isCreated, postMessageWhenClaimed } =
+        const { id, channel, channelId, isEnabled, isDeleted, isCreated } =
           req.body
 
         if (isCreated) {
@@ -25,7 +25,7 @@ const AdminDiscordChannelsPostAPI = async (req, res) => {
           }
         }
 
-        let upsertRes = await prisma.discord.upsert({
+        await prisma.discord.upsert({
           where: {
             id: id || -1,
           },
@@ -34,14 +34,10 @@ const AdminDiscordChannelsPostAPI = async (req, res) => {
             channelId,
             isEnabled: true,
             isDeleted: false,
-            postMessageWhenClaimed,
           },
           update: {
-            // channel,
-            // channelId,
             isEnabled,
             isDeleted,
-            postMessageWhenClaimed,
           },
         })
 

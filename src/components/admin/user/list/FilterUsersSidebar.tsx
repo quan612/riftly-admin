@@ -20,10 +20,12 @@ import Enums from '@enums/index'
 import { UsersContext } from '@context/UsersContext'
 import { useEnabledRewardTypesQuery } from '@hooks/admin/reward-types'
 import { RewardFilterType } from 'types/common'
+import { useNftContractsQuery } from '@hooks/admin/nft-contracts'
 
 const FilterUsersSidebar = () => {
   const { filterObj, filterObjSet, resetFilter } = useContext(UsersContext)
   const [rewardTypes, isLoadingRewardTypes] = useEnabledRewardTypesQuery()
+  const [nftContracts, isLoadingnftContracts] = useNftContractsQuery()
 
   return (
     <Box>
@@ -79,11 +81,21 @@ const FilterUsersSidebar = () => {
               </GridItem>
 
               <GridItem colSpan={1}>
-                <FormControl mb="24px">
+                <FormControl mb="16px">
                   <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                    Contract Address
+                    NFT Contract
                   </FormLabel>
-                  <Field name="contract" type="text" as={Input} variant="auth" fontSize="sm" />
+                  <Field name="nftData" as={Select} fontSize="md" ms="4px" size="lg">
+                    <option value={[]}>Select</option>
+                    {nftContracts &&
+                      nftContracts.map((contract) => {
+                        return (
+                          <option key={contract.id} value={contract.data}>
+                            {contract.name}
+                          </option>
+                        )
+                      })}
+                  </Field>
                 </FormControl>
               </GridItem>
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import { MdBarChart } from 'react-icons/md'
 import { Box, Button, Flex, Heading, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import ApexBarChart from '@components/shared/Charts/ApexBarChart'
 import Card from '@components/shared/Card'

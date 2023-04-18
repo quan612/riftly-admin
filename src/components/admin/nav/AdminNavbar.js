@@ -1,4 +1,3 @@
-// Chakra Imports
 import {
   Box,
   Breadcrumb,
@@ -18,23 +17,12 @@ export default function AdminNavbar(props) {
 
   useEffect(() => {
     window.addEventListener('scroll', changeNavbar)
-
     return () => {
       window.removeEventListener('scroll', changeNavbar)
     }
   })
   const router = useRouter()
   const { backText, backPath, variant, children, fixed, secondary, brandText, onOpen, session, ...rest } = props
-
-  // Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
-  // let mainText =
-  //   fixed && scrolled
-  //     ? useColorModeValue('gray.700', 'gray.200')
-  //     : useColorModeValue('white', 'gray.200')
-  // let secondaryText =
-  //   fixed && scrolled
-  //     ? useColorModeValue('gray.700', 'gray.200')
-  //     : useColorModeValue('white', 'gray.200')
 
   let mainText = useColorModeValue('gray.700', 'gray.200')
 
@@ -49,24 +37,15 @@ export default function AdminNavbar(props) {
   let secondaryMargin = '0px'
   let paddingX = '15px'
   if (props.fixed === true)
-    if (scrolled === true) {
-      // navbarPosition = 'fixed'
-      // navbarShadow = useColorModeValue('0px 7px 23px rgba(0, 0, 0, 0.05)', 'none')
-      // navbarBg = useColorModeValue(
-      //   'linear-gradient(112.83deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.8) 110.84%)',
-      //   'linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)',
-      // )
-      // navbarBorder = useColorModeValue('#FFFFFF', 'rgba(255, 255, 255, 0.31)')
-      // navbarFilter = useColorModeValue('none', 'drop-shadow(0px 7px 23px rgba(0, 0, 0, 0.05))')
+
+    if (props.secondary) {
+      navbarBackdrop = 'none'
+      navbarPosition = 'absolute' //absolute
+      mainText = 'white'
+      secondaryText = 'white'
+      secondaryMargin = '22px'
+      paddingX = '30px'
     }
-  if (props.secondary) {
-    navbarBackdrop = 'none'
-    navbarPosition = 'absolute' //absolute
-    mainText = 'white'
-    secondaryText = 'white'
-    secondaryMargin = '22px'
-    paddingX = '30px'
-  }
   const changeNavbar = () => {
     if (window.scrollY > 1) {
       setScrolled(true)
@@ -102,9 +81,7 @@ export default function AdminNavbar(props) {
         sm: paddingX,
         md: '24px',
       }}
-      // ps={{
-      //   xl: "12px",
-      // }}
+
       pt="8px"
       top="18px"
       w={{ base: 'calc(100vw - 30px)', xl: 'calc(100vw  - 280px)' }}
@@ -120,20 +97,6 @@ export default function AdminNavbar(props) {
       >
         {/* left part */}
         <Box mb={{ sm: '8px', md: '0px' }}>
-          {/* <Breadcrumb>
-            <BreadcrumbItem color={mainText}>
-              <BreadcrumbLink href="#" color={secondaryText}>
-                Pages
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-
-            <BreadcrumbItem color={mainText}>
-              <BreadcrumbLink href="#" color={mainText}>
-                {brandText}
-              
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb> */}
           {/* Here we create navbar brand, based on route name */}
           <Text
             color={mainText}
@@ -153,7 +116,6 @@ export default function AdminNavbar(props) {
           >
             {brandText}
           </Text>
-
 
           <Text
             as={Link}
@@ -184,7 +146,6 @@ export default function AdminNavbar(props) {
         <Box
           ms="auto"
           className='top-right-navbar'
-          //  w={{ sm: '100%', md: 'unset' }}
           w={{ sm: 'auto', md: 'unset' }}
         >
           <AdminNavbarLinks

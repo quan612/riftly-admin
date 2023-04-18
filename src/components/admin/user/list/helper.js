@@ -1,6 +1,7 @@
 import XLSX from 'xlsx'
 import axios from 'axios'
-import { sleep } from '@util/index'
+import { remove_duplicates_es6, sleep } from '@util/index'
+import { utils } from 'ethers'
 
 export const downloadCsv = (jsonData) => {
   jsonData = jsonData.map((r) => {
@@ -20,9 +21,10 @@ export const downloadCsv = (jsonData) => {
 export const getNftOwners = async (contract, chainId) => {
   let cursor = ''
   let nftOwners = []
+
   do {
     let contractQuery = await axios
-      .get(`/api/admin/user-stats/contract/${contract.trim()}/${chainId}/${cursor}`)
+      .get(`/api/admin/nft-contracts/${contract.trim()}/${chainId}/${cursor}`)
       .then((r) => r.data)
 
     for (const nft of contractQuery.result) {
@@ -33,7 +35,8 @@ export const getNftOwners = async (contract, chainId) => {
 
     await sleep()
     break
-  } while (cursor != null && cursor != '')
+  } while ((cursor != null && cursor != ''))
 
-  return nftOwners.map((r) => r.owner_of)
+  const owners = remove_duplicates_es6(nftOwners.map((r) => utils.getAddress(r.owner_of)))
+  return owners
 }

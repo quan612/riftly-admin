@@ -19,14 +19,15 @@
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
       "@util/*": ["util/*"],
-      "@repository/*": ["repository/*"],
+      "@repositories/*": ["repositories/*"],
       "@context/*": ["context/*"],
       "@middlewares/*": ["middlewares/*"],
       "@hooks/*": ["hooks/*"],
       "@enums/*": ["enums/*"],
       "@pages/*": ["pages/*"],
       "@theme/*": ["theme/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@models/*": ["models/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],

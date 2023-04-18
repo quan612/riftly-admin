@@ -3,12 +3,26 @@ import { Form, Formik } from 'formik'
 import Enums from 'enums'
 import axios from 'axios'
 
-import { Heading, Box, Flex, Button, SimpleGrid, GridItem, useToast } from '@chakra-ui/react'
+import {
+  Heading,
+  Box,
+  Flex,
+  Button,
+  SimpleGrid,
+  GridItem,
+  useToast,
+  Text,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import Loading from '@components/shared/LoadingContainer/Loading'
 import { useDebounce } from 'react-use'
 import { NonRequiredTextInput } from '@components/shared/Formik'
 import AdminGeneralImageUpload from '@components/shared/ImageUpload/AdminGeneralImageUpload'
+import { RequiredInput } from '@components/shared/Formik'
+
+const CryptoJS = require('crypto-js')
 
 const MiscInfo = () => {
   const [configs, setConfigs] = useState(null)
@@ -47,6 +61,7 @@ const MiscInfo = () => {
     smsSid: configs?.smsSid || '',
     smsAuthToken: configs?.smsAuthToken || '',
     smsServiceId: configs?.smsServiceId || '',
+    apiKey: configs?.apiKey || '',
   }
 
   const toast = useToast()
@@ -122,6 +137,23 @@ const MiscInfo = () => {
                         </GridItem>
                       </SimpleGrid>
 
+                      <GridItem colSpan={2}>
+                        <FormControl>
+                          <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+                            <Button
+                              variant="cyan"
+                              onClick={() => {
+                                const newCode = CryptoJS.lib.WordArray.random(64).toString()
+                                setFieldValue('apiKey', newCode)
+                              }}
+                            >
+                              Generate New Key
+                            </Button>
+                          </FormLabel>
+                          <Text>{values.apiKey}</Text>
+                        </FormControl>
+                      </GridItem>
+
                       <Button
                         w={{ base: '150px' }}
                         mt="20px"
@@ -130,7 +162,7 @@ const MiscInfo = () => {
                         isLoading={isLoading}
                         disabled={isLoading || !dirty}
                       >
-                        Submit
+                        Save
                       </Button>
                     </AdminCard>
                   </Box>

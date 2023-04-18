@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
-import dynamic from 'next/dynamic'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
-// const CurrentQuestsComponent = dynamic(() => import('@components/admin/quest/CurrentQuests'))
 import { useRouter } from 'next/router'
 
 import AdminQuestFormProvider from '@context/AdminQuestFormContext'
