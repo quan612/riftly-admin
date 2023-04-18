@@ -253,12 +253,6 @@ const settingsList = [
     path: '/setting/misc',
   },
   {
-    title: 'Redeemable Configuration',
-    description: 'Manage redeemable contracts and redeemable amount',
-    icon: <ContractIcon />,
-    path: '/setting/redeemable-contract',
-  },
-  {
     title: 'Admins',
     description: 'Manage Admins',
     icon: <ImageHostingIcon />,

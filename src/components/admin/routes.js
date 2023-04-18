@@ -288,19 +288,6 @@ const routes = [
     backPath: '/setting'
   },
   {
-    name: 'Edit Redeemable Setting',
-    path: '/setting/redeemable-contract',
-    icon: <GiPlanetConquest />,
-    showOnSidebar: false,
-    backText: (
-      <Flex gap="1.5rem">
-        <Text>{'<'}</Text>
-        <Text>Back to Setting</Text>
-      </Flex>
-    ),
-    backPath: '/setting'
-  },
-  {
     name: 'Configure Admins',
     path: '/setting/admin',
     icon: <GiPlanetConquest />,
