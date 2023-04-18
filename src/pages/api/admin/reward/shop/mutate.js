@@ -161,18 +161,6 @@ const handler = async (req, res) => {
       update: updateObj
     })
 
-
-    // if ((existingShopItem?.contract?.type !== contract.type) && (existingShopItem?.contract?.address === contract.address)) {
-    //   await prisma.ContractItem.update({
-    //     where: {
-    //       address: existingShopItem.contract.address
-    //     },
-    //     data: {
-    //       type: contract.type
-    //     }
-    //   })
-    // }
-
     res.status(200).json(updatedContract)
   } catch (err) {
     console.log(err)

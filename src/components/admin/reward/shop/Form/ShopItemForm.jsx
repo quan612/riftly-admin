@@ -192,7 +192,7 @@ const ShopItemForm = ({ item = null, isCreate = true }) => {
     try {
       alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
       setStatus(null)
-
+      console.log('fields', fields)
       const payload = {
         ...fields,
       }
