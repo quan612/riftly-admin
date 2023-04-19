@@ -23,7 +23,6 @@ const handler = async (req, res) => {
       image,
       itemType,
       requirements,
-      // contract,
       contractAddress,
       contractType,
       abi,

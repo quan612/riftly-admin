@@ -44,6 +44,7 @@ import { capitalizeFirstLetter } from '@util/index'
 import { QuestStyle, QuestDuration } from '@prisma/client'
 import { useAdminAllUsersCountQuery } from '@hooks/admin/user'
 import { FaPlay } from 'react-icons/fa'
+import Enums from '@enums/index'
 
 const AdminQuestsBanner = ({ count, onAddNew }) => {
   return (
@@ -120,12 +121,24 @@ const ResultTable = ({ data, usersCount }) => {
     {
       Header: 'QUEST',
       accessor: 'text',
+      // accessor: (row) => {
+      //   const { text, type, extendedQuestData } = row
+      //   console.log(type)
+      //   let result = ''
+      //   switch (type.name) {
+      //     case Enums.JOIN_DISCORD:
+      //       result = `Join discord server ${extendedQuestData.discordServer}`
+      //     default:
+      //       result = text
+      //   }
+      //   return result
+      // },
       disableSortBy: true,
     },
-    {
-      Header: 'DESCRIPTION',
-      accessor: 'description',
-    },
+    // {
+    //   Header: 'DESCRIPTION',
+    //   accessor: 'description',
+    // },
     {
       Header: 'POINTS',
 
@@ -368,14 +381,49 @@ const getCellValue = (cell, usersCount, editQuestAction, mutateAsync, handleOnDe
   if (typeof cell.value === 'number') {
     value = value.toLocaleString('en-US')
   }
-
+  let questColor = 'blue.400'
   switch (cell.column.Header) {
     case 'QUEST':
-      return (
-        <Text maxW="250px" noOfLines={2}>
-          {value}
-        </Text>
-      )
+      if (type.name === Enums.JOIN_DISCORD) {
+        return (
+          <Text fontSize={'md'} as={'span'}>
+            Join Discord server at{' '}
+            <Text as={'span'} color={questColor} ml="1">
+              {extendedQuestData.discordServer}
+            </Text>
+          </Text>
+        )
+      } else if (type.name === Enums.TWITTER_RETWEET) {
+        return (
+          <Text fontSize={'md'} as={'span'}>
+            Retweet this tweet{' '}
+            <Text as={'span'} color={questColor} ml="1">
+              {extendedQuestData.tweetId}
+            </Text>
+          </Text>
+        )
+      } else if (type.name === Enums.FOLLOW_TWITTER) {
+        return (
+          <Text fontSize={'md'} as={'span'}>
+            Follow Twitter
+            <Text as={'span'} color={questColor} ml="1">
+              {extendedQuestData.followAccount}
+            </Text>
+          </Text>
+        )
+      } else if (type.name === Enums.FOLLOW_INSTAGRAM) {
+        return (
+          <Text fontSize={'md'} as={'span'}>
+            Follow Instagram
+            <Text as={'span'} color={questColor} ml="1">
+              {extendedQuestData.followAccount}
+            </Text>
+          </Text>
+        )
+      }
+
+      return <Text>{value}</Text>
+
     case 'DESCRIPTION':
       return (
         <Text maxW="250px" noOfLines={2}>

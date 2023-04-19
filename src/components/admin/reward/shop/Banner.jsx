@@ -4,7 +4,11 @@ import { AddIcon } from '@chakra-ui/icons'
 
 const Banner = ({ count, onAddNew }) => {
   return (
-    <AdminBanner>
+    <AdminBanner
+      background={
+        'linear-gradient(0deg, rgba(0, 187, 199, 0.8), rgba(0, 187, 199, 0.8)), url(/img/user/banner.png)'
+      }
+    >
       <Flex
         mb={{ sm: '10px', md: '0px' }}
         w={'100%'}

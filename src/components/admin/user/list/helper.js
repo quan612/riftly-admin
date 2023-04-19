@@ -34,7 +34,7 @@ export const getNftOwners = async (contract, chainId) => {
     cursor = contractQuery?.cursor
 
     await sleep()
-    break
+
   } while ((cursor != null && cursor != ''))
 
   const owners = remove_duplicates_es6(nftOwners.map((r) => utils.getAddress(r.owner_of)))

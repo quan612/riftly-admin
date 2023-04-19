@@ -35,8 +35,6 @@ const handler = async (req, res) => {
           })
           .then((r) => r.jsonResponse)
 
-
-
         res.setHeader('Cache-Control', 'max-age=0, s-maxage=120, stale-while-revalidate')
         res.status(200).json(response)
       } catch (err) {

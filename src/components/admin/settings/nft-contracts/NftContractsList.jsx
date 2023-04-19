@@ -9,19 +9,19 @@ import { utils } from 'ethers'
 import { shortenAddress } from '@util/index'
 import moment from 'moment'
 
-const NftContractsList = ({ createDataSet }) => {
+const NftContractsList = () => {
   const [nftContracts, isLoadingnftContracts] = useNftContractsQuery()
   const [loading, loadingSet] = useState(false)
   const [data, isUpdating, updateAsync] = useNftContractsUpdateData()
   const toast = useToast()
 
   const handleUpdate = async (contract) => {
-    const { id, name, address } = contract
+    const { id, name, address, chain } = contract
     loadingSet(true)
     try {
-      const data = await getNftOwners(utils.getAddress(address), 'eth')
+      const data = await getNftOwners(utils.getAddress(address), chain)
 
-      let op = await updateAsync({ id, data })
+      const op = await updateAsync({ id, data })
 
       if (op.isError) {
         toast({

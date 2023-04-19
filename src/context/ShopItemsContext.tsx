@@ -16,7 +16,6 @@ const ShopItemFormProvider = ({ id = null, children }) => {
   ]
 
   const { data: shopItems, isLoading: isLoadingShopItems } = useAdminShopQuery()
-
   useEffect(() => {
     if (id && shopItems && shopItems.length > 0) {
       const selectedItem = shopItems?.filter((q) => parseInt(q.id) === parseInt(id))[0]

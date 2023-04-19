@@ -27,9 +27,7 @@ export const AdminCard = ({ children, bg = 'brand.neutral4', ...rest }) => {
   const shadow = useColorModeValue('0px 18px 40px rgba(112, 144, 176, 0.12)', 'none')
 
   return (
-    <Card boxShadow={shadow}
-      p={{ base: '16px', md: '24px', xl: '32px' }}
-      bg={bg} {...rest}>
+    <Card boxShadow={shadow} p={{ base: '16px', md: '24px', xl: '32px' }} bg={bg} {...rest}>
       {children}
     </Card>
   )
@@ -106,7 +104,10 @@ export const MiniStatistics = (props) => {
   )
 }
 
-export const AdminBanner = ({ children }) => {
+export const AdminBanner = ({
+  background = 'linear-gradient(rgba(29, 99, 255, 0.5),  rgba(29, 99, 255, 0.5)), url(/img/user/banner.png)',
+  children,
+}) => {
   return (
     <Flex
       direction={{ base: 'column' }}
@@ -115,8 +116,7 @@ export const AdminBanner = ({ children }) => {
       backdropFilter="blur(21px)"
       borderRadius="20px"
       __css={{
-        background:
-          'linear-gradient(rgba(29, 99, 255, 0.5),  rgba(29, 99, 255, 0.5)), url(/img/user/banner.png)',
+        background: background,
       }}
       backgroundPosition="center"
       backgroundSize={'cover'}
@@ -127,7 +127,7 @@ export const AdminBanner = ({ children }) => {
       justifyContent={'center'}
       p={{ base: '12px', lg: '2rem' }}
       zIndex={10}
-      mt='20px'
+      mt="20px"
     >
       {children}
     </Flex>

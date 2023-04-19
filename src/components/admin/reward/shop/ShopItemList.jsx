@@ -34,16 +34,17 @@ import moment from 'moment'
 import { DeleteIcon, EditIcon, PauseIcon } from '@components/shared/Icons'
 import { capitalizeFirstLetter } from '@util/index'
 
-import { QuestStyle, QuestDuration } from '@prisma/client'
+import { QuestStyle, QuestDuration, ItemType } from '@prisma/client'
 
 import { FaPlay } from 'react-icons/fa'
 import Banner from './Banner'
 import Loading from '@components/shared/LoadingContainer/Loading'
 import { ShopItemsContext } from '@context/ShopItemsContext'
+import { useShopItemPause } from '@hooks/admin/shop-item'
 
 const ShopItemList = () => {
   const { shopItems, isLoadingShopItems } = useContext(ShopItemsContext)
-
+  console.log(shopItems)
   return (
     <Flex flexDirection="column" w="100%" h="100%" justifyContent="center" gap="20px">
       {isLoadingShopItems && <Loading />}
@@ -61,20 +62,18 @@ const columnData = [
     Header: 'DESCRIPTION',
     accessor: 'description',
   },
-  // {
-  //   Header: 'COST',
-  //   accessor: 'quantity',
-  // },
-  // {
-  //   Header: 'REDEEMED / AVAILABLE',
-  //   accessor: 'style',
-  // },
-
-  // {
-  //   Header: 'TYPE',
-  //   accessor: 'active date',
-  // },
-
+  {
+    Header: 'COST',
+    accessor: 'cost',
+  },
+  {
+    Header: 'REDEEMED / AVAILABLE',
+    accessor: 'redeemAvailable',
+  },
+  {
+    Header: 'CONTRACT TYPE',
+    accessor: 'contractType',
+  },
   {
     Header: 'ACTION',
     accessor: 'action',
@@ -120,7 +119,11 @@ const ResultTable = ({ data }) => {
 
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100')
 
-  const { isLoading: upsertingQuest, mutateAsync } = useAdminQuestUpsert()
+  const {
+    data: shopItemData,
+    isLoading: pausingShopItem,
+    mutateAsync: pauseShopItemAsync,
+  } = useShopItemPause()
   const [deleteQuest, deletingQuest, handleOnDelete] = useAdminQuestSoftDelete()
 
   const getRowProps = (row) => ({
@@ -173,6 +176,7 @@ const ResultTable = ({ data }) => {
                       >
                         {!column?.hideHeader && (
                           <Flex
+                            justify={'center'}
                             align="center"
                             fontSize={{ sm: '8px', lg: '12px', xl: '14px' }}
                             color="gray.400"
@@ -198,13 +202,7 @@ const ResultTable = ({ data }) => {
                 return (
                   <Tr {...row.getRowProps(getRowProps(row))} key={index}>
                     {row.cells.map((cell, index) => {
-                      const data = getCellValue(
-                        cell,
-
-                        editShopAction,
-                        mutateAsync,
-                        handleOnDelete,
-                      )
+                      const data = getCellValue(cell, editShopAction, pauseShopItemAsync)
 
                       return (
                         <Td
@@ -256,22 +254,9 @@ const getActiveDateColor = (startDate, endDate) => {
   return 'white'
 }
 
-const getCellValue = (cell, editShopAction, mutateAsync, handleOnDelete) => {
-  const {
-    id,
-    type,
-    description,
-    text,
-    completedText,
-    rewardTypeId,
-    quantity,
-    isEnabled,
-    isRequired,
-    extendedQuestData,
-    duration,
-    image,
-    style,
-  } = cell.row.original
+const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
+  const { id, title, description, isEnabled, itemType, contractType, available, redeemAvailable } =
+    cell.row.original
 
   const day = Math.floor(cell.value / 24)
   const color = day <= 4 ? 'orange.300' : 'red.300'
@@ -282,73 +267,66 @@ const getCellValue = (cell, editShopAction, mutateAsync, handleOnDelete) => {
   }
 
   switch (cell.column.Header) {
-    case 'QUEST':
+    case 'ITEM':
       return (
-        <Text maxW="250px" noOfLines={2}>
+        <Text noOfLines={2} textAlign="center">
           {value}
         </Text>
       )
     case 'DESCRIPTION':
       return (
-        <Text maxW="250px" noOfLines={2}>
+        <Text noOfLines={2} textAlign="center">
           {value}
         </Text>
       )
-    case 'STYLE':
-      return (
-        <Text fontSize={'md'} color={`${value === QuestStyle.FEATURED ? 'yellow.300' : 'white'}`}>
-          {capitalizeFirstLetter(value)}
-        </Text>
-      )
-    case 'ACTIVE DATE':
-      if (duration === QuestDuration.ONGOING)
+    case 'CONTRACT TYPE':
+      if (itemType === ItemType.OFFCHAIN) {
         return (
-          <Text fontSize={'md'} color={'green.300'}>
-            {capitalizeFirstLetter(duration)}
+          <Text textAlign="center" fontSize={'md'}>
+            N/A
           </Text>
         )
-      else {
+      } else
         return (
-          <Flex
-            gap="4px"
-            color={getActiveDateColor(extendedQuestData?.startDate, extendedQuestData?.endDate)}
-          >
-            <Text as={'span'} minW="90px">
-              {moment.utc(extendedQuestData?.startDate, 'MM/DD/yyyy').format('MMM DD')}-
-              {moment.utc(extendedQuestData?.endDate, 'MM/DD/yyyy').format('MMM DD')}
-            </Text>
-          </Flex>
+          <Text textAlign="center" fontSize={'md'}>
+            {contractType.toUpperCase()}
+          </Text>
         )
+    case 'REDEEMED / AVAILABLE':
+      let test = (available - redeemAvailable) / available
+      let color = 'green.300'
+      if (test > 0.9) {
+        color = 'red.300'
+      } else if (test > 0.5) {
+        color = 'orange.300'
       }
-
+      return (
+        <Flex fontSize={'md'} letterSpacing="0.35rem" justify={'center'} w="100%">
+          <Text as={'span'} color={color}>
+            {available - redeemAvailable}
+          </Text>
+          <Text as={'span'} color={'brand.neutral1'}>
+            /{available}
+          </Text>
+        </Flex>
+      )
     case 'ACTION':
       return (
         <Flex align="center" justify="center" gap="6px">
-          {/* <Box
+          <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={async () => {
               //set to enable false
-              let res = await mutateAsync({
+              let res = await pauseShopItemAsync({
                 id,
-                type: type.name, // get type name from type object
-                description,
-                text,
-                completedText,
-                rewardTypeId,
-                quantity,
                 isEnabled: isEnabled ? false : true,
-                isRequired,
-                extendedQuestData,
-                duration,
-                image,
-                style,
               })
             }}
             color="#89A4C2"
             _hover={{ cursor: 'pointer', color: '#00BBC7' }}
           >
             {isEnabled ? <PauseIcon /> : <FaPlay />}
-          </Box> */}
+          </Box>
           <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={() => {
@@ -360,7 +338,7 @@ const getCellValue = (cell, editShopAction, mutateAsync, handleOnDelete) => {
             <EditIcon />
           </Box>
 
-          <Box
+          {/* <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={() => {
               console.log('to delete')
@@ -373,12 +351,12 @@ const getCellValue = (cell, editShopAction, mutateAsync, handleOnDelete) => {
             _hover={{ cursor: 'pointer', color: 'red.300' }}
           >
             <DeleteIcon />
-          </Box>
+          </Box> */}
         </Flex>
       )
     default:
       return (
-        <Text color="white" fontSize={'lg'}>
+        <Text color="white" fontSize={'lg'} textAlign="center">
           {value}
         </Text>
       )

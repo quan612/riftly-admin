@@ -15,13 +15,18 @@ import {
   Image,
   Text,
   Divider,
+  Switch,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import { HeadingLg, HeadingSm, TextMd, TextSm } from '@components/shared/Typography'
 import { Field, Form } from 'formik'
 import RiftlyRadio from '@components/shared/Radio'
 
-import { RequiredTextAreaInput, RequiredInput, NonRequiredTextAreaInput } from '@components/shared/Formik'
+import {
+  RequiredTextAreaInput,
+  RequiredInput,
+  NonRequiredTextAreaInput,
+} from '@components/shared/Formik'
 import { ItemType, ContractType } from '@prisma/client'
 import { capitalizeFirstLetter } from '@util/index'
 import AdminGeneralImageUpload from '@components/shared/ImageUpload/AdminGeneralImageUpload'
@@ -39,7 +44,7 @@ const ShopItemFormWrapper = ({
   handleChange,
   children,
 }) => {
- 
+  console.log(values)
   return (
     <Form>
       <Flex
@@ -64,12 +69,16 @@ const ShopItemFormWrapper = ({
 
               <RadioGroup onChange={(e) => setFieldValue('itemType', e)} value={values?.itemType}>
                 <Flex gap="1rem">
-                  <RiftlyRadio value={ItemType.OFFCHAIN} isDisabled={!isCreate}>Off Chain - No Contract</RiftlyRadio>
-                  <RiftlyRadio value={ItemType.ONCHAIN} isDisabled={!isCreate}>On Chain - With Contract</RiftlyRadio>
+                  <RiftlyRadio value={ItemType.OFFCHAIN} isDisabled={!isCreate}>
+                    Off Chain - No Contract
+                  </RiftlyRadio>
+                  <RiftlyRadio value={ItemType.ONCHAIN} isDisabled={!isCreate}>
+                    On Chain - With Contract
+                  </RiftlyRadio>
                 </Flex>
               </RadioGroup>
             </FormControl>
-
+            
             {values.itemType === ItemType.ONCHAIN && (
               <>
                 <FormControl>
@@ -88,7 +97,7 @@ const ShopItemFormWrapper = ({
                     onChange={(e) => {
                       e.preventDefault()
                       // questTypeSelect(e.target.value)
-                      setFieldValue("contractType", e.target.value)
+                      setFieldValue('contractType', e.target.value)
                     }}
                     // onChange={handleChange}
                   >
@@ -108,16 +117,16 @@ const ShopItemFormWrapper = ({
                   touched={touched?.contractAddress}
                 />
 
-              <GridItem colSpan={2}>
-                <NonRequiredTextAreaInput
-                  label={'Contract Abi'}
-                  fieldName="abi"
-                  error={errors?.abi}
-                  touched={touched?.abi}
-                  placeholder="Contract Abi"
-                  height="150px"
-                />
-              </GridItem>
+                <GridItem colSpan={2}>
+                  <NonRequiredTextAreaInput
+                    label={'Contract Abi'}
+                    fieldName="abi"
+                    error={errors?.abi}
+                    touched={touched?.abi}
+                    placeholder="Contract Abi"
+                    height="150px"
+                  />
+                </GridItem>
               </>
             )}
           </Flex>
@@ -221,7 +230,7 @@ const ShopItemFormWrapper = ({
           </Flex>
         </AdminCard>
 
-        <ShopItemPreview values={values} status={status} dirty={dirty} isCreate={isCreate}/>
+        <ShopItemPreview values={values} status={status} dirty={dirty} isCreate={isCreate} />
       </Flex>
 
       {process.env.NODE_ENV !== 'production' && (
@@ -242,7 +251,7 @@ const ShopItemFormWrapper = ({
 
 export default ShopItemFormWrapper
 /* Shop Item Preview */
-const ShopItemPreview = ({ values, status, dirty, isCreate}) => {
+const ShopItemPreview = ({ values, status, dirty, isCreate }) => {
   return (
     <AdminCard bg="transparent" border="1px solid" borderColor="brand.neutral3">
       <Flex direction="column" gap="20px">
@@ -263,7 +272,7 @@ const ShopItemPreview = ({ values, status, dirty, isCreate}) => {
 
       <Flex justifyContent="center" mt="32px">
         <Button variant="blue" type="submit" minW="60%" disabled={!dirty}>
-        {isCreate ? " Add to Shop" : "Update Shop Item"} 
+          {isCreate ? ' Add to Shop' : 'Update Shop Item'}
         </Button>
       </Flex>
     </AdminCard>
@@ -276,13 +285,10 @@ const ShopItem = ({ values }) => {
   return (
     <Box bg={'brand.neutral4'} borderRadius="16px" h="259px" w="auto" minW="200px" maxW="33%">
       <Flex direction={{ base: 'column' }} h="100%">
-        <Box
-          position="relative"
-          h="99px"
-        >
+        <Box position="relative" h="99px">
           <Image
             boxSize={'100%'}
-            src={image || "/img/user/feature-2.png"}
+            src={image || '/img/user/feature-2.png'}
             w={'100%'}
             borderTopRadius="16px"
             fit={'cover'}
