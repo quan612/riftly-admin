@@ -121,18 +121,6 @@ const ResultTable = ({ data, usersCount }) => {
     {
       Header: 'QUEST',
       accessor: 'text',
-      // accessor: (row) => {
-      //   const { text, type, extendedQuestData } = row
-      //   console.log(type)
-      //   let result = ''
-      //   switch (type.name) {
-      //     case Enums.JOIN_DISCORD:
-      //       result = `Join discord server ${extendedQuestData.discordServer}`
-      //     default:
-      //       result = text
-      //   }
-      //   return result
-      // },
       disableSortBy: true,
     },
     // {

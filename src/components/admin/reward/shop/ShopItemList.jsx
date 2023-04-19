@@ -266,6 +266,8 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
     value = value.toLocaleString('en-US')
   }
 
+  let redeemCal, redeemColor
+
   switch (cell.column.Header) {
     case 'ITEM':
       return (
@@ -293,16 +295,16 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
           </Text>
         )
     case 'REDEEMED / AVAILABLE':
-      let test = (available - redeemAvailable) / available
-      let color = 'green.300'
+      redeemCal = (available - redeemAvailable) / available
+      redeemColor = 'green.300'
       if (test > 0.9) {
-        color = 'red.300'
+        redeemColor = 'red.300'
       } else if (test > 0.5) {
-        color = 'orange.300'
+        redeemColor = 'orange.300'
       }
       return (
         <Flex fontSize={'md'} letterSpacing="0.35rem" justify={'center'} w="100%">
-          <Text as={'span'} color={color}>
+          <Text as={'span'} color={redeemColor}>
             {available - redeemAvailable}
           </Text>
           <Text as={'span'} color={'brand.neutral1'}>
