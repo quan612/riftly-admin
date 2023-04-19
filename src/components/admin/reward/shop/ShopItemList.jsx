@@ -297,9 +297,9 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
     case 'REDEEMED / AVAILABLE':
       redeemCal = (available - redeemAvailable) / available
       redeemColor = 'green.300'
-      if (test > 0.9) {
+      if (redeemCal > 0.9) {
         redeemColor = 'red.300'
-      } else if (test > 0.5) {
+      } else if (redeemCal > 0.5) {
         redeemColor = 'orange.300'
       }
       return (
