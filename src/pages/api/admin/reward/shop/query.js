@@ -24,7 +24,7 @@ const handler = async (req, res) => {
           shop.cost = cost;
           shop.redeemAvailable = redeemAvailable.length;
 
-          delete shop.abi;
+          // delete shop.abi;
           return shop;
         }))
       }

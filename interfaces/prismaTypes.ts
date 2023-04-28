@@ -22,6 +22,22 @@ export enum QuestDuration {
     LIMITED = 'LIMITED',
 }
 
+export enum ItemType {
+    OFFCHAIN = 'OFFCHAIN',
+    ONCHAIN = 'ONCHAIN',
+}
+
+export enum ContractType {
+    ERC20 = 'ERC20',
+    ERC721 = 'ERC721',
+}
+
+export enum RedeemStatus {
+    AVAILABLE = 'AVAILABLE',
+    PENDING = 'PENDING',
+    REDEEMED = 'REDEEMED',
+}
+
 
 export interface WhiteList {
     id: number,
@@ -44,7 +60,7 @@ export interface WhiteList {
     avatar?: string,
     status?: AccountStatus,
     signUpOrigin?: string,
-    redeemTracker?: RedeemableTracker,
+    shopItemRedeem: ShopItemRedeem[],
 }
 
 export interface WhiteListUserData {
@@ -142,6 +158,7 @@ export interface Quest {
 export interface Admin {
     id: number,
     wallet: string,
+    username?: string,
     nonce?: string,
 }
 
@@ -185,6 +202,7 @@ export interface QuestVariables {
     smsAuthToken?: string,
     smsServiceId?: string,
     requiredSmsVerification: boolean,
+    apiKey?: string,
     createdAt: Date,
     updatedAt: Date,
 }
@@ -226,14 +244,6 @@ export interface ConfigImageHosting {
     updatedAt: Date,
 }
 
-export interface RedeemableTracker {
-    id: number,
-    contract: string,
-    user: WhiteList,
-    userId: string,
-    count: number,
-}
-
 export interface ConfigRedeemableContract {
     id: number,
     contract: string,
@@ -256,4 +266,52 @@ export interface RedeemRequirement {
     conditional?: any,
     redeem?: ConfigRedeemableContract,
     redeemId?: number,
+}
+
+export interface NftContractData {
+    id: number,
+    name: string,
+    address: string,
+    chain: string,
+    data?: any,
+    updatedAt: Date,
+}
+
+export interface ShopItem {
+    id: number,
+    title: string,
+    description: string,
+    image?: string,
+    available: number,
+    maxPerAccount: number,
+    multiplier: number,
+    isEnabled: boolean,
+    requirements: ShopItemRequirement[],
+    itemType: ItemType,
+    shopItemRedeem: ShopItemRedeem[],
+    contractAddress?: string,
+    contractType?: ContractType,
+    abi?: any,
+}
+
+export interface ShopItemRequirement {
+    id: number,
+    requirementId: string,
+    requirementType: string,
+    relationId: number,
+    conditional?: any,
+    shopItem?: ShopItem,
+    shopItemId?: number,
+}
+
+export interface ShopItemRedeem {
+    id: number,
+    shopItem: ShopItem,
+    shopItemId: number,
+    redeemedBy?: WhiteList,
+    userId?: string,
+    status: RedeemStatus,
+    extendedRedeemData?: any,
+    createdAt: Date,
+    updatedAt: Date,
 }

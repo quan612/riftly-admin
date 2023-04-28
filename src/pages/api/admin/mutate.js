@@ -1,5 +1,6 @@
 import { prisma } from 'context/PrismaContext'
 import adminMiddleware from '@middlewares/adminMiddleware'
+const CryptoJS = require('crypto-js')
 
 const mutateAdminAPI = async (req, res) => {
   const { method } = req
@@ -31,7 +32,8 @@ const mutateAdminAPI = async (req, res) => {
           },
           create: {
             username,
-            wallet
+            wallet,
+            nonce: CryptoJS.lib.WordArray.random(16).toString()
           },
           update: {
             username,
