@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 
 import AddSubscriber from '@components/admin/settings/integrations/webhook/AddSubscriber'
+import { useRouter } from 'next/router'
 
 const AdminEditWebhookSubscriber = () => {
   const router = useRouter()
