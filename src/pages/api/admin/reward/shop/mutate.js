@@ -26,7 +26,9 @@ const handler = async (req, res) => {
       contractAddress,
       contractType,
       abi,
-      multiplier
+      multiplier,
+      chain,
+      network
     } = req.body
 
 
@@ -103,6 +105,8 @@ const handler = async (req, res) => {
       contractAddress,
       contractType,
       abi,
+      chain,
+      network,
       multiplier: parseInt(multiplier)
     };
 
@@ -132,10 +136,11 @@ const handler = async (req, res) => {
       contractAddress,
       contractType,
       abi,
+      chain,
+      network,
       multiplier: parseInt(multiplier)
     }
     if (createManyShopItemRedeemData.length > 0) {
-      console.log("redeem available slot change", createManyShopItemRedeemData)
 
       createObj.shopItemRedeem = {
         createMany: {

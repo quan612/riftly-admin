@@ -264,4 +264,10 @@ const settingsList = [
     icon: <ImageHostingIcon />,
     path: '/setting/nft-contracts',
   },
+  {
+    title: 'Integrations',
+    description: 'Workflow and Webhook',
+    icon: <ImageHostingIcon />,
+    path: '/setting/integrations',
+  },
 ]

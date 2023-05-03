@@ -42,7 +42,7 @@ import Loading from '@components/shared/LoadingContainer/Loading'
 import { ShopItemsContext } from '@context/ShopItemsContext'
 import { useShopItemPause } from '@hooks/admin/shop-item'
 
-const ShopItemList = () => {
+const IntegrationList = () => {
   const { shopItems, isLoadingShopItems } = useContext(ShopItemsContext)
   console.log(shopItems)
   return (
@@ -303,12 +303,12 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
         redeemColor = 'orange.300'
       }
       return (
-        <Flex fontSize={'md'} justify={'center'} w="100%">
+        <Flex fontSize={'md'} letterSpacing="0.35rem" justify={'center'} w="100%">
           <Text as={'span'} color={redeemColor}>
-            {available - redeemAvailable}{' '}
+            {available - redeemAvailable}
           </Text>
-          <Text as={'span'} color={'brand.neutral1'} ml="0.25rem">
-            / {available}
+          <Text as={'span'} color={'brand.neutral1'}>
+            /{available}
           </Text>
         </Flex>
       )
@@ -365,4 +365,4 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
   }
 }
 
-export default ShopItemList
+export default IntegrationList

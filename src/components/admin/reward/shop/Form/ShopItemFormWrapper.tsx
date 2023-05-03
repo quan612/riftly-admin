@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 
 import {
   Box,
@@ -31,6 +31,7 @@ import { ItemType, ContractType } from '@prisma/client'
 import { capitalizeFirstLetter } from '@util/index'
 import AdminGeneralImageUpload from '@components/shared/ImageUpload/AdminGeneralImageUpload'
 import RequirementsFormArray from '@components/shared/RequirementsFormArray'
+import { Chain, chainTypes, Network } from '@models/chain'
 
 const ShopItemFormWrapper = ({
   isCreate,
@@ -44,7 +45,6 @@ const ShopItemFormWrapper = ({
   handleChange,
   children,
 }) => {
-  console.log(values)
   return (
     <Form>
       <Flex
@@ -78,9 +78,16 @@ const ShopItemFormWrapper = ({
                 </Flex>
               </RadioGroup>
             </FormControl>
-            
+
             {values.itemType === ItemType.ONCHAIN && (
               <>
+                <OnchainContractData
+                  values={values}
+                  handleChange={handleChange}
+                  setFieldValue={setFieldValue}
+                  errors={errors}
+                  touched={touched}
+                />
                 <FormControl>
                   <FormLabel ms="4px" fontSize="md" fontWeight="bold">
                     Select Your Contract Type
@@ -96,12 +103,10 @@ const ShopItemFormWrapper = ({
                     isDisabled={!isCreate}
                     onChange={(e) => {
                       e.preventDefault()
-                      // questTypeSelect(e.target.value)
                       setFieldValue('contractType', e.target.value)
                     }}
-                    // onChange={handleChange}
                   >
-                    {[ContractType.ERC20, ContractType.ERC721]?.map((type, index) => {
+                    {[ContractType.ERC20, ContractType.ERC721, ContractType.ERC721A]?.map((type, index) => {
                       return (
                         <option key={index} value={type}>
                           {type}
@@ -111,7 +116,7 @@ const ShopItemFormWrapper = ({
                   </Select>
                 </FormControl>
                 <RequiredInput
-                  label={'Contract Id'}
+                  label={'Contract Address'}
                   fieldName="contractAddress"
                   error={errors?.contractAddress}
                   touched={touched?.contractAddress}
@@ -323,5 +328,129 @@ const ShopItem = ({ values }) => {
         </Flex>
       </Flex>
     </Box>
+  )
+}
+
+const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touched }) => {
+  const [networkOptions, networkOptionSet] = useState([])
+
+  const getNetworkOptions = async (eventType) => {
+    const networks = (await getSubType(eventType)) as any[]
+
+    networkOptionSet(networks)
+
+    const value = networks?.[0]?.value
+    setFieldValue(`network`, value)
+  }
+
+  const getSubType = (value) => {
+    // Simulate async call
+    return new Promise((resolve, reject) => {
+      switch (value) {
+        case Chain.Ethereum:
+          // resolve(quests)
+          resolve([
+            {
+              id: 1,
+              name: Network.EthereumMainnet,
+              value: Network.EthereumMainnet,
+            },
+            {
+              id: 2,
+              name: Network.EthereumGoerli,
+              value: Network.EthereumGoerli,
+            },
+          ])
+          break
+        case Chain.Polygon:
+          resolve([
+            {
+              id: 1,
+              name: Network.PolygonMainnet,
+              value: Network.PolygonMainnet,
+            },
+            {
+              id: 2,
+              name: Network.PolygonMumbai,
+              value: Network.PolygonMumbai,
+            },
+          ])
+          break
+        case Chain.Arbitrum:
+          resolve([
+            {
+              id: 1,
+              name: Network.ArbitrumMainnet,
+              value: Network.ArbitrumMainnet,
+            },
+            {
+              id: 2,
+              name: Network.ArbitrumGoerli,
+              value: Network.ArbitrumGoerli,
+            },
+          ])
+          break
+        default:
+          resolve([])
+      }
+    })
+  }
+
+  // const getOptionValue = (item, type) => {
+  //   switch (type) {
+  //     case IntegrationType.QUEST_ITEM:
+  //       return getMeaningfulQuestName(item)
+  //     case IntegrationType.SHOP_ITEM:
+  //       return item?.title || item?.description
+  //     default:
+  //       return 'Select Event'
+  //   }
+  // }
+
+  useEffect(() => {
+    if (values?.chain !== '') {
+      getNetworkOptions(values?.chain)
+    }
+  }, [values?.chain])
+  return (
+    <Flex direction={'column'} gap="20px">
+      <FormControl isRequired isInvalid={errors.chain && touched.chain}>
+        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+          Chain
+        </FormLabel>
+        <Field w="250px" id={`chain`} name={`chain`} as={Select} onChange={handleChange}>
+          {chainTypes.map((r) => {
+            return (
+              <option value={r.value} key={r.value}>
+                {r.value}
+              </option>
+            )
+          })}
+        </Field>
+      </FormControl>
+
+      <FormControl isRequired isInvalid={errors.network && touched.network}>
+        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
+          Network
+        </FormLabel>
+        <Field
+          w="250px"
+          id={`network`}
+          name={`network`}
+          as={Select}
+          onChange={(e) => {
+            handleChange(e)
+          }}
+        >
+          {networkOptions.map((r) => {
+            return (
+              <option key={r.id} value={r.value}>
+                {r.value}
+              </option>
+            )
+          })}
+        </Field>
+      </FormControl>
+    </Flex>
   )
 }

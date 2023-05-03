@@ -313,6 +313,8 @@ const routes = [
     ),
     backPath: '/setting'
   },
+
+
   /** Users */
   {
     name: 'Users',
@@ -346,6 +348,19 @@ const routes = [
       </Flex>
     ),
     backPath: '/user'
+  },
+  /** Integration */
+  {
+    name: 'Add New Webhook Subscriber',
+    path: '/setting/webhook/add',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Integration</Text>
+      </Flex>
+    ),
+    backPath: '/setting'
   },
   /** Search */
   // {
