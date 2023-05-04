@@ -4,17 +4,18 @@ import dynamic from 'next/dynamic'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 
-import AddSubscriber from '@components/admin/settings/integrations/webhook/AddSubscriber'
+import EditSubscriber from '@components/admin/settings/integrations/webhook/EditSubscriber'
 import { useRouter } from 'next/router'
+import IntegrationItemsProvider from '@context/IntegrationItemsContext'
 
 const AdminEditWebhookSubscriber = () => {
   const router = useRouter()
   const { query: { id } } = router;
   return (
-    <></>
-    // <ShopItemFormProvider>
-    // <AddSubscriber />
-    // </ShopItemFormProvider>
+
+    <IntegrationItemsProvider id={id}>
+      <EditSubscriber />
+    </IntegrationItemsProvider>
   )
 }
 

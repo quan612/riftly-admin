@@ -360,6 +360,30 @@ const routes = [
         <Text>Back to Integration</Text>
       </Flex>
     ),
+    backPath: '/setting/webhook/list'
+  },
+  {
+    name: 'Edit Webhook Subscriber',
+    path: '/setting/webhook/edit',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Settings</Text>
+      </Flex>
+    ),
+    backPath: '/setting/webhook/list'
+  },
+  {
+    name: 'Webhook Subscribers',
+    path: '/setting/webhook/list',
+    showOnSidebar: false,
+    backText: (
+      <Flex gap="1.5rem">
+        <Text>{'<'}</Text>
+        <Text>Back to Settings</Text>
+      </Flex>
+    ),
     backPath: '/setting'
   },
   /** Search */

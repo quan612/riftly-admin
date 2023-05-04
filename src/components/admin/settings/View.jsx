@@ -268,6 +268,6 @@ const settingsList = [
     title: 'Integrations',
     description: 'Workflow and Webhook',
     icon: <ImageHostingIcon />,
-    path: '/setting/integrations',
+    path: '/setting/webhook/list',
   },
 ]

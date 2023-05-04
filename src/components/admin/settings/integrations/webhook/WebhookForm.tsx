@@ -20,7 +20,7 @@ import { Field, Form } from 'formik'
 import { RequiredInput } from '@components/shared/Formik'
 import { capitalizeFirstLetter } from '@util/index'
 
-import { IntegrationType } from '@models/Integration-type'
+import { IntegrationType } from '@models/integration-type'
 import { useAdminQuestsQuery } from '@hooks/admin/quest'
 import Enums from '@enums/index'
 import { useAdminShopQuery } from '@hooks/admin/shop-item'
@@ -135,9 +135,10 @@ const WebhookForm = ({
                   <Button
                     variant="blue-outline"
                     onClick={async () => {
-                      const currentUrl = values.url
-                      const test = await axios
-                        .post(currentUrl, {
+                     
+                       const res = await axios
+                        .post(`/api/test-hook`, {
+                          url: values.url,
                           webhookId: values.id,
                           description: values.description,
                           type: values.type,
@@ -148,31 +149,35 @@ const WebhookForm = ({
                           },
                         })
                         .then((response: AxiosResponse) => {
-                          if (response.status === 200) {
-                            toast({
-                              title: 'Success',
-                              description: `Ping Url successfully.`,
-                              position: 'bottom-right',
-                              status: 'success',
-                              duration: 1000,
-                            })
-                          } else {
-                            toast({
-                              title: 'Exception',
-                              description: `The endpoint is not available or response status is not 200`,
-                              position: 'bottom-right',
-                              status: 'error',
-                              duration: 2500,
-                              isClosable: true,
-                            })
-                          }
+                         return response.data;
                         })
+
+                        if (res.isError) {
+                          toast({
+                            title: 'Exception',
+                            description: `The endpoint is not available or response status is not 200`,
+                            position: 'bottom-right',
+                            status: 'error',
+                            duration: 2500,
+                            isClosable: true,
+                          })
+                        } else {
+                          toast({
+                            title: 'Success',
+                            description: `Ping Url successfully.`,
+                            position: 'bottom-right',
+                            status: 'success',
+                            duration: 1000,
+                          })
+                          setFieldValue("okToSave", true)
+                         
+                        }
                     }}
                   >
                     Test Webhook
                   </Button>
 
-                  <Button variant="blue" type="submit" w="125px">
+                  <Button variant="blue" type="submit" w="125px" disabled={values?.okToSave !== true || !dirty}>
                     Save
                   </Button>
                 </ButtonGroup>

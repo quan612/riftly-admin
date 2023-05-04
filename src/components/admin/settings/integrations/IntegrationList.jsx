@@ -39,48 +39,21 @@ import { QuestStyle, QuestDuration, ItemType } from '@prisma/client'
 import { FaPlay } from 'react-icons/fa'
 import Banner from './Banner'
 import Loading from '@components/shared/LoadingContainer/Loading'
-import { ShopItemsContext } from '@context/ShopItemsContext'
+
 import { useShopItemPause } from '@hooks/admin/shop-item'
+import { IntegrationItemsContext } from '@context/IntegrationItemsContext'
+import { IntegrationType } from '@models/integration-type'
 
 const IntegrationList = () => {
-  const { shopItems, isLoadingShopItems } = useContext(ShopItemsContext)
-  console.log(shopItems)
+  const { webhookItems, isLoadingWebhookItems } = useContext(IntegrationItemsContext)
+  console.log(webhookItems)
   return (
     <Flex flexDirection="column" w="100%" h="100%" justifyContent="center" gap="20px">
-      {isLoadingShopItems && <Loading />}
-      {shopItems && <ResultTable data={shopItems} />}
+      {isLoadingWebhookItems && <Loading />}
+      {webhookItems && <ResultTable data={webhookItems} />}
     </Flex>
   )
 }
-
-const columnData = [
-  {
-    Header: 'ITEM',
-    accessor: 'title',
-  },
-  {
-    Header: 'DESCRIPTION',
-    accessor: 'description',
-  },
-  {
-    Header: 'COST',
-    accessor: 'cost',
-  },
-  {
-    Header: 'REDEEMED / AVAILABLE',
-    accessor: 'redeemAvailable',
-  },
-  {
-    Header: 'CONTRACT TYPE',
-    accessor: 'contractType',
-  },
-  {
-    Header: 'ACTION',
-    accessor: 'action',
-    disableSortBy: true,
-    hideHeader: true,
-  },
-]
 
 const ResultTable = ({ data }) => {
   const router = useRouter()
@@ -133,8 +106,8 @@ const ResultTable = ({ data }) => {
     },
   })
 
-  const editShopAction = useCallback((id) => {
-    router.push(`/reward/shop/edit?id=${id}`)
+  const editAction = useCallback((id) => {
+    router.push(`/setting/webhook/edit?id=${id}`)
   }, [])
 
   return (
@@ -150,7 +123,7 @@ const ResultTable = ({ data }) => {
       <Banner
         count={data?.length}
         onAddNew={() => {
-          router.push(`/reward/shop/add`)
+          router.push(`/setting/webhook/add`)
         }}
       />
       <Box w="100%" mb="2rem">
@@ -176,7 +149,7 @@ const ResultTable = ({ data }) => {
                       >
                         {!column?.hideHeader && (
                           <Flex
-                            justify={'center'}
+                            justify={'left'}
                             align="center"
                             fontSize={{ sm: '8px', lg: '12px', xl: '14px' }}
                             color="gray.400"
@@ -202,7 +175,7 @@ const ResultTable = ({ data }) => {
                 return (
                   <Tr {...row.getRowProps(getRowProps(row))} key={index}>
                     {row.cells.map((cell, index) => {
-                      const data = getCellValue(cell, editShopAction, pauseShopItemAsync)
+                      const data = getCellValue(cell, editAction, pauseShopItemAsync)
 
                       return (
                         <Td
@@ -225,97 +198,71 @@ const ResultTable = ({ data }) => {
               })}
             </Tbody>
           </Table>
-          <Flex>
-            {/* {tableInstance?.pageOptions?.length > 0 && (
-              <TablePagination tableInstance={tableInstance} />
-            )} */}
-          </Flex>
+          <Flex></Flex>
         </AdminCard>
       </Box>
     </Flex>
   )
 }
 
-const getActiveDateColor = (startDate, endDate) => {
-  if (endDate > new Date()) {
-    return 'brand.neutral2'
-  }
-  const dayPast = moment.utc(new Date()).diff(moment.utc(endDate, 'MM/DD/yyyy'), 'days', false)
+const columnData = [
+  {
+    Header: 'DESCRIPTION',
+    accessor: 'description',
+  },
+  {
+    Header: 'URL',
+    accessor: 'url',
+  },
+  {
+    Header: 'TYPE',
+    accessor: 'type',
+  },
+  {
+    Header: 'EVENT',
+    accessor: 'event',
+  },
+  {
+    Header: 'ACTION',
+    accessor: 'action',
+    disableSortBy: true,
+    hideHeader: true,
+  },
+]
 
-  if (Math.abs(dayPast) > 1) {
-    return 'red.300'
-  }
-  if (Math.abs(dayPast) > 5) {
-    return 'yellow.300'
-  }
-  if (Math.abs(dayPast) > 10) {
-    return 'green.300'
-  }
-  return 'white'
-}
-
-const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
-  const { id, title, description, isEnabled, itemType, contractType, available, redeemAvailable } =
-    cell.row.original
-
-  const day = Math.floor(cell.value / 24)
-  const color = day <= 4 ? 'orange.300' : 'red.300'
+const getCellValue = (cell, editAction, pauseShopItemAsync) => {
+  const { id, url, description, type, eventId, associated } = cell.row.original
 
   let value = cell.value
   if (typeof cell.value === 'number') {
     value = value.toLocaleString('en-US')
   }
 
-  let redeemCal, redeemColor
-
   switch (cell.column.Header) {
-    case 'ITEM':
-      return (
-        <Text noOfLines={2} textAlign="center">
-          {value}
-        </Text>
-      )
     case 'DESCRIPTION':
       return (
-        <Text noOfLines={2} textAlign="center">
+        <Text noOfLines={2} textAlign="left">
           {value}
         </Text>
       )
-    case 'CONTRACT TYPE':
-      if (itemType === ItemType.OFFCHAIN) {
+    case 'EVENT':
+      if (type === IntegrationType.QUEST_ITEM)
         return (
-          <Text textAlign="center" fontSize={'md'}>
-            N/A
+          <Text noOfLines={2} textAlign="left">
+            {associated.text}
           </Text>
         )
-      } else
+
+      if (type === IntegrationType.SHOP_ITEM)
         return (
-          <Text textAlign="center" fontSize={'md'}>
-            {contractType.toUpperCase()}
+          <Text noOfLines={2} textAlign="left">
+            {associated.title}
           </Text>
         )
-    case 'REDEEMED / AVAILABLE':
-      redeemCal = (available - redeemAvailable) / available
-      redeemColor = 'green.300'
-      if (redeemCal > 0.9) {
-        redeemColor = 'red.300'
-      } else if (redeemCal > 0.5) {
-        redeemColor = 'orange.300'
-      }
-      return (
-        <Flex fontSize={'md'} letterSpacing="0.35rem" justify={'center'} w="100%">
-          <Text as={'span'} color={redeemColor}>
-            {available - redeemAvailable}
-          </Text>
-          <Text as={'span'} color={'brand.neutral1'}>
-            /{available}
-          </Text>
-        </Flex>
-      )
     case 'ACTION':
       return (
         <Flex align="center" justify="center" gap="6px">
-          <Box
+          {/* <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={async () => {
               //set to enable false
@@ -328,11 +275,11 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
             _hover={{ cursor: 'pointer', color: '#00BBC7' }}
           >
             {isEnabled ? <PauseIcon /> : <FaPlay />}
-          </Box>
+          </Box> */}
           <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={() => {
-              editShopAction(id)
+              editAction(id)
             }}
             color="#89A4C2"
             _hover={{ cursor: 'pointer', color: '#00BBC7' }}
@@ -358,7 +305,7 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
       )
     default:
       return (
-        <Text color="white" fontSize={'lg'} textAlign="center">
+        <Text color="white" fontSize={'lg'} textAlign="left">
           {value}
         </Text>
       )

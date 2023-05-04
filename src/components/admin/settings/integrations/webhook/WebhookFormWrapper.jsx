@@ -2,19 +2,16 @@ import Enums from 'enums'
 import React from 'react'
 import { Formik } from 'formik'
 import { object, string, number, of, array } from 'yup'
-import { GridItem, useToast } from '@chakra-ui/react'
-import { useAdminQuestUpsert } from '@hooks/admin/quest'
+import { useToast } from '@chakra-ui/react'
 
-import { ItemType, ContractType } from '@prisma/client'
-import { RequiredInput, NonRequiredTextInput } from '@components/shared/Formik'
 import { useRouter } from 'next/router'
 
-import { useShopItemMutation } from '@hooks/admin/shop-item'
 import WebhookForm from './WebhookForm'
-import { IntegrationType } from '@models/Integration-type'
+import { IntegrationType } from '@models/integration-type'
+import { useWebhookMutation } from '@hooks/admin/integration'
 
 const WebhookItemSchema = object().shape({
-  title: string().required('Title is required'),
+  url: string().required('Url is required'),
   description: string().required('Description is required'),
   // available: number()
   //   .required('Available Quantity is required')
@@ -166,9 +163,10 @@ const WebhookFormWrapper = ({ item = null, isCreate = true }) => {
     eventId: item?.eventId || 0,
     eventName: item?.eventName || '',
     isEnabled: item?.isEnabled ?? true,
+    okToSave: item?.url ? true : false,
   }
 
-  const [data, isLoading, mutateAsync] = useShopItemMutation()
+  const [data, isLoading, mutateAsync] = useWebhookMutation()
   const toast = useToast()
   const router = useRouter()
 
@@ -193,7 +191,7 @@ const WebhookFormWrapper = ({ item = null, isCreate = true }) => {
           status: 'success',
           duration: 2000,
         })
-        router.push('/setting/')
+        router.push('/setting/webhook/list')
       }
     } catch (error) {
       setStatus(error.message)
