@@ -229,22 +229,28 @@ const WebhookData = ({
 }) => {
   const [eventOptions, eventOptionSet] = useState([])
 
-  const getEventOptions = async (eventType) => {
-    const options = (await getSubType(eventType)) as any[]
+  const getEventOptions = async (values) => {
+    const options = (await getSubType(values.type)) as any[]
 
     eventOptionSet(options)
 
-    const id = options?.[0]?.id
-    setFieldValue(`eventId`, parseInt(id))
+    let id;
+    if(values.eventId === 0)
+    {
+      id = options?.[0]?.id
+      setFieldValue(`eventId`, parseInt(id))
+     } else{
+      id===values.eventId;
+    }
 
     let name
     if (values.type === IntegrationType.QUEST_ITEM) {
       const selectedIndex = quests.findIndex((r) => parseInt(r.id) === parseInt(id))
-      name = quests[selectedIndex].text
+      name = quests[selectedIndex]?.text
     }
     if (values.type === IntegrationType.SHOP_ITEM) {
       const selectedIndex = shopItems.findIndex((r) => parseInt(r.id) === parseInt(id))
-      name = shopItems[selectedIndex].title
+      name = shopItems[selectedIndex]?.title
     }
     setFieldValue('eventName', name)
   }
@@ -288,7 +294,7 @@ const WebhookData = ({
 
   useEffect(() => {
     if (values?.type !== '') {
-      getEventOptions(values?.type)
+      getEventOptions(values)
     }
   }, [values?.type])
   return (
