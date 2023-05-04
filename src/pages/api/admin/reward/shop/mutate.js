@@ -66,6 +66,9 @@ const handler = async (req, res) => {
       }
     }
 
+    if (itemType === ItemType.OFFCHAIN) {
+
+    }
 
     let createManyShopItemRedeemData = [], lengthToAdd = 0;
     if (existingShopItem) {
