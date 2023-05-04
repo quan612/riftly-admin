@@ -56,11 +56,17 @@ const handler = async (req, res) => {
     })
 
     if (itemType === ItemType.ONCHAIN) {
-      const shopWithThisContractAddress = await prisma.ShopItem.findUnique({
+      const shops = await prisma.shopItem.findMany({
         where: {
-          contractAddress
+          isEnabled: true
         }
       })
+      // const shopWithThisContractAddress = await prisma.ShopItem.findUnique({
+      //   where: {
+      //     contractAddress
+      //   }
+      // })
+      const shopWithThisContractAddress = shops.filter(q => q.contractAddress === contractAddress)[0]
       if (shopWithThisContractAddress && shopWithThisContractAddress?.id !== id) {
         return res.status(200).json({ isError: true, message: `Contract ${contractAddress} linked to another shop item` })
       }
