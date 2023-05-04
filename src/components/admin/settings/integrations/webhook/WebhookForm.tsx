@@ -20,7 +20,7 @@ import { Field, Form } from 'formik'
 import { RequiredInput } from '@components/shared/Formik'
 import { capitalizeFirstLetter } from '@util/index'
 
-import { IntegrationType } from '@models/integration-type'
+import { IntegrationType } from '@models/Integration-type'
 import { useAdminQuestsQuery } from '@hooks/admin/quest'
 import Enums from '@enums/index'
 import { useAdminShopQuery } from '@hooks/admin/shop-item'

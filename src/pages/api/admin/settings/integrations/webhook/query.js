@@ -1,6 +1,6 @@
 import { prisma } from '@context/PrismaContext'
 import adminMiddleware from '@middlewares/adminMiddleware'
-import { IntegrationType } from '@models/integration-type'
+import { IntegrationType } from '@models/Integration-type'
 import { ApiError } from 'next/dist/server/api-utils'
 
 const handler = async (req, res) => {

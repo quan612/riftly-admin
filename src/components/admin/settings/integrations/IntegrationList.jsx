@@ -42,7 +42,7 @@ import Loading from '@components/shared/LoadingContainer/Loading'
 
 import { useShopItemPause } from '@hooks/admin/shop-item'
 import { IntegrationItemsContext } from '@context/IntegrationItemsContext'
-import { IntegrationType } from '@models/integration-type'
+import { IntegrationType } from '@models/Integration-type'
 
 const IntegrationList = () => {
   const { webhookItems, isLoadingWebhookItems } = useContext(IntegrationItemsContext)

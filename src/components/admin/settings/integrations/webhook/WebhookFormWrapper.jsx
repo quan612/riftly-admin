@@ -7,7 +7,7 @@ import { useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
 import WebhookForm from './WebhookForm'
-import { IntegrationType } from '@models/integration-type'
+import { IntegrationType } from '@models/Integration-type'
 import { useWebhookMutation } from '@hooks/admin/integration'
 
 const WebhookItemSchema = object().shape({
