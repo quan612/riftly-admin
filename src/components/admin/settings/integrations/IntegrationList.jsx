@@ -259,6 +259,7 @@ const getCellValue = (cell, editAction, pauseShopItemAsync) => {
             {associated.title}
           </Text>
         )
+      break
     case 'ACTION':
       return (
         <Flex align="center" justify="center" gap="6px">
