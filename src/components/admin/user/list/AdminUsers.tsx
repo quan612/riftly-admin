@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo, useContext, HTMLProps } from 'react'
-
+import React, {  useMemo, useContext } from 'react'
 
 import {
   Heading,
@@ -9,16 +8,13 @@ import {
   Button,
   useColorModeValue,
   Checkbox,
-  GridItem,
   Table,
   Tbody,
   Th,
   Thead,
   Tr,
   Td,
-
   Icon,
-
   ButtonGroup,
   Avatar,
   Menu,
@@ -30,7 +26,7 @@ import {
 import { AdminBanner, AdminCard } from '@components/shared/Card'
 import { useGlobalFilter, usePagination, useSortBy, useTable, useRowSelect } from 'react-table'
 import { BsFilter } from 'react-icons/bs'
-import { FaCopy, FaDownload, FaFileCsv } from 'react-icons/fa'
+import {  FaFileCsv } from 'react-icons/fa'
 
 import { shortenAddress } from '@util/index'
 import Loading from '@components/shared/LoadingContainer/Loading'
@@ -170,7 +166,6 @@ const ResultTable = ({ data }) => {
   const columns = useMemo(
     () => columnData,
     [
-      // columnData
     ],
   )
   const tableData = useMemo(() => data, [data])
@@ -187,11 +182,9 @@ const ResultTable = ({ data }) => {
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
-        // Let's make a column for selection
         {
           id: 'selection',
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
+          // The header can use the table's getToggleAllRowsSelectedProps method to render a checkbox
           Header: ({
             isAllRowsSelected,
             toggleAllRowsSelected,
@@ -199,12 +192,7 @@ const ResultTable = ({ data }) => {
             selectedFlatRows,
           }) => {
             return (
-              // <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-              //    <Button
-              //     onClick={() => {
-              //         toggleAllRowsSelected(isAllRowsSelected ? false : true);
-              //     }}
-              // ></Button>
+             
 
               <Menu>
                 <MenuButton
@@ -600,9 +588,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }: any,
   const { checked, onChange } = rest
   return (
     <>
-      {/* <input type="checkbox" ref={resolvedRef} {...rest} /> */}
       <Checkbox
-        // ref={resolvedRef}
         isChecked={checked}
         onChange={onChange}
       />
@@ -610,7 +596,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }: any,
   )
 })
 
-// this being here to manipulat the style, sometimes in ancessor its impossible to return the
+// this function manipulat the style, sometimes in ancessor its impossible to return the
 // value straightaway for sorting purpose
 const getCellValue = (cell, viewUserDetails) => {
   const { email, discordUserDiscriminator, twitterUserName, wallet, google, userId } = cell.row.original
@@ -724,17 +710,16 @@ const columnData = [
     Header: 'POINTS',
     accessor: (row) => {
       const rewardValue = row?.rewards?.find((e) => e?.rewardType?.reward === 'Points')
-      return rewardValue?.quantity //?.toLocaleString("en-US") || 0;
+      return rewardValue?.quantity 
     },
   },
   {
     Header: 'LAST ACTIVE',
     accessor: (row) => {
       const lastFinishedQuestDaytime = row?.userQuest[0]?.updatedAt || row?.updatedAt
-      // const dayPast = moment(new Date()).diff(moment(lastFinishedQuestDaytime), 'days', false)
       const hourPast = moment(new Date()).diff(moment(lastFinishedQuestDaytime), 'hours', false)
 
-      return hourPast // manipulate later
+      return hourPast // to be manipulate later
     },
   },
   {
@@ -757,12 +742,3 @@ const columnData = [
     hideHeader: true,
   },
 ]
-
-const customFilterRewardsRange = (rows, id, filterValue) => {
-  if (filterValue?.minQty > 0) {
-    return rows.filter(
-      (row) => row.original[id] >= filterValue.minQty && row.original[id] <= filterValue.maxQty,
-    )
-  }
-  return rows
-}

@@ -1,5 +1,5 @@
 import AdminLayout from '@components/admin/AdminLayout'
-import React, { useEffect } from 'react'
+import React from 'react'
 import dynamic from 'next/dynamic'
 const AdminGoogleAnalyticsComponent = dynamic(() =>
   import('@components/admin/analytics/AdminGoogleAnalytics'),

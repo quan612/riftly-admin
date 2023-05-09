@@ -33,10 +33,10 @@ import {
   Input,
 } from '@chakra-ui/react'
 
-import Card, { AdminCard } from '@components/shared/Card'
+import { AdminCard } from '@components/shared/Card'
 
 import axios from 'axios'
-import { CheckSvg, CrossSvg, RiftlyCheckMark } from '@components/shared/Icons'
+import { CheckSvg, CrossSvg } from '@components/shared/Icons'
 import Loading from '@components/shared/LoadingContainer/Loading'
 import { useEnabledRewardTypesQuery } from '@hooks/admin/reward-types'
 import { useAdminBulkRewardsMutation } from '@hooks/admin/reward'
@@ -100,22 +100,21 @@ const BulkRewardsUsers = () => {
       const { quantity, rewardTypeId } = fields
 
       setInputFile(null)
-      // console.log(usersArray)
+
       let chunkSplit = []
       const chunkSize = 100
       for (let i = 0; i < usersArray.length; i += chunkSize) {
         chunkSplit = [...chunkSplit, usersArray.slice(i, i + chunkSize)]
       }
-      // console.log(chunkSplit)
-      let op = await Promise.allSettled(
+
+      const op = await Promise.allSettled(
         chunkSplit.map(async (chunk) => {
-          let payload = {
+          const payload = {
             chunk,
             rewardTypeId: parseInt(rewardTypeId),
             quantity,
           }
 
-          // console.log(payload)
           let res = await bulkRewardsAsync(payload)
           res.start = chunk[0].wallet
           res.end = chunk[chunk.length - 1].wallet
@@ -128,7 +127,6 @@ const BulkRewardsUsers = () => {
       for (let i = 0; i < op.length; i++) {
         if (op[i]?.value?.isError) {
           console.log(op[i]?.value?.message)
-
           error++
         }
       }
@@ -390,29 +388,6 @@ const BulkRewardsUsers = () => {
                   </SimpleGrid>
                   {status && <Text colorScheme={'red'}>API error: {status} </Text>}
 
-                  {/* <Text fontSize="md">
-                    Valid
-                    <Text as={'span'} color="green.500" me={'1'} ms="1">
-                      {originData.filter((user) => user.isValid).length}
-                    </Text>{' '}
-                    users, Invalid
-                    <Text as={'span'} color="red.500" me={'1'} ms="1">
-                      {originData.filter((user) => !user.isValid).length}
-                    </Text>
-                    users
-                    <Tooltip
-                      placement="top"
-                      label="Valid users would not be added if exists"
-                      aria-label="A tooltip"
-                      fontSize="md"
-                    >
-                      <i
-                        className="ms-1 bi bi-info-circle"
-                        data-toggle="tooltip"
-                        title="Tooltip on top"
-                      ></i>
-                    </Tooltip>
-                  </Text> */}
                   <ButtonGroup mt="16px" w="100%">
                     <Button
                       variant="blue"

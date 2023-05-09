@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
-import dynamic from 'next/dynamic'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
-// const CurrentQuestsComponent = dynamic(() => import('@components/admin/quest/CurrentQuests'))
 import { useRouter } from 'next/router'
 import AddQuest from '@components/admin/quest/AddQuest'
 import AdminQuestFormProvider from '@context/AdminQuestFormContext'
@@ -70,7 +68,7 @@ const AdminAddQuest = ({ session }) => {
           break
         case CATEGORY_COMMUNITY_ENGAGEMENT.type:
           questTypesFilter = allQuestTypes.filter(
-            (q) => q.name === Enums.CODE_QUEST //|| q.name === Enums.IMAGE_UPLOAD_QUEST ,
+            (q) => q.name === Enums.CODE_QUEST
           )
 
           break

@@ -43,7 +43,6 @@ export const inputStyles = {
           field: {
             bg: mode('transparent', 'navy.800')(props),
             border: '1px solid',
-            // color: mode("secondaryGray.900", "white")(props),
             color: mode('secondaryGray.900', 'white')(props),
             borderColor: mode('secondaryGray.100', 'whiteAlpha.100')(props),
             borderRadius: '16px',
@@ -255,19 +254,6 @@ export const inputStyles = {
         }),
       },
     },
-    // PinInputField: {
-    //   variants: {
-    //     main: (props) => ({
-    //       field: {
-    //         bg: "red !important",
-    //         border: "1px solid",
-    //         color: mode("secondaryGray.900", "white")(props),
-    //         borderColor: mode("secondaryGray.100", "whiteAlpha.100")(props),
-    //         borderRadius: "16px",
-    //         _placeholder: { color: "secondaryGray.600" },
-    //       },
-    //     }),
-    //   },
-    // },
+
   },
 }

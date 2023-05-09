@@ -31,7 +31,7 @@ const AdminUserAddAPI = async (req, res) => {
           }
 
           //resolving discordId into Discord Username
-          let discordUserQuery = await axios
+          const discordUserQuery = await axios
             .get(`https://discord.com/api/users/${user}`, {
               headers: {
                 Authorization: `Bot ${discordBotToken}`,

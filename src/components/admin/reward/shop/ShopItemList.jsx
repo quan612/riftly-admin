@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback, useContext } from 'react'
-import Enums from 'enums'
+import React, { useMemo, useCallback, useContext } from 'react'
 import { useRouter } from 'next/router'
 
 import {
-  Heading,
   Box,
   Flex,
   Text,
-  Button,
   useColorModeValue,
   Table,
   Tbody,
@@ -15,26 +12,13 @@ import {
   Thead,
   Tr,
   Td,
-  useToast,
-  ButtonGroup,
-  useDisclosure,
-  Progress,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import { useGlobalFilter, usePagination, useSortBy, useTable, useRowSelect } from 'react-table'
 
-import {
-  useAdminQuestSoftDelete,
-  useAdminQuestsQuery,
-  useAdminQuestUpsert,
-} from '@hooks/admin/quest'
-
-import moment from 'moment'
-
 import { DeleteIcon, EditIcon, PauseIcon } from '@components/shared/Icons'
-import { capitalizeFirstLetter } from '@util/index'
 
-import { QuestStyle, QuestDuration, ItemType } from '@prisma/client'
+import { ItemType } from '@prisma/client'
 
 import { FaPlay } from 'react-icons/fa'
 import Banner from './Banner'
@@ -124,7 +108,6 @@ const ResultTable = ({ data }) => {
     isLoading: pausingShopItem,
     mutateAsync: pauseShopItemAsync,
   } = useShopItemPause()
-  const [deleteQuest, deletingQuest, handleOnDelete] = useAdminQuestSoftDelete()
 
   const getRowProps = (row) => ({
     style: {
@@ -195,7 +178,7 @@ const ResultTable = ({ data }) => {
                 </Tr>
               ))}
             </Thead>
-            <Tbody {...getTableBodyProps()} gap="12px">
+            <Tbody {...getTableBodyProps()}>
               {page.map((row, index) => {
                 prepareRow(row)
 
@@ -225,33 +208,10 @@ const ResultTable = ({ data }) => {
               })}
             </Tbody>
           </Table>
-          <Flex>
-            {/* {tableInstance?.pageOptions?.length > 0 && (
-              <TablePagination tableInstance={tableInstance} />
-            )} */}
-          </Flex>
         </AdminCard>
       </Box>
     </Flex>
   )
-}
-
-const getActiveDateColor = (startDate, endDate) => {
-  if (endDate > new Date()) {
-    return 'brand.neutral2'
-  }
-  const dayPast = moment.utc(new Date()).diff(moment.utc(endDate, 'MM/DD/yyyy'), 'days', false)
-
-  if (Math.abs(dayPast) > 1) {
-    return 'red.300'
-  }
-  if (Math.abs(dayPast) > 5) {
-    return 'yellow.300'
-  }
-  if (Math.abs(dayPast) > 10) {
-    return 'green.300'
-  }
-  return 'white'
 }
 
 const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
@@ -318,8 +278,7 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
           <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={async () => {
-              //set to enable false
-              let res = await pauseShopItemAsync({
+              await pauseShopItemAsync({
                 id,
                 isEnabled: isEnabled ? false : true,
               })
@@ -339,21 +298,6 @@ const getCellValue = (cell, editShopAction, pauseShopItemAsync) => {
           >
             <EditIcon />
           </Box>
-
-          {/* <Box
-            boxSize={{ base: '16px', xl: '24px' }}
-            onClick={() => {
-              console.log('to delete')
-
-              if (confirm(`Deleting this quest "${text}" ?`)) {
-                handleOnDelete({ id })
-              }
-            }}
-            color="#89A4C2"
-            _hover={{ cursor: 'pointer', color: 'red.300' }}
-          >
-            <DeleteIcon />
-          </Box> */}
         </Flex>
       )
     default:

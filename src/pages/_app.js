@@ -7,7 +7,6 @@ import { Web3Provider } from 'context/Web3Context'
 import { SessionProvider } from 'next-auth/react'
 import { AdminGuard } from '@components/admin/layout/AdminGuard'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import Script from 'next/script'
 
 import { useRouter } from 'next/router'
 import { ChakraProvider, Box } from '@chakra-ui/react'
@@ -16,7 +15,7 @@ import AdminLayout from '@components/admin/AdminLayout'
 import { useWindowSize } from 'react-use'
 
 export function reportWebVitals(metric) {
-  // console.log(metric);
+
 }
 
 const queryClient = new QueryClient()

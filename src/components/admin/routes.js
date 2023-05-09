@@ -386,23 +386,7 @@ const routes = [
     ),
     backPath: '/setting'
   },
-  /** Search */
-  // {
-  //   name: 'Search',
-  //   category: 'Search',
-  //   children: [
-  //     {
-  //       name: 'User Quest',
-  //       path: '/search/user-quests',
-  //       showOnSidebar: true,
-  //     },
-  //     {
-  //       name: 'Users',
-  //       path: '/search/users',
-  //       showOnSidebar: true,
-  //     },
-  //   ],
-  // },
+
 ]
 
 export default routes

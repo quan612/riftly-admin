@@ -39,7 +39,6 @@ export default function AddRewardType({
       if (
         values?.reward === initialValues.reward &&
         values?.rewardPreview === initialValues.rewardPreview &&
-        // values?.rewardIcon === initialValues.rewardIcon &&
         values?.isEnabled === initialValues.isEnabled
       ) {
         return true
@@ -47,9 +46,7 @@ export default function AddRewardType({
     } else {
       if (
         (values?.reward.length === 0 && values?.rewardPreview?.length === 0) ||
-        // && values?.rewardIcon?.length === 0
         (values?.rewardPreview === initialValues.rewardPreview &&
-          // values?.rewardIcon === initialValues.rewardIcon &&
           values?.isEnabled === initialValues.isEnabled)
       )
         return true

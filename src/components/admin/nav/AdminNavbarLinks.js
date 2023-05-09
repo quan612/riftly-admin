@@ -1,6 +1,6 @@
-// Chakra Icons
+
 import { BellIcon, SettingsIcon } from '@chakra-ui/icons'
-// Chakra Imports
+
 import {
   Avatar,
   Box,
@@ -20,7 +20,7 @@ import { RiftlyLogoWhiteText } from '@components/shared/Logo'
 import { SidebarResponsive } from '../left-side-bar/Sidebar'
 
 import routes from '../routes'
-import React, { useContext, useEffect, useState, useCallback, useRef } from 'react'
+import React, { useContext } from 'react'
 import { Web3Context } from '@context/Web3Context'
 import AdminLogin from '../AdminLogin'
 
@@ -56,31 +56,7 @@ export default function HeaderLinks(props) {
       boxShadow={shadow}
       gap="8px"
     >
-      {/* <SearchBar me='18px' />
-      <NavLink to='/auth/signin'>
-        <Button
-          ms='0px'
-          px='0px'
-          me={{ sm: "2px", md: "16px" }}
-          color={navbarIcon}
-          variant='no-effects'
-          rightIcon={
-            document.documentElement.dir ? (
-              ""
-            ) : (
-              <ProfileIcon color={navbarIcon} w='22px' h='22px' me='0px' />
-            )
-          }
-          leftIcon={
-            document.documentElement.dir ? (
-              <ProfileIcon color={navbarIcon} w='22px' h='22px' me='0px' />
-            ) : (
-              ""
-            )
-          }>
-          <Text display={{ sm: "none", md: "flex" }}>Sign In</Text>
-        </Button>
-      </NavLink> */}
+
       <SidebarResponsive
         hamburgerColor={'white'}
         logo={
@@ -140,13 +116,7 @@ export default function HeaderLinks(props) {
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">
-            {/* <MenuItem
-              _hover={{ bg: "none" }}
-              _focus={{ bg: "none" }}
-              borderRadius='8px'
-              px='14px'>
-              <Text fontSize='sm'>Profile Settings</Text>
-            </MenuItem> */}
+
 
             <MenuItem
               _hover={{ bg: 'none' }}

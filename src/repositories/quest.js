@@ -52,7 +52,7 @@ export const questUpsert = async (
       },
       quantity,
       isEnabled,
-      //isRequired,
+
       duration,
       image,
       style,

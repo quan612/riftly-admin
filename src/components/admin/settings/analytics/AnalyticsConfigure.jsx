@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import Enums from 'enums'
 import axios from 'axios'
 
-import {
-  Heading,
-  Box,
-  Flex,
-  Button,
-  SimpleGrid,
-  GridItem,
-  Divider,
-  useToast,
-} from '@chakra-ui/react'
+import { Heading, Box, Flex, Button, SimpleGrid, GridItem, useToast } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import { RiftlyTooltip } from '@components/shared/Icons'
 import Loading from '@components/shared/LoadingContainer/Loading'
-import { useDebounce } from 'react-use'
-import { RequiredInput, RequiredPasswordInput } from '@components/shared/Formik'
+import { RequiredInput } from '@components/shared/Formik'
 
 const AnalyticsConfigure = () => {
   const [configs, setConfigs] = useState(null)

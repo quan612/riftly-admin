@@ -44,7 +44,7 @@ const AdminUpdateUsersFollowersAPI = async (req, res) => {
             }
           }
 
-          let lastFollowersUpdated = new Date(Date.now()).toISOString()
+          const lastFollowersUpdated = new Date(Date.now()).toISOString()
           await prisma.whiteListUserData.upsert({
             where: {
               userId,

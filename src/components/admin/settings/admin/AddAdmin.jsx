@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { Form, Formik } from 'formik'
 import { object, string } from 'yup'
 
@@ -9,18 +9,13 @@ import {
   Text,
   Button,
   SimpleGrid,
-  FormControl,
-  FormLabel,
-  Switch,
   GridItem,
   ButtonGroup,
   useToast,
 } from '@chakra-ui/react'
 
 import { AdminCard } from '@components/shared/Card'
-import { RiftlyTooltip } from '@components/shared/Icons'
 import { RequiredInput } from '@components/shared/Formik'
-
 import { useAdminMutation } from '@hooks/admin/admin'
 
 const AddAdminSchema = object().shape({

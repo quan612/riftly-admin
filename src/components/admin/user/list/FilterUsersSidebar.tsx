@@ -99,7 +99,7 @@ const FilterUsersSidebar = () => {
                 </FormControl>
               </GridItem>
 
-              <Box w="280px" zIndex={10} mb="12px">
+              <Box h="auto" zIndex={10} mb="12px">
                 <FormLabel ms="4px" fontSize="md" fontWeight="bold">
                   Rewards
                 </FormLabel>
@@ -124,6 +124,14 @@ const FilterUsersSidebar = () => {
                     }}
                     value={values.rewards}
                     closeMenuOnSelect={true}
+                    chakraStyles={{
+                      control: (provided, state) => ({
+                        ...provided,
+                        height: 'auto!important',
+                        h: 'auto!important',
+                      }),
+                  
+                    }}
                   />
                 )}
               </Box>

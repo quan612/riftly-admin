@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query'
 import axios from 'axios'
-
 import Enums from 'enums'
 
 export const useUserRewardQuery = (session) => {

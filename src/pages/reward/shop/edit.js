@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
-import dynamic from 'next/dynamic'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 
 import EditShopItem from '@components/admin/reward/shop/EditShopItem'
 import ShopItemFormProvider from '@context/ShopItemsContext'
 import { useRouter } from 'next/router'
-
 
 const AdminEditShopItem = () => {
   const router = useRouter()

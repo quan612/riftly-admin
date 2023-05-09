@@ -6,22 +6,9 @@ import axios from 'axios'
 import Enums, { LAST_YEAR, THIS_YEAR } from '@enums/index'
 import { capitalizeFirstLetter } from '@util/index'
 
-let chartId = 'pie-user-by-type'
+const chartId = 'pie-user-by-type'
+
 const pieChartOptions = {
-  // responsive: [
-  //     {
-  //         breakpoint: 480,
-  //         options: {
-  //             chart: {
-  //                 width: 150,
-  //             },
-  //             legend: {
-  //                 positon: "bottom",
-  //                 show: false,
-  //             },
-  //         },
-  //     },
-  // ],
   chart: {
     id: chartId,
     width: '50px',
@@ -86,7 +73,7 @@ export default function UsersByDevicePieCart() {
       .catch((err) => console.log(err))
 
     if (res.isError) {
-      // toast or console log error here
+      // toast error
     } else {
       // need 1 array to map to, to display value outside of chart
       // need 1 array to be used as chart Data
@@ -180,45 +167,4 @@ export default function UsersByDevicePieCart() {
       )}
     </Card>
   )
-}
-
-{
-  /* <Flex direction="column" py="5px" me="10px">
-                    <Flex align="center">
-                        <Box
-                            h="8px"
-                            w="8px"
-                            bg="brand.blue"
-                            borderRadius="50%"
-                            me="4px"
-                            opacity={"0.6"}
-                        />
-                        <Text fontSize="xs" color="secondaryGray.600" fontWeight="700" mb="5px">
-                            Mobile
-                        </Text>
-                    </Flex>
-                    <Heading fontSize="md" color={textColor} fontWeight="700" fontFamily={"Intern"}>
-                        25%
-                    </Heading>
-                </Flex> */
-}
-{
-  /* <Flex direction="column" py="5px" me="10px">
-                    <Flex align="center">
-                        <Box
-                            h="8px"
-                            w="8px"
-                            bg="brand.blue"
-                            borderRadius="50%"
-                            me="4px"
-                            opacity={"0.3"}
-                        />
-                        <Text fontSize="xs" color="secondaryGray.600" fontWeight="700" mb="5px">
-                            Tablet
-                        </Text>
-                    </Flex>
-                    <Heading fontSize="md" color={textColor} fontWeight="700" fontFamily={"Intern"}>
-                        25%
-                    </Heading>
-                </Flex> */
 }

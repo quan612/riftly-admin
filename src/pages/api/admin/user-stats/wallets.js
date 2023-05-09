@@ -16,8 +16,6 @@ const adminUserStatsAPI = async (req, res) => {
         where: {
           wallet: { in: walletOwners },
         },
-        // skip: currentPage * 10000,
-        // take: 10000,
         orderBy: [
           {
             createdAt: 'asc',

@@ -4,9 +4,7 @@ import { useDisclosure } from '@chakra-ui/react'
 import Enums from '@enums/index'
 import type Prisma from '@prisma/client'
 import { getNftOwners } from '@components/admin/user/list/helper'
-import { utils } from 'ethers'
 import { RewardFilterType, WhiteListAggregate } from 'types/common'
-import axios from 'axios'
 
 type UsersFilterType = {
   type: string

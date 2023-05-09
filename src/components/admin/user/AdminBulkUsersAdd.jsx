@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 
 import { utils } from 'ethers'
 import { read, utils as excelUtils } from 'xlsx'
@@ -11,17 +11,14 @@ import {
   Td,
   Th,
   Thead,
-  Tooltip,
   Tr,
   useToast,
   Link,
   Text,
   Button,
   useColorModeValue,
-  SimpleGrid,
   FormControl,
   FormLabel,
-  GridItem,
   Flex,
   Select,
   Box,
@@ -35,7 +32,6 @@ import { HeadingLg, TextMd } from '@components/shared/Typography'
 import Enums from '@enums/index'
 import { sortByFalseFirst } from '@util/sort'
 
-/**Remove formik here, we dont do anything related to formik here */
 const AdminBulkUsersAdd = () => {
   const toast = useToast()
   const [newUsersData, isAdding, bulkUsersAsync] = useAdminAddManyUsers()
@@ -70,11 +66,7 @@ const AdminBulkUsersAdd = () => {
     e.target.value = ''
   }
   return (
-    <Formik
-      validateOnBlur={false}
-      validateOnChange={false}
-      // onSubmit={onSubmit}
-    >
+    <Formik validateOnBlur={false} validateOnChange={false}>
       {({ errors, status, touched, setFieldValue, resetForm, dirty }) => (
         <Form>
           <HalfPageWrapper>

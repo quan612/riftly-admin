@@ -48,8 +48,6 @@ const AddRewardToUser = () => {
     method: Enums.AUTOMATIC,
   })
 
-  const generatedRef = useRef()
-
   const RewardSchema = object().shape({
     username: string()
       .required()
@@ -67,7 +65,6 @@ const AddRewardToUser = () => {
       const res = await rewardAsync(fields)
 
       if (res?.isError) {
-        // generatedRef.current.value = ''
         setStatus(res?.message)
       } else {
         toast({
@@ -79,7 +76,6 @@ const AddRewardToUser = () => {
         })
         resetForm()
         setFieldValue('postInDiscordChannels', [])
-        // generatedRef.current.value = `${res.embededLink}`
 
         if (res.errorArray) {
           let statusArray = ''
@@ -352,10 +348,7 @@ const AddRewardToUser = () => {
                     <TextMd color="brand.neutral2">
                       {`Reward image can be adjusted in Settings > Rewards.`}
                     </TextMd>
-                    {/* <RewardPreviewCard
-                      rewardTypeId={values.rewardTypeId}
-                      rewardTypes={rewardTypes}
-                    /> */}
+
                     {getPreviewImage(values.rewardTypeId, rewardTypes)}
 
                     {status && (
@@ -400,45 +393,3 @@ const AddRewardToUser = () => {
 }
 
 export default AddRewardToUser
-
-{
-  /* <GridItem colSpan={{ base: 1, lg: 2 }}>
-                        <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                          Generated URL
-                        </FormLabel>
-                        <Input name="generatedURL" type="text" disabled={true} ref={generatedRef} />
-                      </GridItem> */
-}
-
-const RewardPreviewCard = ({ rewardTypeId, rewardTypes }) => {
-  const getPreviewImage = useCallback((rewardTypeId, rewardTypes) => {
-    if (!rewardTypes) {
-      return null
-    }
-    let selectedReward = rewardTypes.find((r) => parseInt(r.id) === parseInt(rewardTypeId))
-
-    if (
-      !selectedReward ||
-      !selectedReward?.rewardPreview ||
-      selectedReward?.rewardPreview?.trim().length < 1
-    ) {
-      return null
-    }
-
-    let srcImage = selectedReward?.rewardPreview
-    return (
-      <AdminCard py="10px">
-        <img src={srcImage} alt="reward-preview" />
-      </AdminCard>
-    )
-  })
-
-  return (
-    <Box w={{ base: '150px', lg: '200px' }} h={{ base: '150px', lg: 'auto' }}>
-      <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-        Preview
-      </FormLabel>
-      {getPreviewImage(rewardTypeId, rewardTypes)}
-    </Box>
-  )
-}

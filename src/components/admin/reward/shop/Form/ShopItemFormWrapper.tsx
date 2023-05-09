@@ -11,11 +11,8 @@ import {
   RadioGroup,
   SimpleGrid,
   GridItem,
-  InputGroup,
   Image,
   Text,
-  Divider,
-  Switch,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import { HeadingLg, HeadingSm, TextMd, TextSm } from '@components/shared/Typography'
@@ -28,7 +25,6 @@ import {
   NonRequiredTextAreaInput,
 } from '@components/shared/Formik'
 import { ItemType, ContractType } from '@prisma/client'
-import { capitalizeFirstLetter } from '@util/index'
 import AdminGeneralImageUpload from '@components/shared/ImageUpload/AdminGeneralImageUpload'
 import RequirementsFormArray from '@components/shared/RequirementsFormArray'
 import { Chain, chainTypes, Network } from '@models/chain'
@@ -146,7 +142,6 @@ const ShopItemFormWrapper = ({
             touched={touched?.image}
             uploaded={values?.image}
             onConfirmUpload={(imageUrl) => {
-              // dont clear the field on cancel, no way to re-upload old file
               setFieldValue('image', imageUrl)
             }}
             minH={{ base: 'auto', lg: '420px', '2xl': '365px' }}
@@ -344,11 +339,10 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
   }
 
   const getSubType = (value) => {
-    // Simulate async call
     return new Promise((resolve, reject) => {
       switch (value) {
         case Chain.Ethereum:
-          // resolve(quests)
+       
           resolve([
             {
               id: 1,
@@ -396,16 +390,6 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
     })
   }
 
-  // const getOptionValue = (item, type) => {
-  //   switch (type) {
-  //     case IntegrationType.QUEST_ITEM:
-  //       return getMeaningfulQuestName(item)
-  //     case IntegrationType.SHOP_ITEM:
-  //       return item?.title || item?.description
-  //     default:
-  //       return 'Select Event'
-  //   }
-  // }
 
   useEffect(() => {
     if (values?.chain !== '') {

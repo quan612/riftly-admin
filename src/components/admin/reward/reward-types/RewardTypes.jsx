@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 
-import { Heading, Box, Flex, Table, Tbody, Th, Thead, Tr, Td } from '@chakra-ui/react'
+import { Box, Table, Tbody, Th, Thead, Tr, Td } from '@chakra-ui/react'
 
 import { useRewardTypesQuery } from '@hooks/admin/reward-types'
 import { AdminCard } from '@components/shared/Card'
-import { RiftlyCheckMark, RiftlyEditIcon, RiftlyTooltip } from '@components/shared/Icons'
+import { RiftlyCheckMark, RiftlyEditIcon } from '@components/shared/Icons'
 
 const RewardTypes = ({ createRewardTypeSet }) => {
   const [rewardTypes, isLoadingRewardTypes] = useRewardTypesQuery()

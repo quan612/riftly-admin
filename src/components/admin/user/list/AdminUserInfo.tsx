@@ -111,18 +111,7 @@ const AdminUserInfo = ({ userDetails }: UsersBannerProps) => {
         </FormControl>
       )}
 
-      {/* {google && google?.length > 0 && (
-                <FormControl gap="8px">
-                    <FormLabel fontSize="sm" fontWeight="200" mb="2px">
-                        Google
-                    </FormLabel>
-                    <Flex>
-                        <Text isTruncated maxW="80%">
-                            {google}
-                        </Text>
-                    </Flex>
-                </FormControl>
-            )} */}
+    
 
       <FormControl gap="8px">
         <FormLabel fontSize="sm" fontWeight="200" mb="2px">

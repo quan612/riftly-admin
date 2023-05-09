@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react'
 
 import { AdminCard } from '@components/shared/Card'
-import { RiftlyTooltip } from '@components/shared/Icons'
 import { RequiredInput } from '@components/shared/Formik'
 
 import { useNftContractsMutation } from '@hooks/admin/nft-contracts'
@@ -47,25 +46,28 @@ export default function AddNftContract({ createData, createDataSet }) {
           let op = await upsertAsync({
             ...fields,
           })
-
-          if (op.isError) {
-            setStatus(op.message)
-          } else {
-            resetForm()
-            toast({
-              title: 'Succeed',
-              description: `Mutate nft contract ${fields.name} successful`,
-              position: 'bottom-right',
-              status: 'success',
-              duration: 2000,
-            })
-            createDataSet({
-              id: -1,
-              name: '',
-              address: '',
-              chain: 'eth',
-              isUpdating: false,
-            })
+          try {
+            if (op.isError) {
+              setStatus(op.message)
+            } else {
+              resetForm()
+              toast({
+                title: 'Succeed',
+                description: `Mutate nft contract ${fields.name} successful`,
+                position: 'bottom-right',
+                status: 'success',
+                duration: 2000,
+              })
+              createDataSet({
+                id: -1,
+                name: '',
+                address: '',
+                chain: 'eth',
+                isUpdating: false,
+              })
+            }
+          } catch (error) {
+            console.log(error)
           }
         }}
       >

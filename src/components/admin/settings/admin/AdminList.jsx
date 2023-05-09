@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { Box, Flex, Table, Tbody, Th, Thead, Tr, Td } from '@chakra-ui/react'
 
 import { AdminCard } from '@components/shared/Card'

@@ -1,7 +1,5 @@
 import adminMiddleware from '@middlewares/adminMiddleware'
-import Enums from 'enums'
 import { prisma } from 'context/PrismaContext'
-import axios from 'axios'
 import { utils } from 'ethers'
 import { sleep } from '@util/index'
 const Moralis = require('moralis').default
@@ -19,11 +17,9 @@ const AdminUpdateUsersETHAPI = async (req, res) => {
         if (!Moralis.Core.isStarted) {
           await Moralis.start({
             apiKey: process.env.MORALIS_API_KEY,
-            // ...other configuration
           })
         }
 
-        // should be serial here
         for (let row of selectedRows) {
           await sleep(100)
           const { userId, wallet } = row
@@ -59,7 +55,7 @@ const AdminUpdateUsersETHAPI = async (req, res) => {
             },
           })
         }
-        console.log('done update eth')
+
         console.timeEnd()
         return res.status(200).json({ message: 'Stats refresh' })
       } catch (error) {

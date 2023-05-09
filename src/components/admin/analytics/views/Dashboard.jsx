@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { AdminBanner, MiniStatistics } from '@components/shared/Card'
 import { IconBox } from '@components/shared/Icons'
-import { MdAddTask, MdAttachMoney, MdBarChart, MdFileCopy, MdPeopleAlt } from 'react-icons/md'
+import { MdAttachMoney, MdBarChart, MdPeopleAlt } from 'react-icons/md'
 import { FiBarChart2 } from 'react-icons/fi'
 import {
   Box,
@@ -127,9 +127,9 @@ export default function Dashboard() {
         <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>
           <UsersByDevicePieCart />
         </GridItem>
-        <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>
+        {/* <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>
           <UserSignUpReferral />
-        </GridItem>
+        </GridItem> */}
       </SimpleGrid>
     </Box>
   )

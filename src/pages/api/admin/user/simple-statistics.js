@@ -16,27 +16,23 @@ const adminUsersCountAPI = async (req, res) => {
       try {
         let aggregatedUserStatistic = {}
 
-        // get users count
         const usersCount = await prisma.whiteList.count()
         aggregatedUserStatistic.usersCount = usersCount
 
-        let whitelistData = await prisma.whiteListUserData.findMany()
-        // console.log(whitelistData)
+        const whitelistData = await prisma.whiteListUserData.findMany()
 
-        //get users eth
-        let usersETH = whitelistData.reduce((accumulator, row) => {
+
+        const usersETH = whitelistData.reduce((accumulator, row) => {
           let eth = parseFloat(row?.eth) || 0.0
           return parseFloat(accumulator) + eth
         }, 0.0)
 
         aggregatedUserStatistic.usersETH = usersETH.toFixed(2)
 
-        // get news user
-        // const { monday, sunday } = getFirstLastDayOfWeek()
-        let firstDayPrevMonth = getFirstDayPrevMonth()
-        let lastDayPrevMonth = getLastDayPrevMonth()
-        let firstDayCurMonth = getFirstDayCurMonth()
-        let lastDayCurMonth = getLastDayCurMonth()
+        const firstDayPrevMonth = getFirstDayPrevMonth()
+        const lastDayPrevMonth = getLastDayPrevMonth()
+        const firstDayCurMonth = getFirstDayCurMonth()
+        const lastDayCurMonth = getLastDayCurMonth()
 
         const newUsersLastMonth = await prisma.whiteList.count({
           where: {
@@ -92,18 +88,3 @@ const adminUsersCountAPI = async (req, res) => {
 }
 
 export default adminMiddleware(adminUsersCountAPI)
-
-const getFirstLastDayOfWeek = () => {
-  const today = new Date()
-  const day = today.getDay()
-  const diff = today.getDate() - day + (day === 0 ? -6 : 1)
-
-  let monday = new Date(today.setDate(diff))
-  let sunday = new Date(monday)
-  sunday.setDate(sunday.getDate() + 6)
-
-  return {
-    monday: new Date(monday.setHours(0, 0, 0, 0)),
-    sunday: new Date(sunday.setHours(23, 59, 59, 59)),
-  }
-}

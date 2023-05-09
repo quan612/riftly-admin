@@ -330,7 +330,6 @@ export const AdminQuestFormWrapper = ({
                                   e.preventDefault()
                                 }}
                                 // dateFormat="yyyy-MM-dd"
-                                // dateFormat="MM/DD/YYYY"
                                 dateFormat="MM/dd/yyyy"
                                 selected={(field.value && new Date(field.value)) || null}
                                 onChange={(val) => {

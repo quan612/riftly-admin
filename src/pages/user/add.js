@@ -3,8 +3,6 @@ import AdminLayout from '@components/admin/AdminLayout'
 import dynamic from 'next/dynamic'
 const AddNewUserComponent = dynamic(() => import('@components/admin/user/AddNewUser'))
 
-const modsAddress = []
-
 const AdminUsers = ({ session }) => {
   return <AddNewUserComponent />
 }

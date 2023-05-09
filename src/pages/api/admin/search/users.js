@@ -1,14 +1,12 @@
 import { prisma } from 'context/PrismaContext'
 import adminMiddleware from '@middlewares/adminMiddleware'
 
-/**For bulk test validate */
 const adminSearchUserAPI = async (req, res) => {
   const { method } = req
 
   switch (method) {
     case 'POST':
       try {
-        // console.time()
 
         const { walletArray } = req.body
 

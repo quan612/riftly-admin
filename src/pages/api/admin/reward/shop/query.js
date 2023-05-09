@@ -23,8 +23,6 @@ const handler = async (req, res) => {
           const { cost } = await getShopRequirementCost(shop.requirements);
           shop.cost = cost;
           shop.redeemAvailable = redeemAvailable.length;
-
-          // delete shop.abi;
           return shop;
         }))
       }

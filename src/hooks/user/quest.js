@@ -93,7 +93,7 @@ export const usePhoneNumberQuestSubmit = () => {
 
   return [data, isLoading, mutateAsync]
 }
-// only after code sent to user phone
+
 export const usePhoneCodeQuestSubmit = () => {
   const queryClient = useQueryClient()
 
@@ -193,20 +193,6 @@ export const useUserQuestQuery = () => {
 
   return { data, isLoading }
 }
-
-// export const useUserCollaborationQuestQuery = () => {
-//   const { data, isLoading } = useQuery(
-//     'user-query-collaboration-quest',
-//     async (collaboration) => {
-//       return axios
-//         .get(`${Enums.BASEPATH}/api/user/quest/collaboration/${collaboration}`)
-//         .then((r) => r.data)
-//     },
-//     { enabled: !!collaboration, staleTime: 60 },
-//   )
-
-//   return { data, isLoading }
-// }
 
 export const useUserUnstoppableAuthQuestQuery = () => {
   const { data, isLoading } = useQuery(

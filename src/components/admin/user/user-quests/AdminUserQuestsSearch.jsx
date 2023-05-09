@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Enums from 'enums'
 
 import { utils } from 'ethers'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 
 import {
-  Heading,
   Box,
   Flex,
   Text,
   Button,
-  useColorMode,
   useColorModeValue,
   SimpleGrid,
   FormControl,

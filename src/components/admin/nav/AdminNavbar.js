@@ -1,8 +1,6 @@
 import {
   Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
+
   Flex,
   Link,
   useColorModeValue,
@@ -28,7 +26,7 @@ export default function AdminNavbar(props) {
 
   let secondaryText = useColorModeValue('gray.700', 'gray.200')
 
-  let navbarPosition = 'absolute' //absolute
+  let navbarPosition = 'absolute'
   let navbarFilter = 'none'
   let navbarBackdrop = 'none'
   let navbarShadow = 'none'
@@ -40,7 +38,7 @@ export default function AdminNavbar(props) {
 
     if (props.secondary) {
       navbarBackdrop = 'none'
-      navbarPosition = 'absolute' //absolute
+      navbarPosition = 'absolute'
       mainText = 'white'
       secondaryText = 'white'
       secondaryMargin = '22px'

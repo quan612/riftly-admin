@@ -6,14 +6,6 @@ export const IntegrationItemsContext = React.createContext<any | null>(null)
 
 const IntegrationItemsProvider = ({ id = null, children }) => {
   const [editItem, editItemSet] = useState(null)
-  // const itemTypes = [
-  //   {
-  //     name: 'Off Chain - No Contract',
-  //   },
-  //   {
-  //     name: 'On Chain - With Contract',
-  //   },
-  // ]
 
   const { data: webhookItems, isLoading: isLoadingWebhookItems } = useWebhookQuery()
   useEffect(() => {
@@ -25,9 +17,10 @@ const IntegrationItemsProvider = ({ id = null, children }) => {
   return (
     <IntegrationItemsContext.Provider
       value={{
-        //  itemType, itemTypeSelect, itemTypes, editItem, shopItems, isLoadingShopItems
-        webhookItems, isLoadingWebhookItems,editItem
-         }}
+        webhookItems,
+        isLoadingWebhookItems,
+        editItem,
+      }}
     >
       {children}
     </IntegrationItemsContext.Provider>

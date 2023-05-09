@@ -17,10 +17,8 @@ import {
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
 import Loading from '@components/shared/LoadingContainer/Loading'
-import { useDebounce } from 'react-use'
 import { NonRequiredTextInput } from '@components/shared/Formik'
 import AdminGeneralImageUpload from '@components/shared/ImageUpload/AdminGeneralImageUpload'
-import { RequiredInput } from '@components/shared/Formik'
 
 const CryptoJS = require('crypto-js')
 

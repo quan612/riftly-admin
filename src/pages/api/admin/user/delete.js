@@ -1,8 +1,5 @@
 import adminMiddleware from '@middlewares/adminMiddleware'
-import Enums from 'enums'
 import { prisma } from 'context/PrismaContext'
-import axios from 'axios'
-import { utils } from 'ethers'
 
 const AdminUserDeleteAPI = async (req, res) => {
   const { method } = req
@@ -20,9 +17,9 @@ const AdminUserDeleteAPI = async (req, res) => {
           throw new Error('Non-existent user')
         }
 
-        let deleteUserQuest = prisma.userQuest.deleteMany({ where: { userId } })
-        let deleteUser = prisma.whiteList.delete({ where: { userId } })
-        let smsVerifyDelete = prisma.whiteList.delete({ where: { userId } })
+        const deleteUserQuest = prisma.userQuest.deleteMany({ where: { userId } })
+        const deleteUser = prisma.whiteList.delete({ where: { userId } })
+        const smsVerifyDelete = prisma.whiteList.delete({ where: { userId } })
 
         await prisma.$transaction([deleteUserQuest, deleteUser, smsVerifyDelete])
 

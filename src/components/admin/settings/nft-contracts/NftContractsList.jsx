@@ -77,7 +77,7 @@ const NftContractsList = () => {
                     <Td>{name}</Td>
                     <Td>{shortenAddress(address)}</Td>
                     <Td>{chain}</Td>
-                    <Td>{data.length}</Td>
+                    <Td>{data?.length}</Td>
                     <Td>{moment.utc(updatedAt).format('MM-DD-YYYY')}</Td>
                     <Td>
                       <RefreshIcon onClick={() => handleUpdate(contract)} />

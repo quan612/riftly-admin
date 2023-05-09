@@ -1,18 +1,15 @@
 import { prisma } from 'context/PrismaContext'
 import adminMiddleware from '@middlewares/adminMiddleware'
 
-// This could be used for server pagination later
+// TODO: server pagination later
 const adminSearchAPI = async (req, res) => {
   const { method } = req
   const currentPage = req.query.page
 
-  let searchRes = {},
-    userCondition = {}
-
+  let searchRes = {};
   switch (method) {
     case 'POST':
       try {
-        // console.time()
         const userCount = await prisma.whiteList.count()
         let users = await prisma.whiteList.findMany({
           // where: userCondition,
@@ -48,40 +45,9 @@ const adminSearchAPI = async (req, res) => {
           },
         })
 
-        // console.log(rewardTypes)
 
-        // let usersOp = users.map((user, i) => {
-        //     rewardTypes.map((r) => {
-        //         let rewardIndex = user.rewards.findIndex(userReward => userReward.rewardType.id === r.id)
-        //         // console.log(found)
-
-        //         if (rewardIndex === -1) {
-        //             user[r.reward] = 0;
-        //         } else {
-        //             user[r.reward] = user.rewards[rewardIndex].quantity;
-        //         }
-        //     })
-        //     return users
-        // })
-
-        // await Promise.all(usersOp)
-        // users.forEach((user, i) => {
-        //     rewardTypes.forEach((r) => {
-        //         let found = user.rewards.some(userReward => userReward.rewardType.id === r.id)
-        //         // console.log(found)
-
-        //         if (!found) {
-        //             user[r.reward] = 0;
-        //         } else {
-        //             user[r.reward] = 1;
-        //             // user[r.reward] = user.rewards[indexOfReward].quantity
-        //         }
-        //     })
-        //     // return users
-
-        // })
         for (let i = 0; i < users.length; i++) {
-          // Do stuff with arr[i] or i
+
           rewardTypes.map((r) => {
             let user = users[i]
             let rewardIndex = user.rewards.findIndex(
@@ -96,7 +62,6 @@ const adminSearchAPI = async (req, res) => {
           })
         }
 
-        // console.log(users[0])
         searchRes.userCount = userCount
         searchRes.users = users
 
@@ -107,7 +72,6 @@ const adminSearchAPI = async (req, res) => {
         }
 
         res.setHeader('Cache-Control', 'max-age=0, s-maxage=300, stale-while-revalidate')
-        // console.timeEnd()
 
         res.status(200).json(searchRes)
       } catch (err) {

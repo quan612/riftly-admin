@@ -22,7 +22,7 @@ const config = {
 
 const riftlyColor = {
   brand: {
-    neutral5: '#132436', // 1D3148
+    neutral5: '#132436',
     neutral4: '#1D3148',
     blue: '#1D63FF',
     cyan: '#00BBC7',
@@ -40,18 +40,18 @@ const fonts = {
 }
 
 export default extendTheme(
-  { breakpoints }, // Breakpoints
+  { breakpoints },
   globalStyles,
-  badgeStyles, // badge styles
-  radioStyles, //radio styles
-  buttonStyles, // button styles
-  linkStyles, // link styles
-  progressStyles, // progress styles
-  sliderStyles, // slider styles
-  inputStyles, // input styles
-  textareaStyles, // textarea styles
-  switchStyles, // switch styles
-  CardComponent, // card component
+  badgeStyles,
+  radioStyles,
+  buttonStyles,
+  linkStyles,
+  progressStyles,
+  sliderStyles,
+  inputStyles,
+  textareaStyles,
+  switchStyles,
+  CardComponent,
   MainPanelComponent,
   PanelContentComponent,
   PanelContainerComponent,
@@ -96,5 +96,4 @@ export default extendTheme(
       },
     },
   },
-
 )

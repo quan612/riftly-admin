@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
-import Enums from 'enums'
+import React from 'react'
 
 import { Heading, Box, Flex, Text, Icon, Grid } from '@chakra-ui/react'
 import { AdminBanner, AdminCard } from '@components/shared/Card'
@@ -135,7 +134,12 @@ const methodList = [
     icon: <DiscordSettingIcon />,
     path: '/reward/shop',
   },
-
+  {
+    title: 'Achievement Items',
+    description: 'Add, Remove, or Edit achievement items',
+    icon: <DiscordSettingIcon />,
+    path: '/reward/achievement',
+  },
   {
     title: 'Configure Reward Types',
     description: 'Add, remove, or edit Reward Types',

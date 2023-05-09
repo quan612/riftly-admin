@@ -16,11 +16,8 @@ const handler = async (req, res) => {
       id,
       url,
       description,
-
       type,
       eventId,
-      // eventName,
-      // isEnabled,
     } = req.body
 
     const createObj = {
@@ -28,8 +25,6 @@ const handler = async (req, res) => {
       description,
       type,
       eventId: parseInt(eventId),
-      // eventName,
-      // isEnabled,
     }
 
     const updateObj = {
@@ -37,8 +32,6 @@ const handler = async (req, res) => {
       description,
       type,
       eventId: parseInt(eventId),
-      // eventName,
-      // isEnabled,
     }
 
     const updatedWebhook = await prisma.webhookSubscriber.upsert({

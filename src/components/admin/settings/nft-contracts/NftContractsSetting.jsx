@@ -8,7 +8,7 @@ const NftContractsSetting = () => {
     id: -1,
     name: '',
     address: '',
-    chain: '',
+    chain: 'eth',
     isUpdating: false,
   })
   return (

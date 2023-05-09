@@ -8,7 +8,6 @@ import {
 import { Heading, Box, Flex, Table, Tbody, Th, Thead, Tr, Td, Switch } from '@chakra-ui/react'
 
 import { AdminCard } from '@components/shared/Card'
-import { RiftlyTooltip } from '@components/shared/Icons'
 import { debounce } from '@util/index'
 
 const DiscordChannels = () => {
@@ -48,15 +47,8 @@ const DiscordChannels = () => {
           <Tr my=".8rem" pl="0px" color="gray.400" fontSize="18px">
             <Th px="0.25rem">Channel</Th>
             <Th px="0.25rem">Channel Id</Th>
-            <Th px="0.25rem">
-              Status
-              {/* <RiftlyTooltip label="Disabled Channel will not be listed under Reward User Page" /> */}
-            </Th>
-            <Th>
-              Post Message
-              {/* <RiftlyTooltip label="Allow to post an embeded message to this channel once user claimed a reward" /> */}
-            </Th>
-            {/* <Th px="0.25rem">Action</Th> */}
+            <Th px="0.25rem">Status</Th>
+            <Th>Post Message</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -73,28 +65,6 @@ const DiscordChannels = () => {
                       onChange={(e) => debouncedStatusChangeHandler(e, discord)}
                     />
                   </Td>
-                  {/*  <Td px="0.25rem">
-                   <Icon                       
-                        transition="0.8s"
-                        color="red.300"
-                        boxSize={7}
-                        as={AiFillDelete}
-                        _hover={{
-                            cursor: "pointer",
-                            color: "red.600",
-                        }}
-                        onClick={async () => {
-                            // if (
-                            //     !window.confirm(
-                            //         "Proceed to soft delete discord channel "
-                            //     )
-                            // ) {
-                            //     return;
-                            // }
-                            // handleQuestSoftDelete(quest);
-                        }}
-                      /> 
-                  </Td>*/}
                 </Tr>
               )
             })}

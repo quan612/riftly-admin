@@ -18,7 +18,6 @@ import { HeadingLg, HeadingSm, TextMd, TextSm } from '@components/shared/Typogra
 import { Field, Form } from 'formik'
 
 import { RequiredInput } from '@components/shared/Formik'
-import { capitalizeFirstLetter } from '@util/index'
 
 import { IntegrationType } from '@models/Integration-type'
 import { useAdminQuestsQuery } from '@hooks/admin/quest'
@@ -51,32 +50,7 @@ const WebhookForm = ({
         mb="24px"
         className="item-shop-container"
       >
-        {/* <AdminCard>
-          <Flex direction="column" gap="20px">
-            <HeadingLg>Setup</HeadingLg>
-            <TextMd color="brand.neutral2">
-              Choose the type of shop item and set up contract details if necessary.
-            </TextMd>
-
-            <FormControl>
-              <FormLabel ms="4px" fontSize="md" fontWeight="bold">
-                Select Item Type
-              </FormLabel>
-
-              <RadioGroup onChange={(e) => setFieldValue('itemType', e)} value={values?.itemType}>
-                <Flex gap="1rem">
-                  <RiftlyRadio value={ItemType.OFFCHAIN} isDisabled={!isCreate}>
-                    Off Chain - No Contract
-                  </RiftlyRadio>
-                  <RiftlyRadio value={ItemType.ONCHAIN} isDisabled={!isCreate}>
-                    On Chain - With Contract
-                  </RiftlyRadio>
-                </Flex>
-              </RadioGroup>
-            </FormControl>
-          </Flex>
-        </AdminCard> */}
-
+       
         {/* Webhook Item information */}
         <AdminCard>
           <Flex direction="column">
@@ -145,7 +119,6 @@ const WebhookForm = ({
                           eventName: values.eventName,
                           data: {
                             userId: 'example-userId',
-                            // transactionHash:"0xe865a371743280269c3d146b181117b15f5cd303f1f37bc644ce83f56da1a785"
                           },
                         })
                         .then((response: AxiosResponse) => {
@@ -256,20 +229,10 @@ const WebhookData = ({
   }
 
   const getSubType = (value) => {
-    // Simulate async call
     return new Promise((resolve, reject) => {
       switch (value) {
         case IntegrationType.QUEST_ITEM:
-          // quests = quests?.filter((q) => {
-          //   if (
-          //     q.type.name === Enums.DAILY_SHELL ||
-          //     q.type.name === Enums.LIMITED_FREE_SHELL ||
-          //     q.type.name === Enums.IMAGE_UPLOAD_QUEST ||
-          //     q.type.name === Enums.UNSTOPPABLE_AUTH
-          //   )
-          //     return false
-          //   return true
-          // })
+        
           resolve(quests)
           break
         case IntegrationType.SHOP_ITEM:
@@ -369,57 +332,9 @@ const getMeaningfulQuestName = (quest) => {
       return `Follow instagram ${extendedQuestData.followAccount}`
     case Enums.OWNING_NFT_CLAIM:
       return `Own an NFT ${extendedQuestData.nft}`
-    // case Enums.IMAGE_UPLOAD_QUEST:
     case Enums.CODE_QUEST:
       return `Finished code quest event ${extendedQuestData.codeEvent}`
     default:
       return type?.name
   }
-}
-
-const ShopItem = ({ values }) => {
-  const { title, description, image } = values
-
-  return (
-    <Box bg={'brand.neutral4'} borderRadius="16px" h="259px" w="auto" minW="200px" maxW="33%">
-      <Flex direction={{ base: 'column' }} h="100%">
-        <Box position="relative" h="99px">
-          <Image
-            boxSize={'100%'}
-            src={image || '/img/user/feature-2.png'}
-            w={'100%'}
-            borderTopRadius="16px"
-            fit={'cover'}
-          />
-        </Box>
-        <Flex flexDirection="column" pt="16px" px="12px" flex="1" gap="4px">
-          <Flex justify="space-between">
-            <Flex direction="column" gap="5px">
-              <HeadingSm color={'white'} fontWeight="bold" noOfLines={'2'}>
-                {title}
-              </HeadingSm>
-
-              <TextSm color="whiteAlpha.700" opacity="0.64" fontWeight="400" noOfLines={'2'}>
-                {description}
-              </TextSm>
-            </Flex>
-          </Flex>
-          <Flex align="start" alignItems={'center'} justify="space-between" mt="auto" pb="6px">
-            <Flex alignItems={'center'} gap="5px">
-              {/* <Box maxH="24px" h="33%" position={'relative'} boxSize="16px">
-          <RiftlyIcon fill={'#1D63FF'} />
-        </Box>
-        <HeadingLg fontWeight="700" color={'white'}>
-         100
-        </HeadingLg> */}
-            </Flex>
-
-            <Button maxW="95px" variant="blue" borderRadius="48px" px="12px" py="5px">
-              Redeem
-            </Button>
-          </Flex>
-        </Flex>
-      </Flex>
-    </Box>
-  )
 }

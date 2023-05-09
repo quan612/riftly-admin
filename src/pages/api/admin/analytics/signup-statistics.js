@@ -107,9 +107,7 @@ order by "signUpOrigin", dates
           return r
         })
 
-        //translation
-
-        res.setHeader('Cache-Control', 'max-age=0, s-maxage=600, stale-while-revalidate')
+        res.setHeader('Cache-Control', 'max-age=0, s-maxage=43200, stale-while-revalidate')
         res.status(200).json(usersSignUp)
       } catch (err) {
         console.log(err)
@@ -123,18 +121,3 @@ order by "signUpOrigin", dates
 }
 
 export default adminMiddleware(adminUsersSignUpStatisticAPI)
-
-const getFirstLastDayOfWeek = () => {
-  const today = new Date()
-  const day = today.getDay()
-  const diff = today.getDate() - day + (day === 0 ? -6 : 1)
-
-  let monday = new Date(today.setDate(diff))
-  let sunday = new Date(monday)
-  sunday.setDate(sunday.getDate() + 6)
-
-  return {
-    monday: new Date(monday.setHours(0, 0, 0, 0)),
-    sunday: new Date(sunday.setHours(23, 59, 59, 59)),
-  }
-}

@@ -15,7 +15,6 @@ const adminUserStatsAPI = async (req, res) => {
 
       let searchRes = {}
 
-      // console.time(`RESPONSE TIME request ${currentPage}`)
       const users = await prisma.whiteList.findMany({
         skip: currentPage * skipNumber,
         take: skipNumber,
@@ -53,17 +52,12 @@ const adminUserStatsAPI = async (req, res) => {
               updatedAt: 'desc',
             },
           },
-          // _count: {
-          //     select: {
-          //         userQuest: true
-          //     }
-          // },
+
         },
       })
 
       searchRes.users = users
 
-      // console.timeEnd(`RESPONSE TIME request ${currentPage}`)
       res.setHeader('Cache-Control', 'max-age=0, s-maxage=3600, stale-while-revalidate')
       return res.status(200).json(searchRes)
     } catch (error) {

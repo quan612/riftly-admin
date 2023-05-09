@@ -36,8 +36,7 @@ export const createReward = async (rewardTypeId, quantity, userId) => {
       },
     },
     create: {
-      // userId,
-      // rewardTypeId,
+
       quantity,
       rewardType: {
         connect: {

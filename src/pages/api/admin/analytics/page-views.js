@@ -16,40 +16,6 @@ async function googleAnalyticsPageViewsQuery(req, res) {
         const [response] = await client.runReport({
           property: `properties/${googlePropertyId}`,
 
-          // {
-          //     dimensions: [
-          //         {
-          //             name: 'country',
-          //         },
-          //         {
-          //             name: 'region',
-          //         },
-          //         {
-          //             name: 'city',
-          //         },
-          //     ],
-          //     metrics,
-          //     dateRanges: [
-          //         {
-          //             startDate: '2023-01-01',
-          //             endDate: 'today',
-          //         },
-          //     ],
-          // },
-          // {
-          //     dimensions: [
-          //         {
-          //             name: 'browser',
-          //         },
-          //     ],
-          //     metrics,
-          //     dateRanges: [
-          //         {
-          //             startDate: '2023-01-01',
-          //             endDate: 'today',
-          //         },
-          //     ],
-          // },
 
           dimensions: [
             {
@@ -57,21 +23,11 @@ async function googleAnalyticsPageViewsQuery(req, res) {
             },
           ],
           metrics: [
-            // {
-            //     name: "totalUsers",
-            // },
+
             {
               name: 'screenPageViews',
             },
-            // {
-            //     name: "sessions"
-            // },
-            // {
-            //     name: "sessionsPerUser"
-            // },
-            // {
-            //     name: "bounceRate"
-            // },
+
           ],
           dateRanges: [
             {
@@ -80,14 +36,8 @@ async function googleAnalyticsPageViewsQuery(req, res) {
             },
           ],
         })
-        // console.log(response)
-        // printRunReportResponse(response);
-        // response.reports.forEach(report => {
-        //     printRunReportResponse(report);
-        // });
 
-        // console.log(response?.rows[0]?.dimensionValues)
-        // console.log(response?.rows[0]?.metricValues)
+        res.setHeader('Cache-Control', 'max-age=0, s-maxage=120, stale-while-revalidate')
         res.status(200).json(response)
       } catch (err) {
         res.status(200).json({ isError: true, error: err.message })
@@ -101,82 +51,3 @@ async function googleAnalyticsPageViewsQuery(req, res) {
 
 export default adminMiddleware(googleAnalyticsPageViewsQuery)
 
-function printRunReportResponse(response) {
-  //[START analyticsdata_print_run_report_response_header]
-  console.log(`${response.rowCount} rows received`)
-  response.dimensionHeaders.forEach((dimensionHeader) => {
-    console.log(`Dimension header name: ${dimensionHeader.name}`)
-  })
-  response.metricHeaders.forEach((metricHeader) => {
-    console.log(`Metric header name: ${metricHeader.name} (${metricHeader.type})`)
-  })
-  //[END analyticsdata_print_run_report_response_header]
-
-  // [START analyticsdata_print_run_report_response_rows]
-
-  response.rows.forEach((row) => {
-    console.log(row.metricValues)
-    console.log(`${row.dimensionValues[0].value}, ${row.metricValues[0].value}`)
-  })
-  // [END analyticsdata_print_run_report_response_rows]
-}
-
-// const [response] = await client.runReport({
-//     property: `properties/${propertyId}`,
-//     requests: [
-//         // {
-//         //     dimensions: [
-//         //         {
-//         //             name: 'country',
-//         //         },
-//         //         {
-//         //             name: 'region',
-//         //         },
-//         //         {
-//         //             name: 'city',
-//         //         },
-//         //     ],
-//         //     metrics,
-//         //     dateRanges: [
-//         //         {
-//         //             startDate: '2023-01-01',
-//         //             endDate: 'today',
-//         //         },
-//         //     ],
-//         // },
-//         // {
-//         //     dimensions: [
-//         //         {
-//         //             name: 'browser',
-//         //         },
-//         //     ],
-//         //     metrics,
-//         //     dateRanges: [
-//         //         {
-//         //             startDate: '2023-01-01',
-//         //             endDate: 'today',
-//         //         },
-//         //     ],
-//         // },
-//         {
-//             dimensions: [
-//                 {
-//                     name: 'pagePath',
-//                 },
-//             ],
-//             metrics: [
-//                 {
-//                     name: 'totalUsers',
-//                 },
-//                 { name: "screenPageViews" },
-//                 { name: "bounceRate" }
-//             ],
-//             dateRanges: [
-//                 {
-//                     startDate: '2023-01-01',
-//                     endDate: 'today',
-//                 },
-//             ],
-//         },
-//     ],
-// });

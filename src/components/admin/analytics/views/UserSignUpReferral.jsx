@@ -48,15 +48,9 @@ const barChartOptionsConsumption = {
     theme: 'dark',
   },
   xaxis: {
-    // categories: ["17", "18", "19", "20", "21", "22", "23", "24", "25"],
     show: false,
     labels: {
       show: false,
-      //     style: {
-      //         colors: "#A3AED0",
-      //         fontSize: "14px",
-      //         fontWeight: "500",
-      //     },
     },
     axisBorder: {
       show: false,

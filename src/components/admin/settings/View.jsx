@@ -1,18 +1,7 @@
 import React from 'react'
 
-import {
-  Heading,
-  Box,
-  Flex,
-  Text,
-  Button,
-  useColorMode,
-  useColorModeValue,
-  Icon,
-  Grid,
-  Image,
-} from '@chakra-ui/react'
-import { AdminBanner, AdminCard } from '@components/shared/Card'
+import { Heading, Box, Flex, Text, Icon, Grid, Image } from '@chakra-ui/react'
+import { AdminCard } from '@components/shared/Card'
 
 import { HeadingLg, TextMd } from '@components/shared/Typography'
 import { useRouter } from 'next/router'

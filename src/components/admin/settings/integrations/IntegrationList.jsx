@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback, useContext } from 'react'
-import Enums from 'enums'
+import React, { useRef, useMemo, useCallback, useContext } from 'react'
 import { useRouter } from 'next/router'
 
 import {
-  Heading,
   Box,
   Flex,
   Text,
-  Button,
   useColorModeValue,
   Table,
   Tbody,
@@ -15,28 +12,12 @@ import {
   Thead,
   Tr,
   Td,
-  useToast,
-  ButtonGroup,
-  useDisclosure,
-  Progress,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
-import { useGlobalFilter, usePagination, useSortBy, useTable, useRowSelect } from 'react-table'
-
-import {
-  useAdminQuestSoftDelete,
-  useAdminQuestsQuery,
-  useAdminQuestUpsert,
-} from '@hooks/admin/quest'
-
-import moment from 'moment'
+import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table'
 
 import { DeleteIcon, EditIcon, PauseIcon } from '@components/shared/Icons'
-import { capitalizeFirstLetter } from '@util/index'
 
-import { QuestStyle, QuestDuration, ItemType } from '@prisma/client'
-
-import { FaPlay } from 'react-icons/fa'
 import Banner from './Banner'
 import Loading from '@components/shared/LoadingContainer/Loading'
 
@@ -58,12 +39,7 @@ const IntegrationList = () => {
 const ResultTable = ({ data }) => {
   const router = useRouter()
 
-  const columns = useMemo(
-    () => columnData,
-    [
-      // columnData
-    ],
-  )
+  const columns = useMemo(() => columnData, [])
   const tableData = useMemo(() => data, [data])
 
   const tableInstance = useTable(
@@ -97,7 +73,6 @@ const ResultTable = ({ data }) => {
     isLoading: pausingShopItem,
     mutateAsync: pauseShopItemAsync,
   } = useShopItemPause()
-  const [deleteQuest, deletingQuest, handleOnDelete] = useAdminQuestSoftDelete()
 
   const getRowProps = (row) => ({
     style: {
@@ -263,20 +238,6 @@ const getCellValue = (cell, editAction, pauseShopItemAsync) => {
     case 'ACTION':
       return (
         <Flex align="center" justify="center" gap="6px">
-          {/* <Box
-            boxSize={{ base: '16px', xl: '24px' }}
-            onClick={async () => {
-              //set to enable false
-              let res = await pauseShopItemAsync({
-                id,
-                isEnabled: isEnabled ? false : true,
-              })
-            }}
-            color="#89A4C2"
-            _hover={{ cursor: 'pointer', color: '#00BBC7' }}
-          >
-            {isEnabled ? <PauseIcon /> : <FaPlay />}
-          </Box> */}
           <Box
             boxSize={{ base: '16px', xl: '24px' }}
             onClick={() => {
@@ -287,21 +248,6 @@ const getCellValue = (cell, editAction, pauseShopItemAsync) => {
           >
             <EditIcon />
           </Box>
-
-          {/* <Box
-            boxSize={{ base: '16px', xl: '24px' }}
-            onClick={() => {
-              console.log('to delete')
-
-              if (confirm(`Deleting this quest "${text}" ?`)) {
-                handleOnDelete({ id })
-              }
-            }}
-            color="#89A4C2"
-            _hover={{ cursor: 'pointer', color: 'red.300' }}
-          >
-            <DeleteIcon />
-          </Box> */}
         </Flex>
       )
     default:

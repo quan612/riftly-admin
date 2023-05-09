@@ -92,26 +92,12 @@ export default function AdminLayout({ session, children }) {
           return categoryActiveNavbar
         }
       }
-      //  else {
-      //     if (window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1) {
-      //         if (routes[i].secondaryNavbar) {
-      //             return routes[i].secondaryNavbar;
-      //         }
-      //     }
-      // }
     }
     return activeNavbar
   }
 
   return (
-    <Box
-    // minHeight="100vh"
-    // height="100vh"
-    // w="100%"
-    // zIndex="3"
-    // flexDirection="column"
-    // alignItems="start"
-    >
+    <Box>
       {session && (
         <Sidebar
           routes={routes}
@@ -131,7 +117,6 @@ export default function AdminLayout({ session, children }) {
           xl: 'calc(100% - 260px)',
         }}
       >
-        {/* <Portal> */}
         <AdminNavbar
           onOpen={onOpen}
           brandText={getActiveRoute(routes)}
@@ -141,7 +126,6 @@ export default function AdminLayout({ session, children }) {
           backText={getBackText(routes)}
           backPath={getBackPath(routes)}
         />
-        {/* </Portal> */}
 
         <PanelContent>
           <PanelContainer>
@@ -150,24 +134,6 @@ export default function AdminLayout({ session, children }) {
             </Flex>
           </PanelContainer>
         </PanelContent>
-
-        {/* <Footer /> */}
-        {/* <Portal>
-          <FixedPlugin
-            secondary={getActiveNavbar(routes)}
-            fixed={fixed}
-            onOpen={onOpen}
-          />
-        </Portal>
-        <Configurator
-          secondary={getActiveNavbar(routes)}
-          isOpen={isOpen}
-          onClose={onClose}
-          isChecked={fixed}
-          onSwitch={(value) => {
-            setFixed(value);
-          }}
-        /> */}
       </MainPanel>
     </Box>
   )

@@ -1,5 +1,4 @@
 import { prisma } from '@context/PrismaContext'
-import { utils } from 'ethers'
 const webpush = require('web-push')
 
 const vapidKeys = {
@@ -7,7 +6,6 @@ const vapidKeys = {
   privateKey: process.env.PRIVATE_VAPID,
 }
 
-//TODO: This should be limit as internal api, using api secret key
 export default async function pushNotification(req, res) {
   const { method } = req
 
@@ -15,7 +13,7 @@ export default async function pushNotification(req, res) {
     case 'POST':
       try {
         const { text, description, action, tag } = req.body
-        // get all subscriptions
+
 
         let subscriptions = await prisma.WebPushSubscription.findMany()
 
@@ -23,7 +21,7 @@ export default async function pushNotification(req, res) {
           text,
           description,
           action,
-          // tag,
+
         }
 
         webpush.setVapidDetails(

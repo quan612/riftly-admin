@@ -50,7 +50,7 @@ async function AnalyticsUserByQuery(req, res) {
           ],
           dateRanges: [
             {
-              startDate: startDate, //"2023-01-01",
+              startDate: startDate,
               endDate,
             },
           ],

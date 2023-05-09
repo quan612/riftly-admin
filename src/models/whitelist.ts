@@ -44,16 +44,13 @@ export interface WhiteList {
   discordUserDiscriminator?: string,
   createdAt: Date,
   updatedAt: Date,
-  // pendingRewards: PendingReward[],
   rewards?: Reward[],
   userQuest?: UserQuest[],
   nonce?: string,
-  // whiteListUserData?: WhiteListUserData,
   uathUser?: string,
   email?: string,
   password?: string,
   avatar?: string,
   status?: AccountStatus,
   signUpOrigin?: string,
-  // redeemTracker?: RedeemableTracker, // not ready
 }

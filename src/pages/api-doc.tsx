@@ -30,10 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
             scheme: 'bearer',
             bearerFormat: 'JWT',
           },
-          // bearerAuth: {
-          //   type: "http",
-          //   scheme: "bearer",
-          // },
+         
           OAuth2: {
             type: 'oauth2',
             flows: {

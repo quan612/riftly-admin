@@ -178,11 +178,11 @@ const RequirementItem = ({
         return `Follow instagram ${extendedQuestData.followAccount}`
       case Enums.OWNING_NFT_CLAIM:
         return `Own an NFT ${extendedQuestData.nft}`
-      // case Enums.IMAGE_UPLOAD_QUEST:
+
       case Enums.CODE_QUEST:
         return `Finished code quest event ${extendedQuestData.codeEvent}`
     }
-    return 'Select a quest' // should not show this
+    return 'Select a quest' 
   }
 
   const getAssociation = async (requirementType) => {
@@ -224,13 +224,7 @@ const RequirementItem = ({
             id={`requirements.[${index}].relationId`}
             name={`requirements.[${index}].relationId`}
             onChange={handleChange}
-            // onChange={async (e) => {
-            //   const { value } = e.target
-            //   console.log('value', value)
-            //   let newRequirements = [...requirements]
-            //   newRequirements[index].relationId = parseInt(value)
-            //   setFieldValue('requirements', newRequirements)
-            // }}
+            
           >
             {requirementOptions?.length > 0 &&
               requirementOptions?.map((r, i) => {

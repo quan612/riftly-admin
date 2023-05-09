@@ -30,9 +30,9 @@ export const useAdminUserStatsQuery = () => {
   const { data, isLoading } = useQuery(
     'admin-query-user-stats',
     async () => {
-      // console.time()
-      let totalUsers = await axios.get(`/api/admin/user/count`).then((r) => r.data) // || 100
-      let skip = Enums.PAGINATION_SKIP // 100
+
+      let totalUsers = await axios.get(`/api/admin/user/count`).then((r) => r.data)
+      let skip = Enums.PAGINATION_SKIP
       let totalPages = Math.ceil(totalUsers / skip)
 
       let data = []
@@ -52,7 +52,7 @@ export const useAdminUserStatsQuery = () => {
           data = [...data, ...r.users]
         }),
       )
-      // console.timeEnd()
+
       return data
     },
     { staleTime: 60 * 60 * 10 },

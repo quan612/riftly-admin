@@ -163,15 +163,7 @@ const QuestCategoryWrapper = ({ category }) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="326.486"
-            height="95"
-            rx="19.5"
-            // stroke="#00BBC7"
-            stroke="currentColor"
-          />
+          <rect x="0.5" y="0.5" width="326.486" height="95" rx="19.5" stroke="currentColor" />
         </svg>
       </Box>
       {/* wrapper */}

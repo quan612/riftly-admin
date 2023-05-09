@@ -40,41 +40,6 @@ const chartId = 'sign-up-user-line-chart'
 const { THIS_MONTH, LAST_MONTH, THIS_YEAR, LAST_YEAR, WALLET, DISCORD, TWITTER, EMAIL, GOOGLE } =
   Enums
 
-const updateOptionsData = {
-  'This Month': {
-    xaxis: {
-      // type: "datetime",
-      // min: getFirstDayCurMonth().getTime(),
-      // max: new Date(), //getLastDayCurMonth().getTime(), //new Date().getTime(), //getLastDayCurMonth().getTime() //new Date("05 Mar 2023").getTime()
-    },
-  },
-  'Last Month': {
-    xaxis: {
-      // type: "datetime",
-      // min: getFirstDayPrevMonth().getTime(),
-      // max: getLastDayPrevMonth().getTime(),
-      // tickAmount: 6,
-    },
-  },
-  'This Year': {
-    xaxis: {
-      type: 'string',
-      // type: "string",
-      // min: getFirstDayOfYear().getTime(),
-      // max: new Date().getTime(),
-      // tickAmount: 6,
-    },
-  },
-  'Last Year': {
-    xaxis: {
-      type: 'string',
-      // min: getFirstDayOfLastYear().getTime(),
-      // max: getLastDayOfLastYear().getTime(),
-      // tickAmount: 12,
-    },
-  },
-}
-
 const lineChartOptionsUserSignUp = {
   chart: {
     // type: "line",
@@ -120,10 +85,6 @@ const lineChartOptionsUserSignUp = {
     type: 'line',
   },
   xaxis: {
-    // type: "string",
-    // type: "datetime",
-    // min: getFirstDayPrevMonth().getTime(),
-    // max: getLastDayPrevMonth().getTime(),
     labels: {
       show: true,
       style: {
@@ -335,12 +296,6 @@ export default function UserSignUpLineChart() {
             <Text color="secondaryGray.600" fontSize="sm" fontWeight="500" mt="4px" me="12px">
               User sign up
             </Text>
-            {/* <Flex align="center">
-              <Icon as={RiArrowUpSFill} color="green.500" me="2px" mt="2px" />
-              <Text color="green.500" fontSize="sm" fontWeight="700">
-                +2.45%
-              </Text>
-            </Flex> */}
           </Flex>
 
           <Flex align="start" flexDirection={'column'} gap="8px">

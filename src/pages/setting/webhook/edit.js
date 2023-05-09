@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import AdminLayout from '@components/admin/AdminLayout'
-import dynamic from 'next/dynamic'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from 'pages/api/auth/[...nextauth]'
 

@@ -16,7 +16,6 @@ import {
 import React, { useMemo } from 'react'
 import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table'
 
-import { MdCheckCircle, MdCancel, MdOutlineError } from 'react-icons/md'
 import Card from '@components/shared/Card'
 
 const columnsData = [
@@ -91,18 +90,11 @@ export default function TopCountriesTable() {
   const textColor = useColorModeValue('secondaryGray.900', 'white')
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100')
   return (
-    <Card
-      direction="column"
-      w="100%"
-      px="0px"
-      // overflowX={{ sm: "scroll", lg: "hidden" }}
-      h="100%"
-    >
+    <Card direction="column" w="100%" px="0px" h="100%">
       <Flex px="25px" justify="space-between" mb="24px" align="center">
         <Heading color={textColor} fontSize="xl" fontWeight="700" lineHeight="24px">
           Top Countries
         </Heading>
-        {/* <Menu /> */}
       </Flex>
       <Box
         overflowX={'auto'}
@@ -169,19 +161,7 @@ export default function TopCountriesTable() {
                         fontSize={{ sm: '14px' }}
                         maxH="30px !important"
                         py="4px"
-                        // minW={{ sm: "150px", md: "200px", lg: "auto" }}
                         borderColor="transparent"
-                        // width={cell.column.width}
-                        // maxW={{
-                        //     sm: "50px",
-                        //     md: "70px",
-                        //     lg: "70px",
-                        // }}
-                        // width={{
-                        //     sm: 50,
-                        //     md: 50,
-                        //     lg: 50,
-                        // }}
                       >
                         {data}
                       </Td>

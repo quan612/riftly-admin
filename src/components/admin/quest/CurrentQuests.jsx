@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useRouter } from 'next/router'
 
 import {
@@ -31,14 +31,8 @@ import {
 import NewQuestModal from './NewQuestModal'
 import moment from 'moment'
 
-import { AddIcon, ChevronDownIcon, SmallAddIcon } from '@chakra-ui/icons'
-import {
-  DeleteIcon,
-  EditIcon,
-  PauseIcon,
-  RiftlyCheckMark,
-  RiftlyEditIcon,
-} from '@components/shared/Icons'
+import { AddIcon } from '@chakra-ui/icons'
+import { DeleteIcon, EditIcon, PauseIcon } from '@components/shared/Icons'
 import { capitalizeFirstLetter } from '@util/index'
 
 import { QuestStyle, QuestDuration } from '@prisma/client'
@@ -56,11 +50,10 @@ const AdminQuestsBanner = ({ count, onAddNew }) => {
         justifyContent="space-between"
       >
         <Flex direction="column" maxWidth="100%" my={{ base: '14px' }} gap="1rem">
-          {/* {allUsers && ( */}
           <Heading fontSize={{ base: 'lg', lg: '3xl' }} color={'white'} fontWeight="700">
-            {count} Active Quests
+            {count} Quests
           </Heading>
-          {/* )} */}
+
           <Text fontSize={'lg'} color={'white'} fontWeight="400">
             Last updated: {moment(new Date()).format('MMM dd, hh:mm A')}{' '}
             {new Date()
@@ -80,14 +73,6 @@ const AdminQuestsBanner = ({ count, onAddNew }) => {
           fontWeight="semibold"
           fontSize="lg"
         >
-          {/* <Button
-            variant="blue"
-            borderColor={'white'}
-            leftIcon={<BsFilter size={'20px'} color="white" />}
-            // onClick={filterSidebar.onOpen}
-          >
-            Filter
-          </Button> */}
           <Button
             variant="blue"
             borderColor={'white'}
@@ -115,7 +100,6 @@ const CurrentQuests = () => {
 
 const ResultTable = ({ data, usersCount }) => {
   const newQuestModal = useDisclosure()
-  // const { filterSidebar, userSidebar, userDetails, viewUserDetails } = useContext(UsersContext)
   const router = useRouter()
   const columnData = [
     {
@@ -123,10 +107,7 @@ const ResultTable = ({ data, usersCount }) => {
       accessor: 'text',
       disableSortBy: true,
     },
-    // {
-    //   Header: 'DESCRIPTION',
-    //   accessor: 'description',
-    // },
+
     {
       Header: 'POINTS',
 
@@ -216,16 +197,6 @@ const ResultTable = ({ data, usersCount }) => {
       justifyContent="center"
       gap="20px"
     >
-      {/* <RightSideBar
-        isOpen={filterSidebar.isOpen}
-        onClose={filterSidebar.onClose}
-        title="Filter Users"
-      >
-        <FilterUsersSidebar />
-      </RightSideBar>
-      <RightSideBar isOpen={userSidebar.isOpen} onClose={userSidebar.onClose} title="User Info">
-        <AdminUserInfo userDetails={userDetails} />
-      </RightSideBar> */}
       <NewQuestModal
         isOpen={newQuestModal.isOpen}
         onClose={() => {
@@ -315,11 +286,7 @@ const ResultTable = ({ data, usersCount }) => {
               })}
             </Tbody>
           </Table>
-          <Flex>
-            {/* {tableInstance?.pageOptions?.length > 0 && (
-              <TablePagination tableInstance={tableInstance} />
-            )} */}
-          </Flex>
+          <Flex></Flex>
         </AdminCard>
       </Box>
     </Flex>
