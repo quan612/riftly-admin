@@ -28,7 +28,8 @@ const handler = async (req, res) => {
       abi,
       multiplier,
       chain,
-      network
+      network,
+      tokenId
     } = req.body
 
 
@@ -43,7 +44,7 @@ const handler = async (req, res) => {
       }
     })
 
-    if (itemType === ItemType.ONCHAIN) {
+    if (itemType === ItemType.ONCHAIN && contractType !== ContractType.ERC1155) {
       const shops = await prisma.shopItem.findMany({
         where: {
           isEnabled: true
@@ -56,13 +57,11 @@ const handler = async (req, res) => {
       }
     }
 
-
-
     let createManyShopItemRedeemData = [], lengthToAdd = 0;
     if (existingShopItem) {
       if (existingShopItem.shopItemRedeem.length < parseInt(available)) {
         lengthToAdd = parseInt(available) - existingShopItem.shopItemRedeem.length;
-        console.log("lengthToAdd", lengthToAdd)
+
         createManyShopItemRedeemData = new Array(lengthToAdd).fill({
           status: RedeemStatus.AVAILABLE,
         })
@@ -98,7 +97,8 @@ const handler = async (req, res) => {
       abi,
       chain,
       network,
-      multiplier: parseInt(multiplier)
+      multiplier: parseInt(multiplier),
+      tokenId: parseInt(tokenId)
     };
 
     let updateObj = {
@@ -129,7 +129,8 @@ const handler = async (req, res) => {
       abi,
       chain,
       network,
-      multiplier: parseInt(multiplier)
+      multiplier: parseInt(multiplier),
+      tokenId: parseInt(tokenId)
     }
     if (createManyShopItemRedeemData.length > 0) {
 
@@ -145,7 +146,7 @@ const handler = async (req, res) => {
       }
     }
     else {
-      console.log("no chane")
+      console.log("no change")
     }
 
     let updatedContract = await prisma.ShopItem.upsert({

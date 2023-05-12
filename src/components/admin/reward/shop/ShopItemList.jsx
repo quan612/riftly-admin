@@ -14,9 +14,9 @@ import {
   Td,
 } from '@chakra-ui/react'
 import { AdminCard } from '@components/shared/Card'
-import { useGlobalFilter, usePagination, useSortBy, useTable, useRowSelect } from 'react-table'
+import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table'
 
-import { DeleteIcon, EditIcon, PauseIcon } from '@components/shared/Icons'
+import { EditIcon, PauseIcon } from '@components/shared/Icons'
 
 import { ItemType } from '@prisma/client'
 
@@ -28,7 +28,6 @@ import { useShopItemPause } from '@hooks/admin/shop-item'
 
 const ShopItemList = () => {
   const { shopItems, isLoadingShopItems } = useContext(ShopItemsContext)
-  console.log(shopItems)
   return (
     <Flex flexDirection="column" w="100%" h="100%" justifyContent="center" gap="20px">
       {isLoadingShopItems && <Loading />}

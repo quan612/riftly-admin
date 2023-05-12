@@ -237,7 +237,8 @@ enum ItemType {
 enum ContractType {
  ERC20       
  ERC721   
- ERC721A  
+ ERC721A
+ ERC1155  
 }
 
 model ShopItem {
@@ -258,6 +259,7 @@ model ShopItem {
   chain                       String?                   @default("Ethereum")
   network                     String?                   @default("Ethereum Goerli")
   abi                         Json? 
+  tokenId                     Int                       @default(-1)
 }
 
 model ShopItemRequirement {
