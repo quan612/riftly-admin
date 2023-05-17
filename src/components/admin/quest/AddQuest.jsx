@@ -28,7 +28,6 @@ import OwnNftQuestForm from './TemplateForms/OwnNftQuestForm'
 import EnterCodeQuestForm from './TemplateForms/EnterCodeQuestForm'
 import DailyQuestForm from './TemplateForms/DailyQuestForm'
 import DiscordAuthQuestForm from './TemplateForms/DiscordAuthQuestForm'
-import FreeLimitedQuestForm from './TemplateForms/FreeLimitedQuestForm'
 import ImageUploadQuestForm from './TemplateForms/ImageUploadQuestForm'
 import InstagramFollowQuestForm from './TemplateForms/InstagramFollowQuestForm'
 import TwitterAuthQuestForm from './TemplateForms/TwitterAuthQuestForm'
@@ -67,7 +66,6 @@ export default function AddQuest() {
       {questType === Enums.DAILY_SHELL && <DailyQuestForm />}
       {questType === Enums.DISCORD_AUTH && <DiscordAuthQuestForm />}
       {questType === Enums.CODE_QUEST && <EnterCodeQuestForm />}
-      {questType === Enums.LIMITED_FREE_SHELL && <FreeLimitedQuestForm />}
       {questType === Enums.IMAGE_UPLOAD_QUEST && <ImageUploadQuestForm />}
 
       {questType === Enums.FOLLOW_INSTAGRAM && <InstagramFollowQuestForm />}

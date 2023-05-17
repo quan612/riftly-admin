@@ -34,10 +34,6 @@ const questTypes = [
   },
 
   {
-    type: Enums.LIMITED_FREE_SHELL,
-  },
-
-  {
     type: Enums.DAILY_SHELL,
   },
   {
@@ -46,7 +42,6 @@ const questTypes = [
 ]
 
 async function main() {
-
   for (let i = 0; i < questTypes.length; i++) {
     await prisma.questType.create({
       data: {

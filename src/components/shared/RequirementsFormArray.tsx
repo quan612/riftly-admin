@@ -9,18 +9,16 @@ import {
   Select,
   FormControl,
   FormLabel,
-
   Text,
   Divider,
 } from '@chakra-ui/react'
 
 import { Field, Form } from 'formik'
 import { DeleteIcon, RiftlyIcon, RiftlyTooltip } from '@components/shared/Icons'
-import {  useAdminQuestsQuery } from '@hooks/admin/quest'
+import { useAdminQuestsQuery } from '@hooks/admin/quest'
 import { useEnabledRewardTypesQuery } from '@hooks/admin/reward-types'
 import { v4 as uuid } from 'uuid'
 import { RequirementType } from '@models/requirement-type'
-
 
 const RequirementsFormArray = ({ requirements, handleChange, setFieldValue, errors }) => {
   const { data: quests, isLoading: isLoadingQuests } = useAdminQuestsQuery()
@@ -32,27 +30,30 @@ const RequirementsFormArray = ({ requirements, handleChange, setFieldValue, erro
       </FormLabel>
 
       <Flex flexDirection={'column'} gap="1rem">
-        {rewardTypes && quests && quests.length>0 && requirements.map((r, index) => {
-          return (
-            <RequirementItem
-              key={r.requirementId}
-              requirementId={r.requirementId}
-               quests={quests}
-              requirements={requirements}
-              index={index}
-              rewardTypes={rewardTypes}
-              setFieldValue={setFieldValue}
-              errors={errors?.requirements?.[index]}
-              handleChange={handleChange}
-              handleOnDelete={(requirementId) => {
-                setFieldValue(
-                  'requirements',
-                  requirements.filter((re) => re.requirementId !== requirementId),
-                )
-              }}
-            />
-          )
-        })}
+        {rewardTypes &&
+          quests &&
+          quests.length > 0 &&
+          requirements.map((r, index) => {
+            return (
+              <RequirementItem
+                key={r.requirementId}
+                requirementId={r.requirementId}
+                quests={quests}
+                requirements={requirements}
+                index={index}
+                rewardTypes={rewardTypes}
+                setFieldValue={setFieldValue}
+                errors={errors?.requirements?.[index]}
+                handleChange={handleChange}
+                handleOnDelete={(requirementId) => {
+                  setFieldValue(
+                    'requirements',
+                    requirements.filter((re) => re.requirementId !== requirementId),
+                  )
+                }}
+              />
+            )
+          })}
       </Flex>
       <Button
         variant="signIn"
@@ -128,7 +129,7 @@ const RequirementItem = ({
           quests = quests?.filter((q) => {
             if (
               q.type.name === Enums.DAILY_SHELL ||
-              q.type.name === Enums.LIMITED_FREE_SHELL ||
+              // q.type.name === Enums.LIMITED_FREE_SHELL ||
               q.type.name === Enums.IMAGE_UPLOAD_QUEST ||
               q.type.name === Enums.UNSTOPPABLE_AUTH
             )
@@ -182,7 +183,7 @@ const RequirementItem = ({
       case Enums.CODE_QUEST:
         return `Finished code quest event ${extendedQuestData.codeEvent}`
     }
-    return 'Select a quest' 
+    return 'Select a quest'
   }
 
   const getAssociation = async (requirementType) => {
@@ -224,7 +225,6 @@ const RequirementItem = ({
             id={`requirements.[${index}].relationId`}
             name={`requirements.[${index}].relationId`}
             onChange={handleChange}
-            
           >
             {requirementOptions?.length > 0 &&
               requirementOptions?.map((r, i) => {
