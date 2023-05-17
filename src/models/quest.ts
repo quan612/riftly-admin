@@ -1,6 +1,13 @@
 import { RewardType } from "./reward-type";
 import { UserQuest } from "./user-quest";
 
+interface QuestType {
+  id: number,
+  name: string,
+  description?: string,
+  quests: Quest[],
+}
+
 /**
  * @swagger
  * components:
@@ -47,7 +54,7 @@ import { UserQuest } from "./user-quest";
  * */
 export interface Quest {
   id: number,
-  // type: QuestType,
+  type?: QuestType,
   text: string,
   completedText: string,
   rewardTypeId: number,
@@ -60,10 +67,11 @@ export interface Quest {
   questId: string,
   createdAt: Date,
   updatedAt: Date,
-  rewardType: RewardType,
-  userQuests: UserQuest[],
+  rewardType?: RewardType,
+  userQuests?: UserQuest[],
   questTypeId: number,
   // style: QuestStyle,
   // duration: QuestDuration,
   image?: string,
+  _count?:any
 }

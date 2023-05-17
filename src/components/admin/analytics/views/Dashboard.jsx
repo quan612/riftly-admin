@@ -16,7 +16,7 @@ import {
 
 import dynamic from 'next/dynamic'
 import UsersByDevicePieCart from './UsersByDevicePieCart'
-import CompletedChallengesTable from './CompletedChallengesTable'
+import CompletedChallengesTable from './CompletedChallenges/CompletedChallengesComponent'
 import TopCountriesTable from './TopCountriesTable'
 import UserSignUpReferral from './UserSignUpReferral'
 import { useAdminUsersSimpleStatisticsQuery } from '@hooks/admin/user'
@@ -96,7 +96,7 @@ export default function Dashboard() {
           }
           name="New Users this month"
           value={aggregatedUserStatistic?.newUsers?.newUsersThisMonth}
-          growth={`${aggregatedUserStatistic?.newUsers?.growth || null}`}
+          growth={`${aggregatedUserStatistic?.newUsers?.growth?.toFixed(2) || null}`}
         />
         <MiniStatistics
           startContent={
@@ -116,11 +116,11 @@ export default function Dashboard() {
           <UserSignUpLineChart />
         </GridItem>
 
-        <GridItem colSpan={{ base: 4, md: 2 }}>
+        <GridItem colSpan={{ base: 4, lg: 2 }}>
           <CompletedChallengesTable />
         </GridItem>
 
-        <GridItem colSpan={{ base: 4, md: 2 }}>
+        <GridItem colSpan={{ base: 4, lg: 2 }}>
           <TopCountriesTable />
         </GridItem>
 
