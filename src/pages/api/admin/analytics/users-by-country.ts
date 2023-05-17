@@ -20,15 +20,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json({ isError: true, error: 'only GET' })
   }
 
+  const client = await analyticsDataClient()
+  const variables: QuestVariables = await prisma.questVariables.findFirst()
+
+  if (!variables) {
+    return res.status(200).json({ isError: true, error: 'Missing analytics config' })
+  }
+  const { googlePropertyId } = variables
+
+  let transformedData: UsersByCountryDef[]
   try {
-    const client = await analyticsDataClient()
-    const variables: QuestVariables = await prisma.questVariables.findFirst()
-
-    if (!variables) {
-      return res.status(200).json({ isError: true, error: 'Missing analytics config' })
-    }
-    const { googlePropertyId } = variables
-
     const [response] = await client.runReport({
       property: `properties/${googlePropertyId}`,
 
@@ -49,23 +50,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       ],
     })
-    const transformedData: UsersByCountryDef[] = transformGoogleResponse(response).slice(
-      0,
-      RECORDS_TO_TAKE,
-    )
-
-    res.setHeader('Cache-Control', 'max-age=0, s-maxage=86400, stale-while-revalidate')
-    res.status(200).json(transformedData)
+    transformedData = transformGoogleResponse(response).slice(0, RECORDS_TO_TAKE)
   } catch (err) {
-    
+    // errors here are due to google analytics misconfig
     res.status(200).json({ isError: true, message: err.message })
   }
+
+  res.setHeader('Cache-Control', 'max-age=0, s-maxage=86400, stale-while-revalidate')
+  res.status(200).json(transformedData)
 }
 
 export default adminMiddleware(handler)
 
 const transformGoogleResponse = (response: google.analytics.data.v1beta.IRunReportResponse) => {
-  let temp: UsersByCountryDef[] = []
+  const temp: UsersByCountryDef[] = []
   const total = parseInt(response.rows[0].metricValues[0].value) ?? 1
   for (let i = 0; i < response.rows.length; i++) {
     const country = response.rows[i].dimensionValues[0].value
