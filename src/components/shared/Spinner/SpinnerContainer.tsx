@@ -5,8 +5,8 @@ const SpinnerContainer = () => {
     <Flex
           my="auto"
           h="56px"
-          align={{ base: 'center', xl: 'center' }}
-          justify={{ base: 'center', xl: 'center' }}
+          align="center"
+          justify="center"
         >
           <Spinner size="lg" />
         </Flex>
