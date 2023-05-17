@@ -22,7 +22,6 @@ const UsersByCountryHeading = () => {
 
 export default function UsersByCountryComponent() {
   const { data: usersByCountry, isLoading: isLoadingStatistics } = useUsersByCountryQuery()
-
   return (
     <Card direction="column" w="100%" px="0px" h="100%">
       <UsersByCountryHeading />

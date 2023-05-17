@@ -115,7 +115,8 @@ export default function Dashboard() {
         <GridItem colSpan={{ base: 4 }}>
           <UserSignUpLineChart />
         </GridItem>
-
+      </SimpleGrid>
+      <SimpleGrid columns={4} gap="20px" mb="20px">
         <GridItem colSpan={{ base: 4, lg: 2 }}>
           <CompletedChallengesComponent />
         </GridItem>
