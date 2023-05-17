@@ -16,11 +16,11 @@ import {
 
 import dynamic from 'next/dynamic'
 import UsersByDevicePieCart from './UsersByDevicePieCart'
-import CompletedChallengesTable from './CompletedChallenges/CompletedChallengesComponent'
-import TopCountriesTable from './TopCountriesTable'
 import UserSignUpReferral from './UserSignUpReferral'
 import { useAdminUsersSimpleStatisticsQuery } from '@hooks/admin/user'
 import axios from 'axios'
+import UsersByCountryComponent from './UsersByCountry/UsersByCountryComponent'
+import CompletedChallengesComponent from './CompletedChallenges/CompletedChallengesComponent'
 
 const UserSignUpLineChart = dynamic(() => import('./UserSignUpLineChart'), { ssr: false })
 
@@ -117,11 +117,11 @@ export default function Dashboard() {
         </GridItem>
 
         <GridItem colSpan={{ base: 4, lg: 2 }}>
-          <CompletedChallengesTable />
+          <CompletedChallengesComponent />
         </GridItem>
 
-        <GridItem colSpan={{ base: 4, lg: 2 }}>
-          <TopCountriesTable />
+        <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>
+          <UsersByCountryComponent />
         </GridItem>
 
         <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>

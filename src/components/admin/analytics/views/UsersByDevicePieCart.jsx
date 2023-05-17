@@ -3,7 +3,7 @@ import { Box, Flex, Text, Select, useColorModeValue, Heading, Spinner } from '@c
 import Card from '@components/shared/Card'
 import ApexPieChart from '@components/shared/Charts/ApexPieChart'
 import axios from 'axios'
-import Enums, { LAST_YEAR, THIS_YEAR } from '@enums/index'
+import { LAST_YEAR, THIS_YEAR } from '@enums/index'
 import { capitalizeFirstLetter } from '@util/index'
 
 const chartId = 'pie-user-by-type'
@@ -67,7 +67,7 @@ export default function UsersByDevicePieCart() {
 
   const getUsersByDevice = async (filterBy) => {
     isLoadingSet(true)
-    let res = await axios
+    const res = await axios
       .post(`/api/admin/analytics/users-by-type`, { filterBy })
       .then((r) => r.data)
       .catch((err) => console.log(err))
@@ -81,8 +81,8 @@ export default function UsersByDevicePieCart() {
         series = [],
         total = 0
       for (let i = 0; i < res.rows.length; i++) {
-        let label = res.rows[i].dimensionValues[0].value
-        let value = parseInt(res.rows[i].metricValues[0].value)
+        const label = res.rows[i].dimensionValues[0].value
+        const value = parseInt(res.rows[i].metricValues[0].value)
 
         temp.push({ label, value })
         series.push(value)
@@ -99,18 +99,13 @@ export default function UsersByDevicePieCart() {
     getUsersByDevice(THIS_YEAR)
   }, [])
   return (
-    <Card p="20px" align="center" direction="column" w="100%" h="100%">
-      <Flex
-        px={{ base: '0px', '2xl': '10px' }}
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-        mb="8px"
-      >
-        <Text color={textColor} fontSize="md" fontWeight="600" mt="4px">
+    <Card px="0px" direction="column" w="100%" h="100%">
+      <Flex px="25px" justifyContent="space-between" align="center" mb="1rem">
+        <Heading fontSize="xl" fontWeight="700" lineHeight="24px">
           Users by Device
-        </Text>
+        </Heading>
         <Select
+          h="24px"
           fontSize="sm"
           variant="subtle"
           defaultValue={THIS_YEAR}
@@ -133,37 +128,37 @@ export default function UsersByDevicePieCart() {
         </Flex>
       )}
       {chartSeries?.length > 0 && !isLoading && (
-        <ApexPieChart h="100%" w="100%" chartData={chartSeries} chartOptions={pieChartOptions} />
-      )}
-      {chartData?.length > 0 && !isLoading && (
-        <Card
-          bg={cardColor}
-          flexDirection="row"
-          boxShadow={cardShadow}
-          w="100%"
-          p="15px"
-          px="20px"
-          mt="15px"
-          mx="auto"
-          gap="10px"
-          justifyContent="space-around"
-        >
-          {chartData?.map((data, index) => {
-            return (
-              <Flex direction="column" py="5px" key={index}>
-                <Flex align="center">
-                  <Box h="8px" w="8px" bg="brand.blue" borderRadius="50%" me="4px" />
-                  <Text fontSize="xs" color="brand.neutral1" fontWeight="400" mb="5px">
-                    {capitalizeFirstLetter(data.label)}
-                  </Text>
+        <>
+          <ApexPieChart h="100%" w="100%" chartData={chartSeries} chartOptions={pieChartOptions} />
+          <Card
+            bg={cardColor}
+            flexDirection="row"
+            boxShadow={cardShadow}
+            w="auto"
+            p="15px"
+            px="20px"
+            mx="25px"
+            mt="auto"
+            gap="10px"
+            justifyContent="space-around"
+          >
+            {chartData?.map((data, index) => {
+              return (
+                <Flex direction="column" py="5px" key={index}>
+                  <Flex align="center">
+                    <Box h="8px" w="8px" bg="brand.blue" borderRadius="50%" me="4px" />
+                    <Text fontSize="xs" color="brand.neutral1" fontWeight="400" mb="5px">
+                      {capitalizeFirstLetter(data.label)}
+                    </Text>
+                  </Flex>
+                  <Heading fontSize="md" color={textColor} fontWeight="700" fontFamily={'Intern'}>
+                    {((data.value / total) * 100).toFixed(0)}%
+                  </Heading>
                 </Flex>
-                <Heading fontSize="md" color={textColor} fontWeight="700" fontFamily={'Intern'}>
-                  {((data.value / total) * 100).toFixed(0)}%
-                </Heading>
-              </Flex>
-            )
-          })}
-        </Card>
+              )
+            })}
+          </Card>
+        </>
       )}
     </Card>
   )

@@ -5,7 +5,7 @@ import { CompletedQuest } from './types'
 
 export const useCompletedQuestQuery = () => {
   const { data, isLoading } = useQuery(
-    'shop-query',
+    'completed-challenges',
     async () => {
       return axios.get<CompletedQuest[]>(`${Enums.BASEPATH}/api/admin/analytics/completed-challenges`).then((r) => r.data)
     },
