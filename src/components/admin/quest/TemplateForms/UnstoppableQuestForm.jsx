@@ -143,7 +143,7 @@ const UnstoppableQuestForm = ({ quest = null, isCreate = true }) => {
           dirty,
           setFieldValue,
         }
-        return <AdminQuestFormWrapper {...childrenProps} />
+        return <AdminQuestFormWrapper {...childrenProps} askQu3st={true} />
       }}
     </Formik>
   )
