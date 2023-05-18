@@ -16,11 +16,11 @@ import {
 
 import dynamic from 'next/dynamic'
 import UsersByDevicePieCart from './UsersByDevicePieCart'
-import CompletedChallengesTable from './CompletedChallengesTable'
-import TopCountriesTable from './TopCountriesTable'
 import UserSignUpReferral from './UserSignUpReferral'
 import { useAdminUsersSimpleStatisticsQuery } from '@hooks/admin/user'
 import axios from 'axios'
+import UsersByCountryComponent from './UsersByCountry/UsersByCountryComponent'
+import CompletedChallengesComponent from './CompletedChallenges/CompletedChallengesComponent'
 
 const UserSignUpLineChart = dynamic(() => import('./UserSignUpLineChart'), { ssr: false })
 
@@ -96,7 +96,7 @@ export default function Dashboard() {
           }
           name="New Users this month"
           value={aggregatedUserStatistic?.newUsers?.newUsersThisMonth}
-          growth={`${aggregatedUserStatistic?.newUsers?.growth || null}`}
+          growth={`${aggregatedUserStatistic?.newUsers?.growth?.toFixed(2) || null}`}
         />
         <MiniStatistics
           startContent={
@@ -115,13 +115,14 @@ export default function Dashboard() {
         <GridItem colSpan={{ base: 4 }}>
           <UserSignUpLineChart />
         </GridItem>
-
-        <GridItem colSpan={{ base: 4, md: 2 }}>
-          <CompletedChallengesTable />
+      </SimpleGrid>
+      <SimpleGrid columns={4} gap="20px" mb="20px">
+        <GridItem colSpan={{ base: 4, lg: 2 }}>
+          <CompletedChallengesComponent />
         </GridItem>
 
-        <GridItem colSpan={{ base: 4, md: 2 }}>
-          <TopCountriesTable />
+        <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>
+          <UsersByCountryComponent />
         </GridItem>
 
         <GridItem colSpan={{ base: 4, md: 2, lg: 1 }}>

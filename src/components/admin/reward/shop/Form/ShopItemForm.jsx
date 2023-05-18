@@ -55,71 +55,27 @@ const ShopItemSchema = object().shape({
       },
     ),
   // image: string().required('Image is required'),
-
-  // extendedQuestData: object().shape({
-  //   frequently: string().required('A frequently identity is required!'),
-  //   questRule: string().required('A rule identity is required!'),
-  //   startDate: string().test('valid startDate', 'Start Date is not valid!', function () {
-  //     const { from } = this
-  //     const { startDate, endDate } = from[0].value // first ancestor
-  //     const { duration } = from[1].value // root ancestor
-
-  //     if (duration === QuestDuration.ONGOING) return true
-
-  //     if (duration === QuestDuration.LIMITED && !startDate) {
-  //       return false
-  //     }
-  //     if (duration === QuestDuration.LIMITED && !endDate) {
-  //       return false
-  //     }
-  //     const dayDiff = moment(new Date(endDate).toISOString()).diff(
-  //       moment(new Date(startDate).toISOString()),
-  //       'days',
-  //       false,
-  //     )
-  //     if (duration === QuestDuration.LIMITED && dayDiff < 0) {
-  //       return false
-  //     }
-
-  //     return true
-  //   }),
-  //   endDate: string().test('valid endDate', 'End Date is not valid!', function () {
-  //     try {
-  //       const { from } = this
-  //       const { startDate, endDate } = from[0].value
-  //       const { duration } = from[1].value
-  //       if (duration === QuestDuration.ONGOING) return true
-
-  //       if (duration === QuestDuration.LIMITED && !startDate) {
-  //         return false
-  //       }
-  //       if (duration === QuestDuration.LIMITED && !endDate) {
-  //         return false
-  //       }
-  //       const dayDiff = moment(new Date(endDate).toISOString()).diff(
-  //         moment(new Date(startDate).toISOString()),
-  //         'days',
-  //         false,
-  //       )
-  //       if (duration === QuestDuration.LIMITED && dayDiff < 0) {
-  //         return false
-  //       }
-  //       return true
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }),
-  // }),
   multiplier: number().required('Multiplier is required to be at least 1').min(1),
   requirements: array().of(
     object({
-      requirementType: string().required('Requirement Type is required'),
+      requirementType: string().test(
+        'Test requirementType',
+        'Invalid requirement type',
+        function () {
+          const { from } = this
+          const { requirementType } = from[0].value
+          if (requirementType === 'Select Type' || requirementType === '') {
+            return false
+          }
+          return true
+        },
+      ),
       relationId: string().test(
         'Test relationId valid',
         'Invalid relationId of requirement',
         function () {
           const { from } = this
-          const { relationId } = from[0].value
+          const { relationId, requirementType } = from[0].value
           if (relationId === '0' || relationId === 0 || relationId === '') {
             return false
           }
@@ -151,6 +107,15 @@ const ShopItemSchema = object().shape({
       }),
     }),
   ),
+  tokenId: number().test('Token ID validation', 'Token Id for ERC1155 cannot be -1', function () {
+    const { from } = this
+    const { contractType, tokenId } = from[0].value
+
+    if (contractType === ContractType.ERC1155 && parseInt(tokenId) < 0) {
+      return false
+    }
+    return true
+  }),
 })
 
 const ShopItemForm = ({ item = null, isCreate = true }) => {
@@ -172,15 +137,13 @@ const ShopItemForm = ({ item = null, isCreate = true }) => {
 
     itemType: item?.itemType || ItemType.ONCHAIN,
     requirements: item?.requirements ?? [],
-    // contract: item?.contract || {
-    //   address: '',
-    //   type: ContractType.ERC20,
-    // },
+
     contractAddress: item?.contractAddress ?? null,
     contractType: item?.contractType ?? ContractType.ERC20,
     chain: item?.chain ?? Chain.Ethereum,
     network: item?.network ?? Network.EthereumGoerli,
     abi: item?.abi ?? '',
+    tokenId: item?.tokenId ?? -1,
   }
 
   const [data, isLoading, mutateAsync] = useShopItemMutation()
@@ -189,7 +152,7 @@ const ShopItemForm = ({ item = null, isCreate = true }) => {
 
   const onSubmit = async (fields, { setStatus }) => {
     try {
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
+      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
       setStatus(null)
       console.log('fields', fields)
       const payload = {

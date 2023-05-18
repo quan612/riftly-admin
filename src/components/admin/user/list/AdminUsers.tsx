@@ -77,7 +77,7 @@ const UsersBanner = ({ downloadCsv }: UsersBannerProps) => {
         <Flex direction="column" maxWidth="100%" my={{ base: '14px' }} gap="1rem">
           {allUsers && (
             <Heading fontSize={{ base: 'lg', lg: '3xl' }} color={'white'} fontWeight="700">
-              {allUsers.length} Users on Riftly
+              {allUsers.length} Users
             </Heading>
           )}
           <Text fontSize={'lg'} color={'white'} fontWeight="400">

@@ -102,13 +102,15 @@ const ShopItemFormWrapper = ({
                       setFieldValue('contractType', e.target.value)
                     }}
                   >
-                    {[ContractType.ERC20, ContractType.ERC721, ContractType.ERC721A]?.map((type, index) => {
-                      return (
-                        <option key={index} value={type}>
-                          {type}
-                        </option>
-                      )
-                    })}
+                    {[ContractType.ERC20, ContractType.ERC721, ContractType.ERC721A, ContractType.ERC1155]?.map(
+                      (type, index) => {
+                        return (
+                          <option key={index} value={type}>
+                            {type}
+                          </option>
+                        )
+                      },
+                    )}
                   </Select>
                 </FormControl>
                 <RequiredInput
@@ -218,14 +220,28 @@ const ShopItemFormWrapper = ({
                 />
               </GridItem>
 
-              <GridItem colSpan={2}>
-                <RequiredInput
-                  label={'Amount to redeem per slot (Multiplier - Only affect erc20)'}
-                  fieldName="multiplier"
-                  error={errors?.multiplier}
-                  touched={touched?.multiplier}
-                />
-              </GridItem>
+              {values.contractType === ContractType.ERC20 && (
+                <GridItem colSpan={2}>
+                  <RequiredInput
+                    label={'Amount to redeem per slot (Multiplier only affects erc20)'}
+                    fieldName="multiplier"
+                    error={errors?.multiplier}
+                    touched={touched?.multiplier}
+                  />
+                </GridItem>
+              )}
+
+              {values.contractType === ContractType.ERC1155 && (
+                <GridItem colSpan={2}>
+                  <RequiredInput
+                    label={'ERC1155 Token Id'}
+                    fieldName="tokenId"
+                    error={errors?.tokenId}
+                    touched={touched?.tokenId}
+                    type="number"
+                  />
+                </GridItem>
+              )}
             </SimpleGrid>
           </Flex>
         </AdminCard>
@@ -329,20 +345,19 @@ const ShopItem = ({ values }) => {
 const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touched }) => {
   const [networkOptions, networkOptionSet] = useState([])
 
-  const getNetworkOptions = async (eventType) => {
-    const networks = (await getSubType(eventType)) as any[]
+  const getNetworkOptions = async (chain, network) => {
+    const networks = (await getSubType(chain)) as any[]
 
     networkOptionSet(networks)
 
-    const value = networks?.[0]?.value
-    setFieldValue(`network`, value)
+    const value = network ?? networks?.[0]?.value
+        setFieldValue(`network`, value)
   }
 
   const getSubType = (value) => {
     return new Promise((resolve, reject) => {
       switch (value) {
         case Chain.Ethereum:
-       
           resolve([
             {
               id: 1,
@@ -390,10 +405,9 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
     })
   }
 
-
   useEffect(() => {
     if (values?.chain !== '') {
-      getNetworkOptions(values?.chain)
+      getNetworkOptions(values?.chain, values?.network)
     }
   }, [values?.chain])
   return (

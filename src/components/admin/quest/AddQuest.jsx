@@ -64,10 +64,10 @@ export default function AddQuest() {
 
   return (
     <>
-      {questType === Enums.DAILY_SHELL && <DailyQuestForm />}
+      {questType === Enums.DAILY_QUEST && <DailyQuestForm />}
       {questType === Enums.DISCORD_AUTH && <DiscordAuthQuestForm />}
       {questType === Enums.CODE_QUEST && <EnterCodeQuestForm />}
-      {questType === Enums.LIMITED_FREE_SHELL && <FreeLimitedQuestForm />}
+      {questType === Enums.LIMITED_FREE_POINT && <FreeLimitedQuestForm />}
       {questType === Enums.IMAGE_UPLOAD_QUEST && <ImageUploadQuestForm />}
 
       {questType === Enums.FOLLOW_INSTAGRAM && <InstagramFollowQuestForm />}

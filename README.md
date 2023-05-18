@@ -17,17 +17,15 @@ INSERT INTO public."QuestType" (id, name, description) VALUES (3, 'Follow Twitte
 INSERT INTO public."QuestType" (id, name, description) VALUES (4, 'Follow Instagram Account', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (5, 'Retweet a Tweet', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (6, 'Image Upload Quest', NULL);
-INSERT INTO public."QuestType" (id, name, description) VALUES (9, 'Limited Free $SHELL', NULL);
+INSERT INTO public."QuestType" (id, name, description) VALUES (9, 'Limited Free Point', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (10, 'Join our Discord', NULL);
-INSERT INTO public."QuestType" (id, name, description) VALUES (11, 'Daily Shell Quest', NULL);
+INSERT INTO public."QuestType" (id, name, description) VALUES (11, 'Daily Quest', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (12, 'Code Quest', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (13, 'Wallet Authenticate', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (14, 'Claim Reward For Owning NFT', NULL);
 INSERT INTO public."QuestType" (id, name, description) VALUES (15, 'Unstoppable Domain Authenticate', NULL);
 
-INSERT INTO public."RewardType" (id, reward) VALUES (1, '$Shell');
-INSERT INTO public."RewardType" (id, reward) VALUES (2, 'Mint List');
-INSERT INTO public."RewardType" (id, reward) VALUES (3, 'Mystery Bowl');
+INSERT INTO public."RewardType" (id, reward) VALUES (1, 'Point');
 ```
 
 ## How to use
