@@ -134,12 +134,12 @@ const methodList = [
     icon: <DiscordSettingIcon />,
     path: '/reward/shop',
   },
-  {
-    title: 'Achievement Items',
-    description: 'Add, Remove, or Edit achievement items',
-    icon: <DiscordSettingIcon />,
-    path: '/reward/achievement',
-  },
+  // {
+  //   title: 'Achievement Items',
+  //   description: 'Add, Remove, or Edit achievement items',
+  //   icon: <DiscordSettingIcon />,
+  //   path: '/reward/achievement',
+  // },
   {
     title: 'Configure Reward Types',
     description: 'Add, remove, or edit Reward Types',

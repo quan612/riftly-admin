@@ -10,7 +10,7 @@ import { QuestStyle, QuestDuration } from '@prisma/client'
 import { RequiredInput, NonRequiredTextInput } from '@components/shared/Formik'
 import { useRouter } from 'next/router'
 
-const DailyShellQuestSchema = object().shape({
+const DailyQuestSchema = object().shape({
   text: string().required('Quest text is required'),
   description: string().required('Quest description is required'),
   completedText: string().required('Complete Text is required'),
@@ -133,7 +133,7 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={DailyShellQuestSchema}
+      validationSchema={DailyQuestSchema}
       validateOnBlur={true}
       validateOnChange={true}
       onSubmit={onSubmit}

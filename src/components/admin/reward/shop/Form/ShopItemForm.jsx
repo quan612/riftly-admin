@@ -58,13 +58,24 @@ const ShopItemSchema = object().shape({
   multiplier: number().required('Multiplier is required to be at least 1').min(1),
   requirements: array().of(
     object({
-      requirementType: string().required('Requirement Type is required'),
+      requirementType: string().test(
+        'Test requirementType',
+        'Invalid requirement type',
+        function () {
+          const { from } = this
+          const { requirementType } = from[0].value
+          if (requirementType === 'Select Type' || requirementType === '') {
+            return false
+          }
+          return true
+        },
+      ),
       relationId: string().test(
         'Test relationId valid',
         'Invalid relationId of requirement',
         function () {
           const { from } = this
-          const { relationId } = from[0].value
+          const { relationId, requirementType } = from[0].value
           if (relationId === '0' || relationId === 0 || relationId === '') {
             return false
           }

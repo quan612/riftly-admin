@@ -345,13 +345,13 @@ const ShopItem = ({ values }) => {
 const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touched }) => {
   const [networkOptions, networkOptionSet] = useState([])
 
-  const getNetworkOptions = async (eventType) => {
-    const networks = (await getSubType(eventType)) as any[]
+  const getNetworkOptions = async (chain, network) => {
+    const networks = (await getSubType(chain)) as any[]
 
     networkOptionSet(networks)
 
-    const value = networks?.[0]?.value
-    setFieldValue(`network`, value)
+    const value = network ?? networks?.[0]?.value
+        setFieldValue(`network`, value)
   }
 
   const getSubType = (value) => {
@@ -407,7 +407,7 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
 
   useEffect(() => {
     if (values?.chain !== '') {
-      getNetworkOptions(values?.chain)
+      getNetworkOptions(values?.chain, values?.network)
     }
   }, [values?.chain])
   return (

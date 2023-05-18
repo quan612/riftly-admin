@@ -9,13 +9,6 @@ const Enums = {
   METAMASK: 'METAMASK',
   WALLETCONNECT: 'WALLETCONNET',
 
-  REWARDTYPE: {
-    MYSTERYBOWL: 'Mystery Bowl',
-    NUDE: 'Nude',
-    BOREDAPE: 'Bored Ape',
-    MINTLIST: 'Mint List',
-    SHELL: '$Shell',
-  },
   ADMIN_SIGN_MSG: 'Sign to authenticate as admin',
 
   DAILY: 'daily',

@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react'
+import { useMemo, useCallback } from 'react'
 import { useRouter } from 'next/router'
 
 import {
@@ -14,13 +14,12 @@ import {
   Thead,
   Tr,
   Td,
-  useToast,
   ButtonGroup,
   useDisclosure,
   Progress,
 } from '@chakra-ui/react'
 import { AdminBanner, AdminCard } from '@components/shared/Card'
-import { useGlobalFilter, usePagination, useSortBy, useTable, useRowSelect } from 'react-table'
+import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table'
 
 import {
   useAdminQuestSoftDelete,
@@ -28,7 +27,7 @@ import {
   useAdminQuestUpsert,
 } from '@hooks/admin/quest'
 
-import NewQuestModal from './NewQuestModal'
+import NewQuestModal from '../NewQuestModal'
 import moment from 'moment'
 
 import { AddIcon } from '@chakra-ui/icons'
@@ -40,6 +39,7 @@ import { useAdminAllUsersCountQuery } from '@hooks/admin/user'
 import { FaPlay } from 'react-icons/fa'
 import Enums from '@enums/index'
 
+// TODO: To be refactored following Jane's code improvements
 const AdminQuestsBanner = ({ count, onAddNew }) => {
   return (
     <AdminBanner>
@@ -55,13 +55,7 @@ const AdminQuestsBanner = ({ count, onAddNew }) => {
           </Heading>
 
           <Text fontSize={'lg'} color={'white'} fontWeight="400">
-            Last updated: {moment(new Date()).format('MMM dd, hh:mm A')}{' '}
-            {new Date()
-              .toLocaleDateString(undefined, {
-                day: '2-digit',
-                timeZoneName: 'short',
-              })
-              .substring(4)}
+            Last updated: {moment(new Date()).format('MMM DD, hh:mm A')}{' '}
           </Text>
         </Flex>
         <ButtonGroup
@@ -90,16 +84,40 @@ const AdminQuestsBanner = ({ count, onAddNew }) => {
 const CurrentQuests = () => {
   const { data: quests, isLoading: isLoadingQuests } = useAdminQuestsQuery()
   const { data: usersCount, isLoading: isFetchingUsersCount } = useAdminAllUsersCountQuery()
+  const newQuestModal = useDisclosure()
 
   return (
     <Flex flexDirection="column" w="100%" h="100%" justifyContent="center" gap="20px">
-      {quests && usersCount && <ResultTable data={quests} usersCount={usersCount} />}
+      <Flex
+        flexDirection={{
+          base: 'column',
+        }}
+        w="100%"
+        h="100%"
+        justifyContent="center"
+        gap="20px"
+      >
+        <NewQuestModal
+          isOpen={newQuestModal.isOpen}
+          onClose={() => {
+            newQuestModal.onClose()
+          }}
+        />
+        <AdminQuestsBanner
+          count={usersCount?.length || 0}
+          onAddNew={() => {
+            newQuestModal.onOpen()
+          }}
+        />
+        {quests && quests.length > 0 && usersCount && (
+          <ResultTable data={quests} usersCount={usersCount} />
+        )}
+      </Flex>
     </Flex>
   )
 }
 
 const ResultTable = ({ data, usersCount }) => {
-  const newQuestModal = useDisclosure()
   const router = useRouter()
   const columnData = [
     {
@@ -139,12 +157,7 @@ const ResultTable = ({ data, usersCount }) => {
       hideHeader: true,
     },
   ]
-  const columns = useMemo(
-    () => columnData,
-    [
-      // columnData
-    ],
-  )
+  const columns = useMemo(() => columnData, [])
   const tableData = useMemo(() => data, [data])
 
   const tableInstance = useTable(
@@ -188,108 +201,85 @@ const ResultTable = ({ data, usersCount }) => {
   }, [])
 
   return (
-    <Flex
-      flexDirection={{
-        base: 'column',
-      }}
-      w="100%"
-      h="100%"
-      justifyContent="center"
-      gap="20px"
-    >
-      <NewQuestModal
-        isOpen={newQuestModal.isOpen}
-        onClose={() => {
-          newQuestModal.onClose()
-        }}
-      />
-      <AdminQuestsBanner
-        count={data?.length}
-        onAddNew={() => {
-          newQuestModal.onOpen()
-        }}
-      />
-      <Box w="100%" mb="2rem">
-        <AdminCard p="16px">
-          <Table
-            variant="simple"
-            style={{
-              borderCollapse: 'separate',
-              borderSpacing: '0 1em',
-            }}
-          >
-            <Thead>
-              {headerGroups.map((headerGroup, index) => (
-                <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                  {headerGroup.headers.map((column, index) => {
-                    return (
-                      <Th
-                        {...column.getHeaderProps(column.getSortByToggleProps())}
-                        key={index}
-                        borderColor={borderColor}
-                        pe="0.5rem"
-                        ps="1rem"
-                      >
-                        {!column?.hideHeader && (
-                          <Flex
-                            align="center"
-                            fontSize={{ sm: '8px', lg: '12px', xl: '14px' }}
-                            color="gray.400"
-                            gap="8px"
-                            fontWeight={'400'}
-                          >
-                            {column.render('Header')}
+    <Box w="100%" mb="2rem">
+      <AdminCard p="16px">
+        <Table
+          variant="simple"
+          style={{
+            borderCollapse: 'separate',
+            borderSpacing: '0 1em',
+          }}
+        >
+          <Thead>
+            {headerGroups.map((headerGroup, index) => (
+              <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                {headerGroup.headers.map((column, index) => {
+                  return (
+                    <Th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      key={index}
+                      borderColor={borderColor}
+                      pe="0.5rem"
+                      ps="1rem"
+                    >
+                      {!column?.hideHeader && (
+                        <Flex
+                          align="center"
+                          fontSize={{ sm: '8px', lg: '12px', xl: '14px' }}
+                          color="gray.400"
+                          gap="8px"
+                          fontWeight={'400'}
+                        >
+                          {column.render('Header')}
 
-                            {column.isSorted && !column.isSortedDesc && <span>▼</span>}
-                            {column.isSorted && column.isSortedDesc && <span>▲</span>}
-                          </Flex>
-                        )}
-                      </Th>
+                          {column.isSorted && !column.isSortedDesc && <span>▼</span>}
+                          {column.isSorted && column.isSortedDesc && <span>▲</span>}
+                        </Flex>
+                      )}
+                    </Th>
+                  )
+                })}
+              </Tr>
+            ))}
+          </Thead>
+          <Tbody {...getTableBodyProps()} gap="12px">
+            {page.map((row, index) => {
+              prepareRow(row)
+
+              return (
+                <Tr {...row.getRowProps(getRowProps(row))} key={index}>
+                  {row.cells.map((cell, index) => {
+                    const data = getCellValue(
+                      cell,
+                      usersCount,
+                      editQuestAction,
+                      mutateAsync,
+                      handleOnDelete,
+                    )
+
+                    return (
+                      <Td
+                        {...cell.getCellProps()}
+                        key={index}
+                        fontSize={{ sm: '14px' }}
+                        maxW={{ sm: '125px', md: '150px', lg: '225px' }}
+                        border="1px solid transparent"
+                        borderLeftRadius={`${index === 0 ? '20px' : '0px'}`}
+                        borderRightRadius={`${index === row.cells.length - 1 ? '20px' : '0px'}`}
+                        pe={'0.5rem'}
+                        ps={'1rem'}
+                      >
+                        {data}
+                      </Td>
                     )
                   })}
                 </Tr>
-              ))}
-            </Thead>
-            <Tbody {...getTableBodyProps()} gap="12px">
-              {page.map((row, index) => {
-                prepareRow(row)
-
-                return (
-                  <Tr {...row.getRowProps(getRowProps(row))} key={index}>
-                    {row.cells.map((cell, index) => {
-                      const data = getCellValue(
-                        cell,
-                        usersCount,
-                        editQuestAction,
-                        mutateAsync,
-                        handleOnDelete,
-                      )
-
-                      return (
-                        <Td
-                          {...cell.getCellProps()}
-                          key={index}
-                          fontSize={{ sm: '14px' }}
-                          maxW={{ sm: '125px', md: '150px', lg: '225px' }}
-                          border="1px solid transparent"
-                          borderLeftRadius={`${index === 0 ? '20px' : '0px'}`}
-                          borderRightRadius={`${index === row.cells.length - 1 ? '20px' : '0px'}`}
-                          pe={'0.5rem'}
-                          ps={'1rem'}
-                        >
-                          {data}
-                        </Td>
-                      )
-                    })}
-                  </Tr>
-                )
-              })}
-            </Tbody>
-          </Table>
-          <Flex></Flex>
-        </AdminCard>
-      </Box>
-    </Flex>
+              )
+            })}
+          </Tbody>
+        </Table>
+      </AdminCard>
+    </Box>
   )
 }
 

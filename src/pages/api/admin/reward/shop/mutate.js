@@ -145,11 +145,8 @@ const handler = async (req, res) => {
         }
       }
     }
-    else {
-      console.log("no change")
-    }
 
-    let updatedContract = await prisma.ShopItem.upsert({
+    const updatedContract = await prisma.ShopItem.upsert({
       where: {
         id: id || -1,
       },

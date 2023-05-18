@@ -57,3 +57,4 @@ artifacts
 bowl-owners.csv
 bowl-owners.xlsx
 .env.example
+.env.test

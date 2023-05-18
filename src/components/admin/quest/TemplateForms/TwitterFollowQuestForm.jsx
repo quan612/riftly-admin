@@ -151,7 +151,7 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
           <AdminQuestFormWrapper {...childrenProps}>
             <GridItem colSpan={2}>
               <RequiredInput
-                label={'Twitter Account (whale.drop)'}
+                label={'Twitter Account (QU3ST_io)'}
                 fieldName="extendedQuestData.followAccount"
                 error={errors?.extendedQuestData?.followAccount}
                 touched={touched?.extendedQuestData?.followAccount}

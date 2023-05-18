@@ -190,9 +190,9 @@ const RequirementItem = ({
     const options = (await getSubType(requirementType)) as any[]
 
     requirementOptionSet(options)
-    if (requirements?.[index].relationId === 0 || requirements?.[index].relationId === '0') {
+    // if (requirements?.[index].relationId === 0 || requirements?.[index].relationId === '0') {
       setFieldValue(`requirements[${index}].relationId`, options?.[0]?.id)
-    }
+    // }
   }
   useEffect(() => {
     if (requirements?.[index].requirementType !== '') {

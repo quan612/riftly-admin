@@ -151,7 +151,7 @@ const InstagramFollowQuestForm = ({ quest = null, isCreate = true }) => {
           <AdminQuestFormWrapper {...childrenProps}>
             <GridItem colSpan={2}>
               <RequiredInput
-                label={'Instagram Account (anomuragame)'}
+                label={'Instagram Account (axieinfinity)'}
                 fieldName="extendedQuestData.followAccount"
                 error={errors?.extendedQuestData?.followAccount}
                 touched={touched?.extendedQuestData?.followAccount}
