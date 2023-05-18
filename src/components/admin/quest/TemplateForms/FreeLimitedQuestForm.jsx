@@ -83,7 +83,7 @@ const FreeTokenQuestSchema = object().shape({
 
 const FreeLimitedQuestForm = ({ quest = null, isCreate = true }) => {
   const initialValues = {
-    type: Enums.LIMITED_FREE_SHELL,
+    type: Enums.LIMITED_FREE_POINT,
     extendedQuestData: quest?.extendedQuestData ?? {
       collaboration: '',
       startDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),

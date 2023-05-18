@@ -85,7 +85,7 @@ const DailyShellQuestSchema = object().shape({
 
 const DailyQuestForm = ({ quest = null, isCreate = true }) => {
   const initialValues = {
-    type: Enums.DAILY_SHELL,
+    type: Enums.DAILY_QUEST,
     extendedQuestData: quest?.extendedQuestData ?? {
       frequently: 'daily',
       questRule: 'any',

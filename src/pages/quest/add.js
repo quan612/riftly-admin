@@ -21,14 +21,16 @@ import Enums, {
   WALLET_AUTH,
   FOLLOW_TWITTER,
   FOLLOW_INSTAGRAM,
-  TWITTER_RETWEET
+  TWITTER_RETWEET,
 } from '@enums/index'
 
 const AdminAddQuest = ({ session }) => {
   const router = useRouter()
   const { data: allQuestTypes, isLoading: isLoadingQuestTypes } = useAdminQuestTypesQuery()
   const [questTypes, questTypesSet] = useState()
-  const { query: { type } } = router
+  const {
+    query: { type },
+  } = router
 
   useEffect(() => {
     if (type && allQuestTypes) {
@@ -36,10 +38,7 @@ const AdminAddQuest = ({ session }) => {
       switch (type) {
         case CATEGORY_AUTHENTICATION.type:
           questTypesFilter = allQuestTypes.filter(
-            (q) =>
-              q.name === DISCORD_AUTH ||
-              q.name === TWITTER_AUTH ||
-              q.name === WALLET_AUTH,
+            (q) => q.name === DISCORD_AUTH || q.name === TWITTER_AUTH || q.name === WALLET_AUTH,
           )
           break
 
@@ -56,8 +55,8 @@ const AdminAddQuest = ({ session }) => {
         case CATEGORY_REWARD_POINTS.type:
           questTypesFilter = allQuestTypes.filter(
             (q) =>
-              q.name === Enums.DAILY_SHELL ||
-              q.name === Enums.LIMITED_FREE_SHELL ||
+              q.name === Enums.DAILY_QUEST ||
+              q.name === Enums.LIMITED_FREE_POINT ||
               q.name === Enums.OWNING_NFT_CLAIM,
           )
 
@@ -67,9 +66,7 @@ const AdminAddQuest = ({ session }) => {
 
           break
         case CATEGORY_COMMUNITY_ENGAGEMENT.type:
-          questTypesFilter = allQuestTypes.filter(
-            (q) => q.name === Enums.CODE_QUEST
-          )
+          questTypesFilter = allQuestTypes.filter((q) => q.name === Enums.CODE_QUEST)
 
           break
         default:

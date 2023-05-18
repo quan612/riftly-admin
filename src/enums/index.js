@@ -22,8 +22,8 @@ const Enums = {
   HOURLY: 'hourly',
   WEEKLY: 'weekly',
   MONTHLY: 'monthly',
-  MANUAL: "Manual",
-  AUTOMATIC: "Automatic",
+  MANUAL: 'Manual',
+  AUTOMATIC: 'Automatic',
 
   PAGINATION_SKIP: 4000,
   /* The number to perform update on large dataset, for when splitting into small chunks,
@@ -44,11 +44,11 @@ const Enums = {
   FOLLOW_TWITTER: 'Follow Twitter Account',
   FOLLOW_INSTAGRAM: 'Follow Instagram Account',
 
-  DAILY_SHELL: 'Daily Shell Quest',
+  DAILY_QUEST: 'Daily Quest',
 
   OWNING_NFT_CLAIM: 'Claim Reward For Owning NFT',
   IMAGE_UPLOAD_QUEST: 'Image Upload Quest',
-  LIMITED_FREE_SHELL: 'Limited Free $SHELL',
+  LIMITED_FREE_POINT: 'Limited Free Point',
 
   CODE_QUEST: 'Code Quest',
   UNSTOPPABLE_AUTH: 'Unstoppable Domain Authenticate',
