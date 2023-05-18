@@ -20,14 +20,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json({ isError: true, error: 'only GET' })
   }
 
-  const client = await analyticsDataClient()
   const variables: QuestVariables = await prisma.questVariables.findFirst()
-
+  const { googlePropertyId } = variables
   if (!variables) {
     return res.status(200).json({ isError: true, error: 'Missing analytics config' })
   }
-  const { googlePropertyId } = variables
+  let client;
+  try {
+    client = await analyticsDataClient()
+  } catch (error) {
+    return res.status(200).json({ isError: true, error: 'Missing analytics config' })
+  }
 
+  
   let transformedData: UsersByCountryDef[]
   try {
     const [response] = await client.runReport({
@@ -53,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     transformedData = transformGoogleResponse(response).slice(0, RECORDS_TO_TAKE)
   } catch (err) {
     // errors here are due to google analytics misconfig
-    res.status(200).json({ isError: true, message: err.message })
+    return res.status(200).json({ isError: true, message: err.message })
   }
 
   res.setHeader('Cache-Control', 'max-age=0, s-maxage=86400, stale-while-revalidate')

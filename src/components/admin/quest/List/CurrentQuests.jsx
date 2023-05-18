@@ -104,7 +104,7 @@ const CurrentQuests = () => {
           }}
         />
         <AdminQuestsBanner
-          count={usersCount?.length || 0}
+          count={quests?.length || 0}
           onAddNew={() => {
             newQuestModal.onOpen()
           }}
