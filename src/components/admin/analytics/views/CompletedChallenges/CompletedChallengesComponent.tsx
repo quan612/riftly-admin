@@ -14,7 +14,7 @@ export default function CompletedChallengesComponent() {
   const {data: completedQuests, isLoading: isLoadingCompletedQuests} = useCompletedQuestQuery()
 
   return (
-    <Card direction="column" w="100%" px="0px" overflowX="hidden">
+    <Card direction="column" w="100%" h="100%" px="0px" overflowX="hidden">
       <Flex px="25px" justify="space-between" mb="24px" align="center">
         <Heading fontSize="xl" fontWeight="700" lineHeight="24px">
           Top Completed Challenges
