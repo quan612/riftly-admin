@@ -55,8 +55,8 @@ const AdminAddQuest = ({ session }) => {
         case CATEGORY_REWARD_POINTS.type:
           questTypesFilter = allQuestTypes.filter(
             (q) =>
-              q.name === Enums.DAILY_SHELL ||
-              // q.name === Enums.LIMITED_FREE_SHELL ||
+              q.name === Enums.DAILY_QUEST ||
+              q.name === Enums.LIMITED_FREE_POINT ||
               q.name === Enums.OWNING_NFT_CLAIM,
           )
 

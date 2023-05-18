@@ -8,6 +8,7 @@ import OwnNftQuestForm from './TemplateForms/OwnNftQuestForm'
 import EnterCodeQuestForm from './TemplateForms/EnterCodeQuestForm'
 import DailyQuestForm from './TemplateForms/DailyQuestForm'
 import DiscordAuthQuestForm from './TemplateForms/DiscordAuthQuestForm'
+import FreeLimitedQuestForm from './TemplateForms/FreeLimitedQuestForm'
 import ImageUploadQuestForm from './TemplateForms/ImageUploadQuestForm'
 import InstagramFollowQuestForm from './TemplateForms/InstagramFollowQuestForm'
 import TwitterAuthQuestForm from './TemplateForms/TwitterAuthQuestForm'
@@ -43,12 +44,15 @@ export default function EditQuest() {
   if (selectedQuest && selectedQuest?.type?.name)
     return (
       <>
-        {selectedQuest?.type?.name === Enums.DAILY_SHELL && (
+        {selectedQuest?.type?.name === Enums.DAILY_QUEST && (
           <DailyQuestForm quest={selectedQuest} isCreate={false} />
         )}
 
         {selectedQuest.type.name === Enums.DISCORD_AUTH && <DiscordAuthQuestForm {...questProps} />}
         {selectedQuest.type.name === Enums.CODE_QUEST && <EnterCodeQuestForm {...questProps} />}
+        {selectedQuest.type.name === Enums.LIMITED_FREE_POINT && (
+          <FreeLimitedQuestForm {...questProps} />
+        )}
         {selectedQuest.type.name === Enums.IMAGE_UPLOAD_QUEST && (
           <ImageUploadQuestForm {...questProps} />
         )}

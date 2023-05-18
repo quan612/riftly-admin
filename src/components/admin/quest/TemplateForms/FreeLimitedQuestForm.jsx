@@ -6,14 +6,14 @@ import { GridItem, useToast } from '@chakra-ui/react'
 import { useAdminQuestUpsert } from '@hooks/admin/quest'
 import { AdminQuestFormWrapper } from '../AddQuest'
 import moment from 'moment'
+import { NonRequiredTextInput } from '@components/shared/Formik'
 import { QuestStyle, QuestDuration } from '@prisma/client'
-import { RequiredInput, NonRequiredTextInput } from '@components/shared/Formik'
 import { useRouter } from 'next/router'
 
-const DailyShellQuestSchema = object().shape({
+const FreeTokenQuestSchema = object().shape({
   text: string().required('Quest text is required'),
   description: string().required('Quest description is required'),
-  completedText: string().required('Complete Text is required'),
+  completedText: string().required('Completed Text is required'),
   quantity: number().required().min(1),
   image: string().test(
     'valid image',
@@ -28,8 +28,6 @@ const DailyShellQuestSchema = object().shape({
     },
   ),
   extendedQuestData: object().shape({
-    frequently: string().required('A frequently identity is required!'),
-    questRule: string().required('A rule identity is required!'),
     startDate: string().test('valid startDate', 'Start Date is not valid!', function () {
       const { from } = this
       const { startDate, endDate } = from[0].value // first ancestor
@@ -83,28 +81,26 @@ const DailyShellQuestSchema = object().shape({
   }),
 })
 
-const DailyQuestForm = ({ quest = null, isCreate = true }) => {
+const FreeLimitedQuestForm = ({ quest = null, isCreate = true }) => {
   const initialValues = {
-    type: Enums.DAILY_QUEST,
+    type: Enums.LIMITED_FREE_POINT,
     extendedQuestData: quest?.extendedQuestData ?? {
-      frequently: 'daily',
-      questRule: 'any',
+      collaboration: '',
       startDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
       endDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
     },
-    text: quest?.text || 'Daily Free Point',
-    description: quest?.description ?? 'Allow user to claim free point on frequently basis',
+    text: quest?.text || 'Free limited Point.',
+    description: quest?.description ?? 'Free point seasonal',
     completedText: quest?.completedText || 'Completed',
     rewardTypeId: quest?.rewardTypeId || 1,
     quantity: quest?.quantity || 0,
     isEnabled: quest?.isEnabled ?? true,
-    isRequired: quest?.isRequired ?? false,
+    isRequired: quest?.isRequired ?? true,
     id: quest?.id || 0,
-    style: quest?.style || QuestStyle.NORMAL,
     image: quest?.image || '',
+    style: quest?.style || QuestStyle.NORMAL,
     duration: quest?.duration || QuestDuration.ONGOING,
   }
-
   const { isLoading, mutateAsync } = useAdminQuestUpsert()
   const toast = useToast()
   const router = useRouter()
@@ -118,7 +114,7 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
       } else {
         toast({
           title: 'Success',
-          description: `Mutate quest success`,
+          description: `Update quest successful`,
           position: 'bottom-right',
           status: 'success',
           duration: 2000,
@@ -133,12 +129,12 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={DailyShellQuestSchema}
+      validationSchema={FreeTokenQuestSchema}
       validateOnBlur={true}
       validateOnChange={true}
       onSubmit={onSubmit}
     >
-      {({ values, errors, status, touched, handleChange, setFieldValue, dirty }) => {
+      {({ values, errors, status, touched, setFieldValue, dirty }) => {
         const childrenProps = {
           isCreate,
           isLoading,
@@ -152,24 +148,6 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
         return (
           <AdminQuestFormWrapper {...childrenProps}>
             <GridItem colSpan={2}>
-              <RequiredInput
-                label={'Frequent Rule (Enter daily for rule)'}
-                fieldName="extendedQuestData.frequently"
-                error={errors?.extendedQuestData?.frequently}
-                touched={touched?.extendedQuestData?.frequently}
-              />
-            </GridItem>
-
-            <GridItem colSpan={2}>
-              <RequiredInput
-                label={'Rule (Enter "any" for rule)'}
-                fieldName="extendedQuestData.questRule"
-                error={errors?.extendedQuestData?.questRule}
-                touched={touched?.extendedQuestData?.questRule}
-              />
-            </GridItem>
-
-            <GridItem colSpan={2}>
               <NonRequiredTextInput
                 label={'Collaboration (leaving blank for non specific collaboration)'}
                 fieldName="extendedQuestData.collaboration"
@@ -182,4 +160,4 @@ const DailyQuestForm = ({ quest = null, isCreate = true }) => {
   )
 }
 
-export default DailyQuestForm
+export default FreeLimitedQuestForm

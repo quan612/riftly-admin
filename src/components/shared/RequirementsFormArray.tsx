@@ -128,8 +128,8 @@ const RequirementItem = ({
         case RequirementType.QUEST:
           quests = quests?.filter((q) => {
             if (
-              q.type.name === Enums.DAILY_SHELL ||
-              // q.type.name === Enums.LIMITED_FREE_SHELL ||
+              q.type.name === Enums.DAILY_QUEST ||
+              q.type.name === Enums.LIMITED_FREE_POINT ||
               q.type.name === Enums.IMAGE_UPLOAD_QUEST ||
               q.type.name === Enums.UNSTOPPABLE_AUTH
             )

@@ -34,7 +34,11 @@ const questTypes = [
   },
 
   {
-    type: Enums.DAILY_SHELL,
+    type: Enums.LIMITED_FREE_POINT,
+  },
+
+  {
+    type: Enums.DAILY_QUEST,
   },
   {
     type: Enums.CODE_QUEST,
