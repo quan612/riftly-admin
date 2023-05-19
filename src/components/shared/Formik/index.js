@@ -40,7 +40,6 @@ export const RequiredInput = ({
         ms="4px"
         placeholder={placeholder}
         validate={validate}
-        onChange={onChange}
       />
 
       <FormErrorMessage fontSize="md" name={fieldName}>

@@ -83,18 +83,13 @@ const TwitterFollowQuestSchema = object().shape({
 })
 
 const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
-  const [twitterInput, setTwitterInput] = useState(initialValues?.extendedQuestData?.followAccount);
 
-  const onTwitterInput = (e) => {
-    console.log("input change");
-    setTwitterInput(e.target.value.replace(/@/g, ""));
-    console.log(twitterInput);
-  }
+  
 
   const initialValues = {
     type: Enums.FOLLOW_TWITTER,
     extendedQuestData: quest?.extendedQuestData ?? {
-      followAccount: twitterInput,
+      followAccount: '',
       collaboration: '',
       startDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
       endDate: moment.utc(new Date().toISOString()).format('MM/DD/yyyy'),
@@ -123,6 +118,9 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnBlur={true}
       validateOnChange={true}
       onSubmit={async (fields, { setStatus }) => {
+        // parse possible @ out of twitter handle input
+        fields.extendedQuestData.followAccount = fields.extendedQuestData.followAccount.replace(/@/g, '')  
+              
         try {
           // alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
           let res = await mutateAsync(fields)
@@ -163,8 +161,6 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
                 fieldName="extendedQuestData.followAccount"
                 error={errors?.extendedQuestData?.followAccount}
                 touched={touched?.extendedQuestData?.followAccount}
-                onChange={onTwitterInput} 
-                value={twitterInput}
               />
             </GridItem>
             <GridItem colSpan={2}>
