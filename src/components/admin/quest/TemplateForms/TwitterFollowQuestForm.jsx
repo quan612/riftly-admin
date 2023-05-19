@@ -83,9 +83,6 @@ const TwitterFollowQuestSchema = object().shape({
 })
 
 const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
-
-  
-
   const initialValues = {
     type: Enums.FOLLOW_TWITTER,
     extendedQuestData: quest?.extendedQuestData ?? {
