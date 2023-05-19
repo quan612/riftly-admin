@@ -1,5 +1,5 @@
 import Enums from 'enums'
-import React, {useState} from 'react'
+import React from 'react'
 import { Formik } from 'formik'
 import { object, string, number } from 'yup'
 import { GridItem, useToast } from '@chakra-ui/react'
@@ -120,7 +120,7 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
       onSubmit={async (fields, { setStatus }) => {
         // parse possible @ out of twitter handle input
         fields.extendedQuestData.followAccount = fields.extendedQuestData.followAccount.replace(/@/g, '')  
-              
+
         try {
           // alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
           let res = await mutateAsync(fields)
