@@ -21,8 +21,7 @@ export const RequiredInput = ({
   error,
   touched,
   placeholder = '',
-  validate = null,
-  onChange
+  validate = null
 }) => {
   return (
     <FormControl isRequired isInvalid={error && touched}>
