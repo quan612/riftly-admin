@@ -95,6 +95,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-tsdoc": "^0.2.14",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.12.0",
+    "immutable": "^4.3.0",
     "swr": "^1.2.1",
     "ts-jest": "^27.0.5",
     "typeconv": "^2.3.0",
