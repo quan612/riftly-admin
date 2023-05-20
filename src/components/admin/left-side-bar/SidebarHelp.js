@@ -30,7 +30,7 @@ export function SidebarHelp(props) {
             Need Help?
           </Text>
           <Text fontSize="16px" >
-            Get in touch with our support team at support@riftly.xyz
+            Get in touch with our support team at support@qu3st.io
           </Text>
           <Button variant='ghost'>Get in touch</Button>
         </Flex>
