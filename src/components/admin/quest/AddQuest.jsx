@@ -93,6 +93,7 @@ export const AdminQuestFormWrapper = ({
   touched,
   setFieldValue,
   children,
+  askQu3st,
 }) => {
   const { questTypeSelect, questType, questTypes, rewardTypes } = useContext(AdminQuestFormContext)
 
@@ -403,6 +404,7 @@ export const AdminQuestFormWrapper = ({
           description={values?.description}
           quantity={values?.quantity}
           status={status}
+          askQu3st={askQu3st}
         />
       </Flex>
       {/* Debug */}
@@ -423,7 +425,7 @@ export const AdminQuestFormWrapper = ({
 }
 
 /* Quest Preview */
-const QuestPreview = ({ text, description, quantity, status }) => {
+const QuestPreview = ({ text, description, quantity, status, askQu3st }) => {
   return (
     <AdminCard bg="transparent" border="1px solid" borderColor="brand.neutral3">
       <Flex direction="column" gap="20px">
@@ -439,8 +441,14 @@ const QuestPreview = ({ text, description, quantity, status }) => {
         )}
       </Flex>
 
-      <Flex justifyContent="center" mt="32px">
-        <Button variant="blue" type="submit">
+      {askQu3st && (
+        <Flex justifyContent="center" mt="32px">
+          <TextMd color="brand.neutral2">Please Contact Qu3st to enable partnerships</TextMd>
+        </Flex>
+      )}
+
+      <Flex justifyContent="center" mt={askQu3st ? '12px' : '32px'}>
+        <Button variant="blue" type="submit" disabled={askQu3st}>
           Schedule Quest
         </Button>
       </Flex>
