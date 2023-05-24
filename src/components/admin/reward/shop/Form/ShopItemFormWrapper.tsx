@@ -102,15 +102,18 @@ const ShopItemFormWrapper = ({
                       setFieldValue('contractType', e.target.value)
                     }}
                   >
-                    {[ContractType.ERC20, ContractType.ERC721, ContractType.ERC721A, ContractType.ERC1155]?.map(
-                      (type, index) => {
-                        return (
-                          <option key={index} value={type}>
-                            {type}
-                          </option>
-                        )
-                      },
-                    )}
+                    {[
+                      ContractType.ERC20,
+                      ContractType.ERC721,
+                      ContractType.ERC721A,
+                      ContractType.ERC1155,
+                    ]?.map((type, index) => {
+                      return (
+                        <option key={index} value={type}>
+                          {type}
+                        </option>
+                      )
+                    })}
                   </Select>
                 </FormControl>
                 <RequiredInput
@@ -220,7 +223,7 @@ const ShopItemFormWrapper = ({
                 />
               </GridItem>
 
-              {values.contractType === ContractType.ERC20 && (
+              {(values.contractType === ContractType.ERC20 && values.itemType === ItemType.ONCHAIN) &&(
                 <GridItem colSpan={2}>
                   <RequiredInput
                     label={'Amount to redeem per slot (Multiplier only affects erc20)'}
@@ -345,13 +348,10 @@ const ShopItem = ({ values }) => {
 const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touched }) => {
   const [networkOptions, networkOptionSet] = useState([])
 
-  const getNetworkOptions = async (chain, network) => {
+  const getNetworkOptions = async (chain) => {
     const networks = (await getSubType(chain)) as any[]
-
     networkOptionSet(networks)
-
-    const value = network ?? networks?.[0]?.value
-        setFieldValue(`network`, value)
+    return networks;
   }
 
   const getSubType = (value) => {
@@ -399,6 +399,20 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
             },
           ])
           break
+        case Chain.Avalance:
+          resolve([
+            {
+              id: 1,
+              name: Network.AvalanceMainnet,
+              value: Network.AvalanceMainnet,
+            },
+            {
+              id: 2,
+              name: Network.AvalanceFuji,
+              value: Network.AvalanceFuji,
+            },
+          ])
+          break
         default:
           resolve([])
       }
@@ -406,17 +420,28 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
   }
 
   useEffect(() => {
-    if (values?.chain !== '') {
-      getNetworkOptions(values?.chain, values?.network)
-    }
-  }, [values?.chain])
+    getNetworkOptions(values?.chain)
+    setFieldValue(`network`, values?.network)
+  }, [])
+
   return (
     <Flex direction={'column'} gap="20px">
       <FormControl isRequired isInvalid={errors.chain && touched.chain}>
         <FormLabel ms="4px" fontSize="md" fontWeight="bold">
           Chain
         </FormLabel>
-        <Field w="250px" id={`chain`} name={`chain`} as={Select} onChange={handleChange}>
+        <Field
+          w="250px"
+          id={`chain`}
+          name={`chain`}
+          as={Select}
+          onChange={async(e) => {
+            setFieldValue(`chain`, e.target.value)
+            const networks = await getNetworkOptions(e.target.value)
+            const value = networks?.[0]?.value
+            setFieldValue(`network`, value)
+          }}
+        >
           {chainTypes.map((r) => {
             return (
               <option value={r.value} key={r.value}>
@@ -442,7 +467,7 @@ const OnchainContractData = ({ values, handleChange, setFieldValue, errors, touc
         >
           {networkOptions.map((r) => {
             return (
-              <option key={r.id} value={r.value}>
+              <option key={r.value} value={r.value}>
                 {r.value}
               </option>
             )

@@ -4,7 +4,7 @@ export const enum Chain  {
   Ethereum="Ethereum",
   Polygon="Polygon",
   Arbitrum="Arbitrum",
-  // Avalance="Avalance"
+  Avalance="Avalance"
 }
 
 export const enum Network  {
@@ -16,7 +16,9 @@ export const enum Network  {
 
   ArbitrumMainnet="Arbitrum Mainnet",
   ArbitrumGoerli="Arbitrum Goerli",
-  // Avalance="Avalance"
+
+  AvalanceMainnet="Avalance Mainnet", // 43114
+  AvalanceFuji="Avalance Fuji", // 43113
 }
 
 
@@ -35,5 +37,10 @@ export const chainTypes = [
     id: 3,
     name: Chain.Arbitrum,
     value: Chain.Arbitrum,
+  },
+  {
+    id: 4,
+    name: Chain.Avalance,
+    value: Chain.Avalance,
   },
 ]

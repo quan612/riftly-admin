@@ -94,11 +94,11 @@ const requirementTypes = [
     name: RequirementType.REWARD,
     value: RequirementType.REWARD,
   },
-  {
-    id: 3,
-    name: RequirementType.LOGIN,
-    value: RequirementType.LOGIN,
-  },
+  // {
+  //   id: 3,
+  //   name: RequirementType.LOGIN,
+  //   value: RequirementType.LOGIN,
+  // },
 ]
 
 const loginRequirement = [
@@ -188,17 +188,14 @@ const RequirementItem = ({
 
   const getAssociation = async (requirementType) => {
     const options = (await getSubType(requirementType)) as any[]
-
     requirementOptionSet(options)
-    // if (requirements?.[index].relationId === 0 || requirements?.[index].relationId === '0') {
-      setFieldValue(`requirements[${index}].relationId`, options?.[0]?.id)
-    // }
+    return options
   }
+
   useEffect(() => {
-    if (requirements?.[index].requirementType !== '') {
       getAssociation(requirements?.[index].requirementType)
-    }
-  }, [requirements?.[index].requirementType])
+      setFieldValue(`requirements[${index}].relationId`, requirements[index].relationId)
+  }, [])
 
   return (
     <>
@@ -208,7 +205,13 @@ const RequirementItem = ({
           id={`requirements.[${index}].requirementType`}
           name={`requirements.[${index}].requirementType`}
           as={Select}
-          onChange={handleChange}
+          // onChange={handleChange}
+          onChange={async(e) => {
+            setFieldValue(`requirements.[${index}].requirementType`, e.target.value)
+            const options = await getAssociation(e.target.value)
+            const relationId = options?.[0]?.id
+            setFieldValue(`requirements.[${index}].relationId`, relationId)
+          }}
         >
           {requirementTypes.map((r) => {
             return (
