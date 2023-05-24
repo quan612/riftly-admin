@@ -29,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     client = await analyticsDataClient()
   } catch (error) {
+    console.log(error)
     return res.status(200).json({ isError: true, error: 'Missing analytics config' })
   }
 
@@ -58,10 +59,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     transformedData = transformGoogleResponse(response).slice(0, RECORDS_TO_TAKE)
   } catch (err) {
     // errors here are due to google analytics misconfig
+    console.log(err)
     return res.status(200).json({ isError: true, message: err.message })
   }
 
-  res.setHeader('Cache-Control', 'max-age=0, s-maxage=86400, stale-while-revalidate')
+  res.setHeader('Cache-Control', 'max-age=0, s-maxage=10, stale-while-revalidate')
   res.status(200).json(transformedData)
 }
 
