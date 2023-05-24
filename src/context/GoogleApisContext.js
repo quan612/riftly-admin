@@ -14,6 +14,7 @@ const analyticsClient = async () => {
     googleProjectId.trim().length < 1 ||
     process.env.GOOGLE_ANALYTICS_PRIVATE_KEY.trim().length < 1
   ) {
+    console.log("Missing google analytics configuration")
     throw new Error('Missing google analytics configuration.')
   }
 
@@ -21,7 +22,7 @@ const analyticsClient = async () => {
     credentials: {
       client_email: googleClientEmail,
       client_id: googleClientId,
-      private_key: process.env.GOOGLE_ANALYTICS_PRIVATE_KEY,
+      private_key: process.env.GOOGLE_ANALYTICS_PRIVATE_KEY.split(String.raw`\n`).join('\n'),
     },
     projectId: googleProjectId,
   })
