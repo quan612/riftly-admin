@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const r: CompletedQuest = {
         name: getMeaningfulQuestName(quest as Quest),
         finished,
-        rate: parseFloat((finished / userCount).toFixed(2)) * 100,
+        rate: parseFloat(((finished / userCount) * 100).toPrecision(2)),
       }
 
       return r
