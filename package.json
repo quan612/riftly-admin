@@ -12,7 +12,8 @@
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "postbuild": "cpy 'src/models/**/*.swagger.yaml' public/openapi --flat",
     "openapi:yaml": "npx typeconv -f ts -t oapi --oapi-format 'yaml' --output-extension yaml --output-directory src/models/openapi src/models/*.ts",
-    "prisma-to-ts": "npx @kalissaac/prisma-typegen ./interfaces/prismaTypes.ts ./prisma/schema.prisma"
+    "prisma-to-ts": "npx @kalissaac/prisma-typegen ./interfaces/prismaTypes.ts ./prisma/schema.prisma",
+    "postinstall": "bash setup_rds.sh"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^1.3.0",
