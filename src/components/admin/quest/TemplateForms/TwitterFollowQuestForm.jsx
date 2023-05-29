@@ -115,6 +115,9 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
       validateOnBlur={true}
       validateOnChange={true}
       onSubmit={async (fields, { setStatus }) => {
+        // parse possible @ out of twitter handle input
+        fields.extendedQuestData.followAccount = fields.extendedQuestData.followAccount.replace(/@/g, '')  
+
         try {
           // alert('SUCCESS!! :-)\n\n' + JSON.stringify(fields, null, 4))
           let res = await mutateAsync(fields)
@@ -151,7 +154,7 @@ const TwitterFollowQuestForm = ({ quest = null, isCreate = true }) => {
           <AdminQuestFormWrapper {...childrenProps}>
             <GridItem colSpan={2}>
               <RequiredInput
-                label={'Twitter Account (QU3ST_io)'}
+                label={'Twitter Account (@QU3ST_io)'} 
                 fieldName="extendedQuestData.followAccount"
                 error={errors?.extendedQuestData?.followAccount}
                 touched={touched?.extendedQuestData?.followAccount}

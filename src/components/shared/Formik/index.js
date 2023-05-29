@@ -21,7 +21,7 @@ export const RequiredInput = ({
   error,
   touched,
   placeholder = '',
-  validate = null,
+  validate = null
 }) => {
   return (
     <FormControl isRequired isInvalid={error && touched}>
@@ -47,6 +47,7 @@ export const RequiredInput = ({
     </FormControl>
   )
 }
+
 
 export const RequiredPasswordInput = ({
   label,
